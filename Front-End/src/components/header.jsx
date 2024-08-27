@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Import Bibliotecas
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,8 +18,8 @@ import {
 const Header = () => {
     const [userName, setUserName] = useState("");
     const [userImage, setUserImage] = useState("");
-    const [setIsLogged] = useState(false);
-    const [ setIsAdmin] = useState(false);
+    const [isLogged, setIsLogged] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("usuarios"));
 
@@ -32,7 +33,7 @@ const Header = () => {
         } else {
             navigate("/");
         }
-    }, [user, navigate, setIsAdmin, setIsLogged]);
+    }, [user, navigate]);
 
 
     // Estado do dropdown icone

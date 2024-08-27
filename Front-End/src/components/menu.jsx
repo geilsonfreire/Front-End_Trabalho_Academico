@@ -35,8 +35,8 @@ const Menu = () => {
 
 
   return (
-      <nav>
-          <Link to="/">
+      <nav className="Menu-lateral">
+          <Link to="/admin">
               <img src={Logo} alt="Logo da pagina" />
           </Link>
 
@@ -56,6 +56,7 @@ const Menu = () => {
               <Icon to="#" icon={<MdOutlineForum />} title="Mensagens" />
               <Icon to="#" icon={<MdCalendarMonth />} title="Agendas" />
           </ul>
+          <hr />
           <ul className="lasttMenu">
               <Icon to="#" icon={<MdSettings />} title="Configurações" />
               <Icon to="#" icon={<MdLogout />} title="Sair" />
