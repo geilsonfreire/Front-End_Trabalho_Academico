@@ -111,33 +111,28 @@ const AdminProducts = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Imagem</th>
                             <th>Nome</th>
                             <th>Categoria</th>
                             <th>Custo</th>
                             <th>Preço</th>
-                            <th>Quantidade</th>
-                            <th>Tamanho</th>
-                            <th>Vendidos</th>
+                            <th>QNT_Min</th>
+                            <th>QNT_Max</th>
+                            <th>Unidade_Medidas</th>
+                            <th>Status</th>
                             <th>Açoes</th>
                         </tr>
                     </thead>
                     <tbody>
                         
                             <tr key={""}>
-                                <td>
-                                    <img
-                                        src="{product.image}"
-                                        alt="{product.name}"
-                                    />
-                                </td>
                                 <td>{"product.name"}</td>
                                 <td>{"product.category"}</td>
                                 <td>{"product.cost"}</td>
                                 <td>{"product.price"}</td>
-                                <td>{"product.stock"}</td>
-                                <td>{"product.size"}</td>
-                                <td>{"product.subcategory"}</td>
+                                <td>{"product.stockmin"}</td>
+                                <td>{"product.stockmax"}</td>
+                                <td>{"product.UnitMedidas"}</td>
+                                <td>{"product.Status"}</td>
                                 <td>{"product.createdAt"}</td>
                                 <td>
                                     <button className="btn-edit"><FaEdit /></button>

@@ -13,7 +13,7 @@ function MyRoutes() {
         <Routes>
             <Route path="/admin" element={<Home />}>
                 <Route path="/admin/adminDashBoard" element={<AdminDashBoard />} />
-                <Route path="/admin/adminProducts" element={<AdminProducts />} />
+                <Route path="/admin/adminEstoques" element={<AdminProducts />} />
             </Route>
         </Routes>
     )

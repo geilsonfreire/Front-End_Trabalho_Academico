@@ -12,13 +12,10 @@ import "../style/menu.css";
 // Import icon
 import {
     MdSpaceDashboard,
-    MdGridView,
-    MdOutlineForum,
-    MdChecklist,
+    MdOutlinePointOfSale,
     MdOutlineGridOn,
     MdSettings,
     MdLogout,
-    MdCalendarMonth,
 } from "react-icons/md";
 
 const Menu = () => {
@@ -34,35 +31,36 @@ const Menu = () => {
     }, []);
 
 
-  return (
-      <nav className="Menu-lateral">
-          <Link to="/admin">
-              <img src={Logo} alt="Logo da pagina" />
-          </Link>
+    return (
+        <nav className="Menu-lateral">
+            <Link to="/admin">
+                <img src={Logo} alt="Logo da pagina" />
+            </Link>
 
-          <ul id="mainMenu">
-              <Icon
-                  to="/admin/adminDashBoard"
-                  icon={<MdSpaceDashboard />}
-                  title="DashBoard"
-              />
-              <Icon
-                  to="/admin/adminProducts"
-                  icon={<MdGridView />}
-                  title="Produtos"
-              />
-              <Icon to="#" icon={<MdChecklist />} title="Pedidos" />
-              <Icon to="#" icon={<MdOutlineGridOn />} title="Estoques" />
-              <Icon to="#" icon={<MdOutlineForum />} title="Mensagens" />
-              <Icon to="#" icon={<MdCalendarMonth />} title="Agendas" />
-          </ul>
-          <hr />
-          <ul className="lasttMenu">
-              <Icon to="#" icon={<MdSettings />} title="Configurações" />
-              <Icon to="#" icon={<MdLogout />} title="Sair" />
-          </ul>
-      </nav>
-  )
+            <ul id="mainMenu">
+                <Icon
+                    to="/admin/adminDashBoard"
+                    icon={<MdSpaceDashboard />}
+                    title="DashBoard"
+                />
+                <Icon
+                    to="/admin/adminEstoques"
+                    icon={<MdOutlineGridOn />}
+                    title="Estoques"
+                />
+                <Icon
+                    to="#"
+                    icon={<MdOutlinePointOfSale />}
+                    title="Movimentações"
+                />
+            </ul>
+            <hr />
+            <ul className="lasttMenu">
+                <Icon to="#" icon={<MdSettings />} title="Configurações" />
+                <Icon to="#" icon={<MdLogout />} title="Sair" />
+            </ul>
+        </nav>
+    )
 }
 
 const Icon = ({ to, icon, title, onClick }) => ( // Icon component
@@ -75,10 +73,10 @@ const Icon = ({ to, icon, title, onClick }) => ( // Icon component
 );
 
 Icon.propTypes = {
-  to: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+    to: PropTypes.string.isRequired,
+    icon: PropTypes.node.isRequired,
+    title: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
 };
 
 export default Menu
