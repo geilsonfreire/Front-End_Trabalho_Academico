@@ -1,0 +1,175 @@
+.Page-Product .Title {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+
+}
+
+/*Imput de pesquisa */
+.Page-Product .search-bar input {
+    background: #fff;
+    border: solid 1px #d5d5d5;
+}
+
+.admin-product-header-second {
+    padding: 30px;
+}
+
+.admin-product-image {
+    width: 10rem;
+    height: 9rem;
+    border-radius: 10px;
+}
+
+/*Header dos produtos */
+.Page-Product header {
+    height: 3rem;
+    border-radius: 10px;
+}
+
+.Page-Product header nav {
+    width: 100%;
+    height: 100%;
+}
+
+/*Menu de produtos  */
+.Page-Product header nav ul {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+    gap: 2rem;
+}
+
+.Page-Product header nav ul li {
+    background: transparent;
+    border-radius: 10px;
+    padding: 0.2rem 1rem;
+    cursor: pointer;
+}
+
+.Page-Product header nav ul li a {
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: normal;
+}
+
+.Page-Product header nav ul li a i {
+    font-size: 1rem;
+}
+
+/*Seçao de filtros  */
+.Page-Product section .Filtes-stoks {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.Page-Product section .Filtes-stoks span {
+    font-size: 1.5rem;
+    color: #3749a6;
+    border-left: solid 1px #3749a6;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    border-radius: 10px;
+}
+
+.Page-Product section .Filtes-stoks li {
+    display: flex;
+    flex-direction: column;
+}
+
+.Page-Product section .Filtes-stoks li label {
+    font-size: 0.7rem;
+}
+
+.Page-Product section .Filtes-stoks select {
+    border: none;
+    border-bottom: 1px solid #1e3194;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    padding: 0.2rem 0.5rem;
+    color: #1e3194;
+    font-size: 1rem;
+}
+
+.Page-Product section .Filtes-stoks .date-filter input {
+    border: none;
+    border-bottom: solid 1px #1e3194;
+    border-radius: 10px;
+    padding: 0.2rem 0.5rem;
+    outline: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/*Lista de estoque */
+.Page-Product .stock-list {
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.2rem 1rem;
+    border-bottom: solid 1px #1e3194;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.Page-Product .stock-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.Page-Product .stock-list table thead {
+    border-bottom: solid 1px #1e3194;
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+}
+
+.Page-Product .stock-list table tbody tr td {
+    padding: 5px 0.75rem;
+}
+
+.Page-Product .stock-list table tbody tr td img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.Page-Product .stock-list table tbody tr:nth-child(odd) {
+    background-color: #8fc4f3;
+
+}
+
+.Page-Product .stock-list table tbody tr:nth-child(even) {
+    background-color: #fff;
+
+}
+
+.Page-Product .stock-list table tbody tr td button {
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+}
+
+.Page-Product .stock-list table tbody tr td button svg {
+    font-size: 1.1rem;
+}
+
+.Page-Product .stock-list table tbody tr td .btn-edit svg {
+    color: blue;
+}
+
+.Page-Product .stock-list table tbody tr td .btn-edit svg:hover {
+    color: rgba(0, 0, 255, 0.664)
+}
+
+.Page-Product .stock-list table tbody tr td .btn-delete svg {
+    color: red;
+}
+
+.Page-Product .stock-list table tbody tr td .btn-delete svg:hover {
+    color: rgba(255, 0, 0, 0.692);
+}

@@ -1,0 +1,74 @@
+.container-menu-dropdown {
+    position: absolute;
+    width: 200px;
+    top: 78px;
+    right: 1%;
+    background-color: #1c1c1c;
+    padding: 10px;
+    border-radius: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.container-menu-dropdown.Dropshow {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Posiciona a ponta acima do container */
+.container-menu-dropdown::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    border-width: 0 10px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #1c1c1c transparent;
+}
+
+.menu-dropdown-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-dropdown-nav ul li {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-dropdown-nav ul li:hover {
+    background-color: #333333;
+    border-radius: 10px;
+    color: #3749A6;
+}
+
+.menu-dropdown-nav ul li svg {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu-dropdown-nav ul li span {
+    font-size: 1rem;
+}
+
+.menu-dropdown-nav ul hr {
+    border: none;
+    border-top: 1px solid #444444;
+    margin: 10px 0;
+}
+
+.menu-dropdown-nav ul a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.menu-dropdown-nav ul a:hover {
+    color: inherit;
+}

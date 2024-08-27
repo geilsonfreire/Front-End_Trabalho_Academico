@@ -1,0 +1,121 @@
+.modal-content h2 {
+    border-bottom: solid 1px #ccc;
+}
+
+
+/*Forms Inputs */
+.form-add-category input {
+    width: 100%;
+    height: 2rem;
+    padding: 10px;
+    border: none;
+    border-bottom: solid 1px #1e3194;
+    border-radius: 2px;
+    outline: none;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+/*Form Seçao 1 */
+.modal-content .form-seçao-1 {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.modal-content .form-seçao-1 .form-add-img i {
+    font-size: 5rem;
+}
+
+/* seçao 2 */
+.modal-content .form-seçao-2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content .form-seçao-2 .form-dropdow-category {
+    width: 100%;
+}
+
+.modal-content .form-seçao-2 .form-dropdow-category button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+/*Prefixaçao de preços por categoria */
+.modal-content .form-seçao-2 .form-dropdow-prefix {
+    width: 100%;
+    max-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 10px 0;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 1rem;
+    visibility: hidden;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+/*Class JSX */
+.modal-content .form-seçao-2 .form-dropdow-prefix.dropdown-show {
+    visibility: visible;
+    max-height: 100%;
+    opacity: 1;
+}
+
+.modal-content .form-seçao-2 .form-dropdow-prefix .form-inputs {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modal-content .form-seçao-2 .form-dropdow-prefix .form-inputs label {
+    width: 15%;
+}
+
+
+.modal-content .form-seçao-2 .form-dropdow-prefix .form-inputs .Form-check-input {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    transform: scale(1.2);
+    border: solid 1px #1e3194;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-content .form-seçao-2 .form-dropdow-prefix .form-inputs .Form-check-input:checked {
+    background: #00ff26;
+}
+
+.modal-content .form-seçao-2 .form-dropdow-prefix .form-price {
+    width: 100%;
+}
+
+/*Form Descriçao */
+.modal-content .form-descrition textarea {
+    width: 100%;
+    min-height: 20px;
+    padding: 10px;
+    border: solid 1px #ccc;
+    border-bottom: solid 1px #1e3194;
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+    resize: vertical;
+}

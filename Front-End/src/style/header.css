@@ -1,0 +1,105 @@
+.Header-painel {
+    z-index: 1000;
+}
+
+/* Lado direito Menu naigation */
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/*Notification */
+.notifications {
+    position: relative;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.notifications:hover {
+    transform: scale(1.1);
+}
+
+.notifications i {
+    color: #3749A6;
+    font-size: 1.5rem;
+}
+
+
+.notification-count {
+    position: absolute;
+    top: 5px;
+    right: -5px;
+    background-color: red;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 7px;
+}
+
+/*Perfil */
+.profile {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.profile img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.profile img:hover {
+    transform: scale(1.1);
+}
+
+.user-name {
+    margin-left: 1rem;
+    white-space: nowrap;
+    cursor: default;
+}
+
+.user-name:hover {
+    color: #3749A6;
+}
+
+/*Perfil Type */
+.pefill-adim-tipo .user-type {
+    position: absolute;
+    top: 40px;
+    cursor: default;
+}
+
+.user-type {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #ccc;
+}
+
+.user-type:hover {
+    color: #3749A6;
+    transform: scale(1.1);
+}
+
+/* Menu DropDow */
+.menu-dropdow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
+}
+
+.menu-dropdow i {
+    color: #3749A6;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.menu-dropdow i:hover {
+    transform: scale(1.1);
+}

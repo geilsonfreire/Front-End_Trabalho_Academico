@@ -1,0 +1,128 @@
+
+
+.modal-content h2 {
+    border-bottom: solid 1px #ccc;
+}
+
+
+/*Forms Inputs */
+.form-add-product input {
+    width: 100%;
+    padding: 10px;
+    border: solid 1px #ccc;
+    border-bottom: solid 1px #1e3194;
+    border-radius: 4px;
+    outline: none;
+}
+
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+/*Form Seçao Product e QNT */
+.modal-content .form-seçao-1 {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-content .form-seçao-1 .form-product {
+    width: 100%;
+}
+
+
+/* seçao 2 */
+.modal-content .form-seçao-2 {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/*CheckBox */
+.form-checkbox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-checkbox input {
+    appearance: none;
+    width: 1rem;
+    transform: scale(1.2);
+    border: solid 1px #1e3194;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-checkbox input:checked {
+    background: #00ff26;
+}
+
+.form-checkbox label {
+    font-size: 1rem;
+}
+
+.modal-content .form-seçao-2 .form-dropdow {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.modal-content .form-seçao-2 .form-dropdow select {
+    border: none;
+    border-bottom: 1px solid #1e3194;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    padding: 0.5rem 0.5rem;
+    color: #1e3194;
+    font-size: 0.6rem;
+}
+
+/*Button categoria */
+.modal-content .btn-category {
+    margin-bottom: 1rem;
+}
+
+/*Form Descriçao */
+.modal-content .form-descrition textarea {
+    width: 100%;
+    min-height: 20px;
+    padding: 10px;
+    border: solid 1px #ccc;
+    border-bottom: solid 1px #1e3194;
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/*Form Imagem */
+.modal-image {
+    min-width: 10rem;
+    min-height: 8rem;
+    width: 10rem;
+    height: 8rem;
+    padding: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.form-add-img {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-add-img i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
