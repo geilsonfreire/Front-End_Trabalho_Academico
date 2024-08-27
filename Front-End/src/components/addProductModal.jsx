@@ -8,7 +8,6 @@ import "../style/addProductModal.css";
 
 // Imports de Icones
 import { BiSolidCategory } from "react-icons/bi";
-import { IoMdImages } from "react-icons/io";
 
 // Imports de Componentes
 import AddCategoryModal from "../components/adminCategoryModal";
@@ -50,17 +49,6 @@ const AddProductModal = ({ onClose }) => {
                 <h2>Adicionar Produto</h2>
                 <form onSubmit={""} className="form-add-product">
                     <div className="form-seçao-1">
-                        <div className="form-img">
-                        
-                                <div className="image-preview">
-                                    <img
-                                        className="modal-image "
-                                        src={""}
-                                        alt="Preview"
-                                    />
-                                </div>
-                           
-                        </div>
                         <div className="form-product">
                             <label htmlFor="name">Nome do produto</label>
                             <input
@@ -90,7 +78,7 @@ const AddProductModal = ({ onClose }) => {
                     </div>
                     <div className="form-seçao-2">
                         <div className="form-custo">
-                            <label htmlFor="cost">Valor de Custo</label>
+                            <label htmlFor="cost">Custo</label>
                             <input
                                 id="cost"
                                 name="cost"
@@ -111,19 +99,10 @@ const AddProductModal = ({ onClose }) => {
                                 required
                             />
                         </div>
-                        <div className="form-checkbox">
-                            <input
-                                className="Form-control"
-                                type="checkbox"
-                                value="Atacado"
-                                id="flexCheckDefault"
-                            ></input>
-                            <label htmlFor="flexCheckDefault">Atacado</label>
-                        </div>
                     </div>
-                    <div className="form-seçao-2">
+                    <div className="form-seçao-3">
                         <div className="form-dropdow">
-                            <label htmlFor="subcategory">Tamanho</label>
+                            <label htmlFor="subcategory">Tamanho: </label>
                             <select
                                 id="subcategory"
                                 name="subcategory"
@@ -178,19 +157,6 @@ const AddProductModal = ({ onClose }) => {
                             required
                         />
                     </div>
-                    <div className="form-add-img">
-                        <i><IoMdImages /></i>
-                        <input
-                            className="form-control"
-                            type="file"
-                            id="image"
-                            name="image"
-                            onChange={""}
-                            required
-                            accept="image/*"
-                        />
-                    </div>
-
                     <div className="modal-buttons">
                         <button type="submit">Salvar</button>
                         <button type="button" onClick={onClose}>

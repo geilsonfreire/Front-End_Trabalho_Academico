@@ -1,7 +1,10 @@
 
 
 .modal-content h2 {
+    color: #1e3194;
+    letter-spacing: 2px;
     border-bottom: solid 1px #ccc;
+    margin-bottom: 20px;
 }
 
 
@@ -15,9 +18,9 @@
     outline: none;
 }
 
-
-.modal-content h2 {
-    margin-bottom: 20px;
+.form-add-product label {
+    font-size: 1rem;
+    color: #0000009c;
 }
 
 /*Form Seçao Product e QNT */
@@ -40,39 +43,25 @@
     margin-bottom: 1rem;
 }
 
-/*CheckBox */
-.form-checkbox {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-}
-
-.form-checkbox input {
-    appearance: none;
-    width: 1rem;
-    transform: scale(1.2);
-    border: solid 1px #1e3194;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.form-checkbox input:checked {
-    background: #00ff26;
-}
-
-.form-checkbox label {
-    font-size: 1rem;
-}
-
 .modal-content .form-seçao-2 .form-dropdow {
     display: flex;
     flex-direction: column;
     width: 50%;
 }
 
-.modal-content .form-seçao-2 .form-dropdow select {
+.form-seçao-3 {
+    display: flex;
+    gap: 5rem;
+    margin-bottom: 1rem;
+}
+
+.form-seçao-3 .form-dropdow {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.form-seçao-3 .form-dropdow select {
     border: none;
     border-bottom: 1px solid #1e3194;
     border-radius: 5px;
@@ -99,30 +88,4 @@
     outline: none;
     box-sizing: border-box;
     resize: vertical;
-}
-
-/*Form Imagem */
-.modal-image {
-    min-width: 10rem;
-    min-height: 8rem;
-    width: 10rem;
-    height: 8rem;
-    padding: 0;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin-left: 10px;
-}
-
-.form-add-img {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.form-add-img i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
 }
