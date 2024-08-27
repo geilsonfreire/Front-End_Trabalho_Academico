@@ -4,7 +4,7 @@ import Cleave from 'cleave.js/react';
 import PropTypes from 'prop-types';
 
 // Import Css
-import "../styles/adminCategoryModal.css";
+import "../style/adminCategoryModal.css";
 
 // Imports de Icones
 import { IoMdImages } from 'react-icons/io';

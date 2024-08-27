@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 // import { toast } from "react-hot-toast";
 
 // Import CSS
-import "../style/addProductModal.css"
+import "../style/addProductModal.css";
 
 // Imports de Icones
 import { BiSolidCategory } from "react-icons/bi";
 import { IoMdImages } from "react-icons/io";
 
 // Imports de Componentes
-import AddCategoryModal from "../adminCategoryModal/adminCategoryModal";
+import AddCategoryModal from "../components/adminCategoryModal";
 
 const AddProductModal = ({ onClose }) => {
     const [isModalCategoryOpen, setIsModalCategoryOpen] = useState(false);

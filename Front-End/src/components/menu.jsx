@@ -19,7 +19,7 @@ import {
     MdSettings,
     MdLogout,
     MdCalendarMonth,
-} from "react-icons/fa";
+} from "react-icons/md";
 
 const Menu = () => {
 

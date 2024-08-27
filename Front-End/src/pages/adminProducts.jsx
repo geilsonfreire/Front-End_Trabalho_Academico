@@ -7,12 +7,13 @@ import {
     MdOutlineSearch,
     MdAdd,
     MdFilterAlt,
+    MdDelete
 } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+
 
 // Import Components
-import AddProductModal from "./adminProductsModal/addProductModal";
+import AddProductModal from "../components/addProductModal";
 
 
 // Import CSS

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../style/header.css";
 
 // Import components
-import MenuDropDownPerfil from "./MenuDropDownPerfil/MenuDropDownPerfil";
+import MenuDropDownPerfil from "../components/MenuDropDownPerfil";
 import {
     MdOutlineSearch,
     MdNotifications,
