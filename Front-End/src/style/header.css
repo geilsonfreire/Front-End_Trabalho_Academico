@@ -43,7 +43,15 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+   
+}
 
+.perfill-name-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
 }
 
 .profile img {
@@ -57,9 +65,8 @@
 }
 
 .user-name {
-    margin-left: 1rem;
-    white-space: nowrap;
     cursor: default;
+    color: #000;
 }
 
 .user-name:hover {
@@ -68,15 +75,13 @@
 
 /*Perfil Type */
 .pefill-adim-tipo .user-type {
-    position: absolute;
-    top: 40px;
+    display: flex;
     cursor: default;
 }
 
 .user-type {
-    margin-left: 5px;
     font-size: 12px;
-    color: #ccc;
+    color: #00ff26;
 }
 
 .user-type:hover {

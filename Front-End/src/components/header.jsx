@@ -84,7 +84,7 @@ const Header = () => {
                 <div className="profile">
                     <div className="perfill-name-img">
                         <img src={userImage} alt="User Profile" />
-                        <span className="user-name">{userName.split(" ")[0]} </span>
+                        <span className="user-name">Geilson Freire</span>
                     </div>
                     <div className="pefill-adim-tipo">
                         <span className="user-type">Admin</span>

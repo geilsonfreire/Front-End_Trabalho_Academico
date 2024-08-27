@@ -50,7 +50,7 @@ ol {
 
 /* Estilo da barra de rolagem */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 2px;
     /* Largura da barra de rolagem */
 }
 
@@ -70,7 +70,7 @@ ol {
 
 /* Estilo do thumb ao passar o mouse */
 ::-webkit-scrollbar-thumb:hover {
-    background: #00ff26;
+    background: #506653;
     /* Cor do thumb ao passar o mouse */
 }
 

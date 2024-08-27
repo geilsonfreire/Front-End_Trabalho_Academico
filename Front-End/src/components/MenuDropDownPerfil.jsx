@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import '../style/MenuDropDownPerfil.css'
 
 //Import icon, image
-import { MdSettings, MdLogout, MdPix } from "react-icons/md";
+import { MdSettings, MdLogout, MdPersonAddAlt1 } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
 
 
@@ -27,8 +27,8 @@ const MenuDropDownPerfil = ({ isDropdownOpen, setIsDropdownOpen }) => {
                         <span>Perfil</span>
                     </li>
                     <li onClick={() => handleNavigate('/admin/adminPix')}>
-                        <MdPix />
-                        <span>Pix</span>
+                        <MdPersonAddAlt1 />
+                        <span>Adicionar usuario</span>
                     </li>
                     <li onClick={() => handleNavigate('#')}>
                         <MdSettings />
