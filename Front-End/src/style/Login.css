@@ -28,6 +28,10 @@
     position: relative;
 }
 
+form .InputWithIcon:focus-within .InputIcon {
+    color: #00ff26;
+}
+
 .LoginContainer .LoginConatinerRight .EntradaLogin {
     display: flex;
     justify-content: center;
