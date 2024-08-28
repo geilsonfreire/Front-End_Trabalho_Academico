@@ -15,7 +15,7 @@ const MenuDropDownPerfil = ({ isDropdownOpen, setIsDropdownOpen }) => {
     const navigate = useNavigate();
     const handleNavigate = () => { // Adicionar path se for nescessario
         setIsDropdownOpen(false);
-        navigate("/admin/adminPix");
+        navigate("/admin/adminCadastroUsuarios");
     };
 
     return (
@@ -26,7 +26,7 @@ const MenuDropDownPerfil = ({ isDropdownOpen, setIsDropdownOpen }) => {
                         <FaUserEdit />
                         <span>Perfil</span>
                     </li>
-                    <li onClick={() => handleNavigate('/admin/adminPix')}>
+                    <li onClick={() => handleNavigate('/admin/adminCadastroUsuarios')}>
                         <MdPersonAddAlt1 />
                         <span>Adicionar usuario</span>
                     </li>
