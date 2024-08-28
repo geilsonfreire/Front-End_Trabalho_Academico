@@ -14,12 +14,3 @@
     height: 100%;
     overflow-y: auto;
 }
-
-.admin-main #Fund {
-    background-image: url(../assets/img/Banner.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 92vw;
-    height: 100vh;
-}

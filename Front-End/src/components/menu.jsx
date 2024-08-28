@@ -31,7 +31,7 @@ const Menu = () => {
 
     return (
         <nav className="Menu-lateral">
-            <Link to="/admin">
+            <Link to="/admin/adminDashBoard">
                 <img src={Logo} alt="Logo da pagina" />
             </Link>
 
