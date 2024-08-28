@@ -52,7 +52,6 @@ const Menu = () => {
                     title="Movimentações"
                 />
             </ul>
-            
         </nav>
     )
 }

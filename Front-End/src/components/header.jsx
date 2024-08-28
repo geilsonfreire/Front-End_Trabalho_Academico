@@ -24,7 +24,7 @@ const Header = () => {
     const user = JSON.parse(localStorage.getItem("usuarios"));
 
     // Verifica se o usuário está logado e se é um admin
-    useEffect(() => {
+   /*  useEffect(() => {
         if (user.tipo === 2) {
             setIsLogged(true);
             setIsAdmin(true);
@@ -33,7 +33,7 @@ const Header = () => {
         } else {
             navigate("/");
         }
-    }, [user, navigate]);
+    }, [user, navigate]); */
 
 
     // Estado do dropdown icone
