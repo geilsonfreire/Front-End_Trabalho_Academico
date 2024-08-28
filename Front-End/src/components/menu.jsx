@@ -13,9 +13,7 @@ import "../style/menu.css";
 import {
     MdSpaceDashboard,
     MdOutlinePointOfSale,
-    MdOutlineGridOn,
-    MdSettings,
-    MdLogout,
+    MdOutlineGridOn
 } from "react-icons/md";
 
 const Menu = () => {
@@ -49,16 +47,12 @@ const Menu = () => {
                     title="Estoques"
                 />
                 <Icon
-                    to="#"
+                    to="/admin/adminMovimentacaoEstoque"
                     icon={<MdOutlinePointOfSale />}
                     title="Movimentações"
                 />
             </ul>
-            <hr />
-            <ul className="lasttMenu">
-                <Icon to="#" icon={<MdSettings />} title="Configurações" />
-                <Icon to="#" icon={<MdLogout />} title="Sair" />
-            </ul>
+            
         </nav>
     )
 }

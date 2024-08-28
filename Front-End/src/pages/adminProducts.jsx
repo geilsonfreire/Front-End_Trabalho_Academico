@@ -116,7 +116,7 @@ const AdminProducts = () => {
                             <th>Custo</th>
                             <th>Preço</th>
                             <th>QNT_Min</th>
-                            <th>QNT_Max</th>
+                            <th>QNT_Atual</th>
                             <th>Unidade_Medidas</th>
                             <th>Status</th>
                             <th>Açoes</th>
@@ -130,7 +130,7 @@ const AdminProducts = () => {
                                 <td>{"product.cost"}</td>
                                 <td>{"product.price"}</td>
                                 <td>{"product.stockmin"}</td>
-                                <td>{"product.stockmax"}</td>
+                                <td>{"product.stockAtual"}</td>
                                 <td>{"product.UnitMedidas"}</td>
                                 <td>{"product.Status"}</td>
                                 <td>{"product.createdAt"}</td>

@@ -16,6 +16,7 @@ const MenuDropDownPerfil = ({ isDropdownOpen, setIsDropdownOpen }) => {
     const handleNavigate = () => { // Adicionar path se for nescessario
         setIsDropdownOpen(false);
         navigate("/admin/adminCadastroUsuarios");
+        navigate("/admin/adminConfig");
     };
 
     return (
@@ -30,7 +31,7 @@ const MenuDropDownPerfil = ({ isDropdownOpen, setIsDropdownOpen }) => {
                         <MdPersonAddAlt1 />
                         <span>Adicionar usuario</span>
                     </li>
-                    <li onClick={() => handleNavigate('#')}>
+                    <li onClick={() => handleNavigate('/admin/adminConfig')}>
                         <MdSettings />
                         <span>Configurações</span>
                     </li>

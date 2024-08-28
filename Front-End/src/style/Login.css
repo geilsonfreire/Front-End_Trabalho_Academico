@@ -184,10 +184,10 @@ form .InputWithIcon:focus-within .InputIcon {
     margin: .5rem;
     border: none;
     border-radius: 5px;
-    background: #00ff26;
+    background: #1e3194;
     border-bottom: solid 2px #fff;
     border-radius: 5px;
-    color: #000;
+    color: #fff;
     font-size: 1em;
     line-height: 8px;
     cursor: pointer;
