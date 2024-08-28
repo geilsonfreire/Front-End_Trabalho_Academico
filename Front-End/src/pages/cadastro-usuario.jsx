@@ -5,7 +5,7 @@
 import "../style/cadastro_usuario.css";
 
 // Import Image, Icons
-import { 
+import {
     BsFillPersonFill,
     BsFillEnvelopeAtFill,
     BsFillUnlockFill,
@@ -30,7 +30,6 @@ const Cadastro_Usuario = () => {
                                 type="text"
                                 name="name"
                                 placeholder="Nome"
-                                value={""}
                                 onChange={""}
                             />
                         </div>
@@ -41,7 +40,6 @@ const Cadastro_Usuario = () => {
                                 type="email"
                                 name="email"
                                 placeholder="Adicione seu e-mail"
-                                value={""}
                                 onChange={""}
                             />
                         </div>
@@ -52,7 +50,6 @@ const Cadastro_Usuario = () => {
                                 type={""}
                                 name="password"
                                 placeholder="Criar senha"
-                                value={""}
                                 onChange={""}
                             />
                         </div>
@@ -63,19 +60,41 @@ const Cadastro_Usuario = () => {
                                 type={""}
                                 name="confirmPassword"
                                 placeholder="Confirme sua senha"
-                                value={''}
                                 onChange={''}
                             />
                         </div>
 
-                        <div className="CheckBox-cadastra-usuario">
-                            <input
-                                type="checkbox"
-                                id="showPassword"
-                                checked={""}
-                                onChange={""}
-                            />
-                            <label htmlFor="showPassword">Mostrar senha</label>
+                        <div className="container-check">
+                            <div className="CheckBox-cadastra-usuario">
+                                <input
+                                    type="checkbox"
+                                    id="showPassword"
+                                    onChange={""}
+                                />
+                                <label htmlFor="showPassword">Mostrar senha</label>
+                            </div>
+                            <div className="CheckBox-cadastra-usuario">
+                                <input
+                                    type="checkbox"
+                                    id="isActive"
+                                    checked={""}
+                                    onChange={""}
+                                />
+                                <label htmlFor="isActive">Ativo</label>
+                            </div>
+
+                            <div className="permision">
+                                <label htmlFor="role">Permissões:</label>
+                                <select
+                                    id="role"
+                                    value={""}
+                                    onChange={""}
+                                >
+                                    <option value="ADM">ADM</option>
+                                    <option value="Operador">Operador</option>
+                                </select>
+                            </div>
+
                         </div>
 
                     </form>
@@ -97,4 +116,4 @@ const Cadastro_Usuario = () => {
 }
 
 
-export default Cadastro_Usuario; // Export the component
+export default Cadastro_Usuario; 
