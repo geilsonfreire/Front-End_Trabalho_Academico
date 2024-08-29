@@ -10,7 +10,8 @@ module.exports = {
                     model: 'Usuario',
                     key: 'id_usuario'
                 },
-                onDelete: 'CASCADE'
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
             },
             id_role: {
                 type: Sequelize.INTEGER,
@@ -19,7 +20,18 @@ module.exports = {
                     model: 'Role',
                     key: 'id_role'
                 },
-                onDelete: 'CASCADE'
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
+            },
+            created_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
             }
         });
     },
@@ -27,4 +39,4 @@ module.exports = {
     down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable('UsuarioRole');
     }
-}
+};

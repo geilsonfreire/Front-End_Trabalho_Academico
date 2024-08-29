@@ -33,7 +33,18 @@ module.exports = {
                     model: 'Categoria',
                     key: 'id_categoria'
                 },
-                onDelete: 'SET NULL'
+                onDelete: 'SET NULL',
+                onUpdate: 'CASCADE'
+            },
+            created_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+            },
+            updated_at: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
             }
         });
     },
