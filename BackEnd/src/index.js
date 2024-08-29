@@ -1,12 +1,21 @@
-// import Bibliotecas
+// Importar Bibliotecas
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan'); // Middleware para logging de requisições
 
-// Import Components
-const routes = require('./Routes/routes');
+// Importar Routes
+const categoriaRoutes = require('./routes/categoriaRoutes');
+const produtoRoutes = require('./routes/produtoRoutes');
+const estoqueRoutes = require('./routes/estoqueRoutes');
+const movimentacaoEstoqueRoutes = require('./routes/movimentacaoEstoqueRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
+const roleRoutes = require('./routes/roleRoutes');
+const usuarioRoleRoutes = require('./routes/usuarioRoleRoutes');
 
+// Inicializar o aplicativo Express
 const app = express();
+
+// Conectar ao banco de dados
 require('./config/db');
 
 // Middleware para logging de requisições
@@ -20,7 +29,15 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use('/api', routes);
+
+// Rotas
+app.use('/api/categorias', categoriaRoutes);
+app.use('/api/produtos', produtoRoutes);
+app.use('/api/estoques', estoqueRoutes);
+app.use('/api/movimentacoes', movimentacaoEstoqueRoutes);
+app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/usuarios-roles', usuarioRoleRoutes);
 
 // Middleware para tratamento de erros
 app.use((err, req, res, next) => {
@@ -28,6 +45,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Ocorreu um erro interno no servidor.', error: err.message });
 });
 
+// Iniciar o servidor
 app.listen(3000, () => {
-  console.log('Servidor rodando na porta 3000');
+    console.log('Servidor rodando na porta 3000');
 });
