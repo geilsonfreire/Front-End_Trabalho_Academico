@@ -1,13 +1,25 @@
-const { Usuario } = require('../database/models');
+const { Usuario } = require('../models');
+const { validationResult } = require('express-validator');
+const usuarioValidation = require('../validations/usuarioValidation');
 
-exports.createUsuario = async (req, res) => {
-    try {
-        const usuario = await Usuario.create(req.body);
-        res.status(201).json(usuario);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+exports.createUsuario = [
+    usuarioValidation,
+    async (req, res) => {
+        try {
+            // Verificar se há erros de validação
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            // Criar o usuário
+            const usuario = await Usuario.create(req.body);
+            res.status(201).json(usuario);
+        } catch (error) {
+            res.status(400).json({ error: 'Erro ao criar usuário.', message: error.message });
+        }
     }
-};
+];
 
 exports.getUsuarios = async (req, res) => {
     try {
@@ -31,19 +43,28 @@ exports.getUsuarioById = async (req, res) => {
     }
 };
 
-exports.updateUsuario = async (req, res) => {
-    try {
-        const usuario = await Usuario.findByPk(req.params.id);
-        if (usuario) {
-            await usuario.update(req.body);
-            res.status(200).json(usuario);
-        } else {
-            res.status(404).json({ error: 'Usuário não encontrado' });
+exports.updateUsuario = [
+    usuarioValidation,
+    async (req, res) => {
+        try {
+            // Verificar se há erros de validação
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const usuario = await Usuario.findByPk(req.params.id);
+            if (usuario) {
+                await usuario.update(req.body);
+                res.status(200).json(usuario);
+            } else {
+                res.status(404).json({ error: 'Usuário não encontrado' });
+            }
+        } catch (error) {
+            res.status(400).json({ error: error.message });
         }
-    } catch (error) {
-        res.status(400).json({ error: error.message });
     }
-};
+];
 
 exports.deleteUsuario = async (req, res) => {
     try {

@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const produtoController = require('../controllers/produtoController');
+const produtoValidation = require('../Validations/produtoVadalidation'); 
+const { validate } = require('express-validator');
 
-router.post('/produtos', produtoController.createProduto);
-router.get('/produtos', produtoController.getProdutos);
-router.get('/produtos/:id', produtoController.getProdutoById);
-router.put('/produtos/:id', produtoController.updateProduto);
-router.delete('/produtos/:id', produtoController.deleteProduto);
+router.post('/', produtoValidation, produtoController.createProduto);
+router.get('/', produtoController.getProdutos);
+router.get('/:id', produtoController.getProdutoById);
+router.put('/:id', produtoValidation, produtoController.updateProduto);
+router.delete('/:id', produtoController.deleteProduto);
 
 module.exports = router;
