@@ -118,7 +118,9 @@ const AdminProducts = () => {
                             <th>QNT_Min</th>
                             <th>QNT_Atual</th>
                             <th>Unidade_Medidas</th>
-                            <th>Status</th>
+                            <th>Tipo_Mov</th>
+                            <th>Data</th>
+                            <th>Atualizado</th>
                             <th>Açoes</th>
                         </tr>
                     </thead>
@@ -132,8 +134,9 @@ const AdminProducts = () => {
                                 <td>{"product.stockmin"}</td>
                                 <td>{"product.stockAtual"}</td>
                                 <td>{"product.UnitMedidas"}</td>
-                                <td>{"product.Status"}</td>
-                                <td>{"product.createdAt"}</td>
+                                <td>{"product.Tipo_Mov"}</td>
+                                <td>{"product.Data_mov"}</td>
+                                <td>{"Updated_at"}</td>
                                 <td>
                                     <button className="btn-edit"><FaEdit /></button>
                                     <button className="btn-delete"><MdDelete /></button>

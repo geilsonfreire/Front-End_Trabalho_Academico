@@ -8,6 +8,9 @@ import "../style/header.css";
 
 // Import components
 import MenuDropDownPerfil from "../components/MenuDropDownPerfil";
+
+// Imports icons e imagens
+import LogoPerfil from "../assets/img/Ge.jpg";
 import {
     MdOutlineSearch,
     MdNotifications,
@@ -83,7 +86,7 @@ const Header = () => {
 
                 <div className="profile">
                     <div className="perfill-name-img">
-                        <img src={userImage} alt="User Profile" />
+                        <img src={LogoPerfil} alt="User Profile" />
                         <span className="user-name">Geilson Freire</span>
                     </div>
                     <div className="pefill-adim-tipo">
