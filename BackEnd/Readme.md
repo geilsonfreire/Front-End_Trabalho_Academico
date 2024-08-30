@@ -96,6 +96,20 @@ http://localhost:3000/api/usuarios
 http://localhost:3000/api/usuarios - RETORNA TODOS OS VALORES <br>
 http://localhost:3000/api/usuarios/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
 
+
+## Role - Papeis dos Usuarios 
+ ### Metodos POST 
+http://localhost:3000/api/roles
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+  "nome": "Administrador"
+}
+
+ ### Metodos GET 
+http://localhost:3000/api/roles - RETORNA TODOS OS VALORES <br>
+http://localhost:3000/roles/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
+
  
 
 

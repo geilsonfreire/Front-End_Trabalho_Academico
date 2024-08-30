@@ -39,5 +39,17 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
+    Usuario.afterCreate(async (usuario, options) => {
+        try {
+            // Associa o papel de Administrador (ID 1) a novos usuários
+            await models.UsuarioRole.create({
+                id_usuario: usuario.id_usuario,
+                id_role: 1 // ID do papel de Administrador
+            });
+        } catch (error) {
+            console.error('Erro ao associar usuário ao papel de Administrador:', error);
+        }
+    });
+    
     return Usuario;
 };
