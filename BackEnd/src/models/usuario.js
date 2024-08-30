@@ -39,15 +39,16 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
+    // Hook to create UsuarioRole after a new user is created
     Usuario.afterCreate(async (usuario, options) => {
         try {
-            // Associa o papel de Administrador (ID 1) a novos usuários
-            await models.UsuarioRole.create({
+            const UsuarioRole = sequelize.models.UsuarioRole;
+            await UsuarioRole.create({
                 id_usuario: usuario.id_usuario,
-                id_role: 1 // ID do papel de Administrador
+                id_role: usuario.id_role
             });
         } catch (error) {
-            console.error('Erro ao associar usuário ao papel de Administrador:', error);
+            console.error('Erro ao associar o usuário ao role:', error);
         }
     });
     

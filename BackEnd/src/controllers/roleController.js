@@ -1,4 +1,4 @@
-const { Role } = require('../models');
+const { Role, Usuario, UsuarioRole } = require('../models');
 const { validationResult } = require('express-validator');
 const roleValidation = require('../validations/roleValidation');
 
@@ -12,8 +12,18 @@ exports.createRole = [
                 return res.status(400).json({ errors: errors.array() });
             }
 
-            // Criar o papel
+            // Criar o role
             const role = await Role.create(req.body);
+
+            // Criar a associação na tabela UsuarioRole para todos os usuários existentes
+            const usuarios = await Usuario.findAll();
+            for (const usuario of usuarios) {
+                await UsuarioRole.create({
+                    id_usuario: usuario.id_usuario,
+                    id_role: role.id_role
+                });
+            }
+
             res.status(201).json(role);
         } catch (error) {
             res.status(400).json({ error: 'Erro ao criar role.', message: error.message });

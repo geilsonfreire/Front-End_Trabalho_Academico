@@ -1,4 +1,4 @@
-const { Usuario } = require('../models');
+const { Usuario, UsuarioRole } = require('../models');
 const { validationResult } = require('express-validator');
 const usuarioValidation = require('../validations/usuarioValidation');
 
@@ -14,6 +14,13 @@ exports.createUsuario = [
 
             // Criar o usuário
             const usuario = await Usuario.create(req.body);
+
+            // Criar a associação na tabela UsuarioRole
+            await UsuarioRole.create({
+                id_usuario: usuario.id_usuario,
+                id_role: req.body.id_role // Assumindo que o id_role é enviado na requisição
+            });
+
             res.status(201).json(usuario);
         } catch (error) {
             res.status(400).json({ error: 'Erro ao criar usuário.', message: error.message });

@@ -25,17 +25,22 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
+    // Hook to create UsuarioRole for each user after a new role is created
     Role.afterCreate(async (role, options) => {
         try {
-            const usuarios = await models.Usuario.findAll();
+            const Usuario = sequelize.models.Usuario;
+            const UsuarioRole = sequelize.models.UsuarioRole;
+
+            const usuarios = await Usuario.findAll();
+
             for (const usuario of usuarios) {
-                await models.UsuarioRole.create({
+                await UsuarioRole.create({
                     id_usuario: usuario.id_usuario,
                     id_role: role.id_role
                 });
             }
         } catch (error) {
-            console.error('Erro ao associar role aos usuários existentes:', error);
+            console.error('Erro ao associar todos os usuários ao novo role:', error);
         }
     });
 
