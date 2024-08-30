@@ -1,71 +1,101 @@
-## Dependencias do projeto
+## Estrutura BackEnd
+ <img src="../BackEnd/src/assets/EstrturaProjeto.png" >
 
-express: Framework web para Node.js.
-sequelize: ORM para gerenciar o banco de dados.
-mysql2: Driver para conectar ao MySQL.
-dotenv: Para carregar variáveis de ambiente a partir de um arquivo .env.
-nodemon: Para reiniciar automaticamente o servidor ao fazer alterações (em desenvolvimento).
-Node-cron: Agendamento de requisições Para automatizar a requisição para ser feita uma vez por dia, você pode utilizar uma biblioteca como node-cron ou cron.
+ ## Dependências instaladas
+ <img src="../BackEnd/src/assets/InstallDepend.png" >
+<br>
+Para o projeto rode corretamenta em sua maquina localhost, instale as Dependências com o comando <br>
+npm install
 
-## Metodos para criar db pelo sequelize 
-1º - npx sequelize db:create
+## Rodando em servidor local 
+http://localhost:300
 
-## Criar Migrações: Para criar tabelas e outras estruturas no banco de dados, use o comando para gerar uma nova migração:
-npx sequelize-cli migration:create --name tabela
+## EndPoints para consultas ao DB
+Todos http://localhost:3000/
+
+## Categorias
+ ### Metodos POST 
+http://localhost:3000/api/categorias - 
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+  "nome": "Salgados"
+}
+
+ ### Metodos GET 
+http://localhost:3000/api/categorias - RETORNA TODOS OS VALORES <br>
+http://localhost:3000/api/categorias/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
+
+## produtos
+ ### Metodos POST 
+http://localhost:3000/api/produtos - 
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+  "nome": "Pastel",
+  "descricao": "Pastel de frango",
+  "preco_compra": 0.50,
+  "preco_venda": 2.00,
+  "unidade_de_medida": "150g",
+  "id_categoria": 1
+}
+
+ ### Metodos GET 
+http://localhost:3000/api/produtos - RETORNA TODOS OS VALORES <br>
+http://localhost:3000/api/produtos/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
+
+ 
+## Estoques
+ ### Metodos POST 
+http://localhost:3000/api/estoques - 
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+  "id_produto": 1,
+  "quantidade_minima": 10,
+  "quantidade_atual": 100
+}
+
+ ### Metodos GET 
+http://localhost:3000/api/estoques - RETORNA TODOS OS VALORES <br>
+http://localhost:3000/api/estoques/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
 
 
-## Executar Migrações: Depois de definir as migrações, aplique-as ao banco de dados:
--- As tabelas devem ser migradas em ordem 
-1 - tabela concursos
-2 - tabela premiacoes
-3 - tabela local_ganhadores
-4 - tabela lotofacilAllResult
-npx sequelize-cli db:migrate --name 20240814225539-concursos
+## Movimentaçoes de Estoques
+ ### Metodos POST 
+http://localhost:3000/api/movimentacoes - 
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+  "tipo_movimentacao": "Entrada",
+  "id_estoque": 1,
+  "quantidade": 20,
+  "data_movimentacao": "2024-08-29T12:00:00Z",
+  "id_produto": 1
+}
 
-## Criar Seeders: Se precisar popular o banco de dados com dados iniciais, você pode criar seeders:
-npx sequelize seed:generate --name seed-name
-
-## Executar Seeders: Aplique os seeders para inserir dados iniciais no banco:
-npx sequelize db:seed:all
-
-
-## Video youtube 
-CRUD com Node.JS e Sequelize PARTE 1 | Criando Estrutura de pastas e conexão com banco de dados.
-https://www.youtube.com/watch?v=bnGKctadkuw&t=536s
+ ### Metodos GET 
+http://localhost:3000/api/movimentacoes - RETORNA TODOS OS VALORES <br>
+http://localhost:3000/api/movimentacoes/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
 
 
-## Relacionamentos entre tabelas 
-Aqui está um resumo dos relacionamentos e propósitos das tabelas:
+## Usuarios 
+ ### Metodos POST 
+http://localhost:3000/api/usuarios
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+  "nome": "Henrique",
+  "email": "henrique@example.com",
+  "senha": "senhaSegura123",
+  "status": true,
+  "id_role": 1
+}
 
-### Tabela LotofacilAllResult:
-Propósito: Armazenar todos os resultados da Lotofácil.
-Relacionamento:
-concursoId: Referencia a tabela concursos, indicando a qual concurso o resultado pertence.
+ ### Metodos GET 
+http://localhost:3000/api/usuarios - RETORNA TODOS OS VALORES <br>
+http://localhost:3000/api/usuarios/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
 
-### Tabela concursos:
-Propósito: Armazenar informações sobre cada concurso da Lotofácil, como o número do concurso e a data do sorteio.
-Relacionamento:
-id: Usado como chave primária e referenciado pelas tabelas LotofacilAllResult, premiacoes, e local_ganhadores.
+ 
 
-### Tabela premiacoes:
-Propósito: Armazenar informações sobre as premiações de cada concurso, incluindo o tipo de prêmio, a quantidade de ganhadores e o valor do prêmio.
-
-### Relacionamento:
-concursoId: Referencia a tabela concursos, associando cada premiação a um concurso específico.
-Tabela local_ganhadores:
-Propósito: Armazenar informações sobre os locais (cidades e estados) onde os ganhadores dos concursos estão localizados.
-
-### Relacionamento:
-concursoId: Referencia a tabela concursos, indicando a qual concurso os locais de ganhadores pertencem.
-Resumo dos Relacionamentos:
-
-### LotofacilAllResult ↔ concursos:
-
-concursoId na tabela LotofacilAllResult é uma chave estrangeira que referencia id na tabela concursos.
-premiacoes ↔ concursos:
-
-concursoId na tabela premiacoes é uma chave estrangeira que referencia id na tabela concursos.
-local_ganhadores ↔ concursos:
-
-concursoId na tabela local_ganhadores é uma chave estrangeira que referencia id na tabela concursos.
 

@@ -1,6 +1,6 @@
-const { MovimentacaoEstoque, Produto, Estoque } = require('../models');
+const { MovimentacaoEstoque } = require('../models');
 const { validationResult } = require('express-validator');
-const movimentacaoEstoqueValidation = require('../validations/movimentacaoEstoqueValidation');
+const movimentacaoEstoqueValidation = require('../Validations/movimentacaoEstoqueValidation');
 
 exports.createMovimentacaoEstoque = [
     movimentacaoEstoqueValidation,
@@ -10,24 +10,6 @@ exports.createMovimentacaoEstoque = [
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
-            }
-
-            // Verificar se o produto existe
-            const { id_produto } = req.body;
-            if (id_produto) {
-                const produto = await Produto.findByPk(id_produto);
-                if (!produto) {
-                    return res.status(400).json({ error: 'Produto não encontrado.' });
-                }
-            }
-
-            // Verificar se o estoque existe
-            const { id_estoque } = req.body;
-            if (id_estoque) {
-                const estoque = await Estoque.findByPk(id_estoque);
-                if (!estoque) {
-                    return res.status(400).json({ error: 'Estoque não encontrado.' });
-                }
             }
 
             // Criar a movimentação de estoque

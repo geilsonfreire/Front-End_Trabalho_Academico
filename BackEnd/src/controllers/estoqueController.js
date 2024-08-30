@@ -1,4 +1,4 @@
-const { Estoque, Produto } = require('../models');
+const { Estoque } = require('../models');
 const { validationResult } = require('express-validator');
 const estoqueValidation = require('../validations/estoqueValidation');
 

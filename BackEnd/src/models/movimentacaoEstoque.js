@@ -15,11 +15,17 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         tipo_movimentacao: {
-            type: DataTypes.STRING(10),
-            allowNull: false,
-            validate: {
-                isIn: [['entrada', 'saida']]
-            }
+            type: DataTypes.ENUM('Entrada', 'Saida'), // Correção para ENUM com valores em maiúsculas
+            allowNull: false
+        },
+        id_estoque: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Estoque',
+                key: 'id_estoque'
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         },
         id_produto: {
             type: DataTypes.INTEGER,
@@ -36,11 +42,15 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     MovimentacaoEstoque.associate = function (models) {
+        MovimentacaoEstoque.belongsTo(models.Estoque, {
+            foreignKey: 'id_estoque',
+            as: 'estoque',
+            onDelete: 'CASCADE'
+        });
         MovimentacaoEstoque.belongsTo(models.Produto, {
             foreignKey: 'id_produto',
             as: 'produto',
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE'
+            onDelete: 'CASCADE'
         });
     };
 

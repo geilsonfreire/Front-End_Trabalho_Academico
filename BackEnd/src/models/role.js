@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Role.associate = function (models) {
         Role.belongsToMany(models.Usuario, {
-            through: 'UsuarioRole',
+            through: models.UsuarioRole, // Referência direta ao modelo UsuarioRole
             foreignKey: 'id_role',
             as: 'usuarios',
             onDelete: 'CASCADE',

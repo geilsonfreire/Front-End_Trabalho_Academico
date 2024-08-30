@@ -17,11 +17,17 @@ module.exports = {
                 allowNull: false
             },
             tipo_movimentacao: {
-                type: Sequelize.STRING(10),
-                allowNull: false,
-                validate: {
-                    isIn: [['entrada', 'saida']]
-                }
+                type: Sequelize.ENUM('Entrada', 'Saida'), // Correção para ENUM com valores em maiúsculas
+                allowNull: false
+            },
+            id_estoque: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: 'Estoque',
+                    key: 'id_estoque'
+                },
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
             },
             id_produto: {
                 type: Sequelize.INTEGER,

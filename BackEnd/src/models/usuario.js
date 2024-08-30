@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         senha: {
             type: DataTypes.STRING(100),
             allowNull: false
+        },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true // Usuário ativo por padrão
         }
     }, {
         tableName: 'Usuario',

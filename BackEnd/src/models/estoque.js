@@ -1,9 +1,13 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Estoque = sequelize.define('Estoque', {
-        id_produto: {
+        id_estoque: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true
+        },
+        id_produto: {
+            type: DataTypes.INTEGER,
             references: {
                 model: 'Produto',
                 key: 'id_produto'
@@ -21,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         tableName: 'Estoque',
-        timestamps: false
     });
 
     Estoque.associate = function (models) {
