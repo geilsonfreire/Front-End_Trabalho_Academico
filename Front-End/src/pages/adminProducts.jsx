@@ -211,8 +211,15 @@ const AdminProducts = () => {
                                 <td>{produto.movimentacoes?.[0]?.data_movimentacao || 'N/A'}</td>
                                 <td>{produto.updated_at}</td>
                                 <td className="td-btn">
-                                    <button className="btn-edit"><FaEdit /></button>
-                                    <button className="btn-delete" onClick={() => handleDeleteProduct(produto.id_produto)}><MdDelete /></button>
+                                    <button
+                                        className="btn-edit">
+                                        <FaEdit />
+                                    </button>
+                                    <button
+                                        className="btn-delete"
+                                        onClick={() => handleDeleteProduct(produto.id_produto)}>
+                                        <MdDelete />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
