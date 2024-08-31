@@ -1,8 +1,6 @@
-// Import Bibliotecas
-import { useState } from "react";
-// import { toast } from "react-hot-toast";
-
-// Import Icons
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import "../style/adminProducts.css";
 import {
     MdOutlineSearch,
     MdAdd,
@@ -11,41 +9,95 @@ import {
 } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
-
-// Import Components
+// Importando o componente
 import AddProductModal from "../components/addProductModal";
-
-
-// Import CSS
-import "../style/adminProducts.css";
- 
+import { fetchProdutos, deleteProduto } from "../services/produtoAPI";
+import { fetchCategorias, fetchTiposEDatas } from "../services/filtroAPI";
 
 const AdminProducts = () => {
     const [isModalProductOpen, setIsModalProductOpen] = useState(false);
-    
-    
+    const [produtos, setProdutos] = useState([]);
+    // eslint-disable-next-line no-unused-vars
+    const [loading, setLoading] = useState(true);
+
+    // Estados para os filtros
+    const [categoria, setCategoria] = useState("");
+    const [status, setStatus] = useState("");
+    const [date, setDate] = useState("");
+
+    // Estados para armazenar as opções dos filtros
+    const [categoriasOptions, setCategoriasOptions] = useState([]);
+    const [statusOptions, setStatusOptions] = useState([]);
+    const [datasOptions, setDatasOptions] = useState([]);
+
+    // Função para carregar os filtros (Categorias / Status)
+    useEffect(() => {
+        const loadFiltros = async () => {
+            try {
+                const [categoriasData, { tiposMovimentacoes, datasMovimentacoes }] = await Promise.all([
+                    fetchCategorias(),
+                    fetchTiposEDatas()
+                ]);
+                setCategoriasOptions(categoriasData);
+                setStatusOptions(tiposMovimentacoes);
+                setDatasOptions(datasMovimentacoes);
+            } catch (error) {
+                console.error('Erro ao carregar filtros:', error);
+                toast.error('Erro ao carregar filtros.');
+            }
+        };
+
+        loadFiltros();
+    }, []);
+
+    // Função para carregar os produtos com filtros
+    useEffect(() => {
+        const loadProdutos = async () => {
+            try {
+                const queryParams = new URLSearchParams();
+                if (categoria) queryParams.append('categoria', categoria);
+                if (status) queryParams.append('status', status);
+                if (date) queryParams.append('date', date);
+
+                const produtosData = await fetchProdutos(queryParams.toString());
+                setProdutos(produtosData);
+            } catch (error) {
+                toast.error("Erro ao carregar produtos.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadProdutos();
+    }, [categoria, status, date]);
+
+    // Função para deletar um produto
+    const handleDeleteProduct = async (id) => {
+        try {
+            await deleteProduto(id);
+            setProdutos(produtos.filter(produto => produto.id_produto !== id));
+            toast.success("Produto deletado com sucesso.");
+        } catch (error) {
+            toast.error("Erro ao deletar produto.");
+        }
+    };
 
     const handleAddProductClick = () => {
-        console.log("Abrindo modal");
         setIsModalProductOpen(true);
-    };  // Função para abrir o modal de adicionar produto
+    };
 
     const handleCloseProductModal = () => {
-        console.log("Fechando modal");
         setIsModalProductOpen(false);
-    }; // Função para fechar o modal de adicionar produto
+    };
 
     return (
         <main className="Page-Product">
-            <toast />
             <div className="Title">
                 <h1>
                     Produtos <span>Cadastrados</span>
                 </h1>
                 <div className="search-bar">
-                    <i>
-                        <MdOutlineSearch />
-                    </i>
+                    <i><MdOutlineSearch /></i>
                     <input type="text" placeholder="Pesquisa" />
                 </div>
             </div>
@@ -58,10 +110,7 @@ const AdminProducts = () => {
                                 onClick={handleAddProductClick}
                                 className="btn-produto"
                             >
-                                <i>
-                                    <MdAdd />
-                                </i>{" "}
-                                Adicionar Produto
+                                <i><MdAdd /></i> Adicionar Produto
                             </button>
                         </li>
                     </ul>
@@ -78,41 +127,60 @@ const AdminProducts = () => {
                     </span>
                     <li className="category-filter">
                         <label htmlFor="category">Categoria:</label>
-                        <select id="category">
+                        <select
+                            id="category"
+                            value={categoria}
+                            onChange={(e) => setCategoria(e.target.value)}
+                        >
                             <option value="">Todas</option>
-                            <option value="Categoria 1">Categoria 1</option>
-                            <option value="Categoria 2">Categoria 2</option>
+                            {categoriasOptions.map((categoria) => (
+                                <option key={categoria.id_categoria} value={categoria.nome}>
+                                    {categoria.nome}
+                                </option>
+                            ))}
                         </select>
                     </li>
                     <li className="status-filter">
                         <label htmlFor="status">Status:</label>
-                        <select id="status">
-                            <option value="">Todas</option>
-                            <option value="Pendente">Pendente</option>
-                            <option value="Em estoque">Em estoque</option>
-                            <option value="Concluido">Concluido</option>
-                        </select>
-                    </li>
-                    <li className="venda-tipo-filter">
-                        <label htmlFor="venda">Vendas:</label>
-                        <select id="venda">
-                            <option value="">Todas</option>
-                            <option value="Atacado">Atacado</option>
-                            <option value="Varejo">Varejo</option>
+                        <select
+                            id="status"
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                        >
+                            <option value="">Todos</option>
+                            {statusOptions.map((tipoMovimentacao) => (
+                                <option key={tipoMovimentacao} value={tipoMovimentacao}>
+                                    {tipoMovimentacao}
+                                </option>
+                            ))}
                         </select>
                     </li>
                     <li className="date-filter">
                         <label htmlFor="date">Data:</label>
-                        <input id="date" type="date" />
+                        <select
+                            type="date"
+                            id="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                        >
+                            <option value="">Todas</option>
+                            {datasOptions.map((data) => (
+                                <option key={data} value={data}>
+                                    {data}
+                                </option>
+                            ))}
+                        </select>
                     </li>
                 </ul>
             </section>
+
             <section className="stock-list">
                 <table>
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Categoria</th>
+                            <th>Descrição</th>
                             <th>Custo</th>
                             <th>Preço</th>
                             <th>QNT_Min</th>
@@ -121,28 +189,29 @@ const AdminProducts = () => {
                             <th>Tipo_Mov</th>
                             <th>Data</th>
                             <th>Atualizado</th>
-                            <th>Açoes</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
-                            <tr key={""}>
-                                <td>{"product.name"}</td>
-                                <td>{"product.category"}</td>
-                                <td>{"product.cost"}</td>
-                                <td>{"product.price"}</td>
-                                <td>{"product.stockmin"}</td>
-                                <td>{"product.stockAtual"}</td>
-                                <td>{"product.UnitMedidas"}</td>
-                                <td>{"product.Tipo_Mov"}</td>
-                                <td>{"product.Data_mov"}</td>
-                                <td>{"Updated_at"}</td>
-                                <td>
+                        {produtos.map(produto => (
+                            <tr key={produto.id_produto}>
+                                <td>{produto.nome}</td>
+                                <td>{produto.categoria?.nome || 'N/A'}</td>
+                                <td>{produto.descricao}</td>
+                                <td>{produto.preco_compra}</td>
+                                <td>{produto.preco_venda}</td>
+                                <td>{produto.estoque?.quantidade_minima || 'N/A'}</td>
+                                <td>{produto.estoque?.quantidade_atual || 'N/A'}</td>
+                                <td>{produto.unidade_de_medida}</td>
+                                <td>{produto.movimentacoes?.[0]?.tipo_movimentacao || 'N/A'}</td>
+                                <td>{produto.movimentacoes?.[0]?.data_movimentacao || 'N/A'}</td>
+                                <td>{produto.updated_at}</td>
+                                <td className="td-btn">
                                     <button className="btn-edit"><FaEdit /></button>
-                                    <button className="btn-delete"><MdDelete /></button>
+                                    <button className="btn-delete" onClick={() => handleDeleteProduct(produto.id_produto)}><MdDelete /></button>
                                 </td>
                             </tr>
-                     
+                        ))}
                     </tbody>
                 </table>
             </section>

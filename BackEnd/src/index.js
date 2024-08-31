@@ -7,7 +7,7 @@ const morgan = require('morgan'); // Middleware para logging de requisições
 const categoriaRoutes = require('./routes/categoriaRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const estoqueRoutes = require('./routes/estoqueRoutes');
-const movimentacaoEstoqueRoutes = require('./routes/movimentacaoEstoqueRoutes');
+const movimentacaoEstoqueRoutes = require('./Routes/movimentacaoEstoqueRoutes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const usuarioRoleRoutes = require('./routes/usuarioRoleRoutes');
@@ -38,6 +38,7 @@ app.use('/api/movimentacoes', movimentacaoEstoqueRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/usuarios-roles', usuarioRoleRoutes);
+
 
 // Middleware para tratamento de erros
 app.use((err, req, res, next) => {

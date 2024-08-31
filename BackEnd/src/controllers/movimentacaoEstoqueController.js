@@ -1,6 +1,7 @@
 const { MovimentacaoEstoque } = require('../models');
 const { validationResult } = require('express-validator');
 const movimentacaoEstoqueValidation = require('../Validations/movimentacaoEstoqueValidation');
+const Sequelize = require('sequelize');
 
 exports.createMovimentacaoEstoque = [
     movimentacaoEstoqueValidation,

@@ -36,7 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         tableName: 'Produto',
-        timestamps: false
+        timestamps: true, // Adiciona os campos `createdAt` e `updatedAt`
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     Produto.associate = function (models) {
