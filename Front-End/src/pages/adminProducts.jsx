@@ -28,6 +28,7 @@ const AdminProducts = () => {
     // Estados para armazenar as opções dos filtros
     const [categoriasOptions, setCategoriasOptions] = useState([]);
     const [statusOptions, setStatusOptions] = useState([]);
+    // eslint-disable-next-line no-unused-vars
     const [datasOptions, setDatasOptions] = useState([]);
 
     // Função para carregar os filtros (Categorias / Status)
@@ -157,8 +158,16 @@ const AdminProducts = () => {
                     </li>
                     <li className="date-filter">
                         <label htmlFor="date">Data:</label>
-                        <select
+                        <input
+                            id="date"
                             type="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                        />
+                    </li>
+                    {/* <li className="date-filter">
+                        <label htmlFor="date">Data:</label>
+                        <select
                             id="date"
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
@@ -170,7 +179,8 @@ const AdminProducts = () => {
                                 </option>
                             ))}
                         </select>
-                    </li>
+                    </li> */}
+
                 </ul>
             </section>
 
