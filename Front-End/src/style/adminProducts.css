@@ -5,36 +5,24 @@
 
 }
 
-/*Imput de pesquisa */
-.Page-Product .search-bar input {
-    background: #fff;
-    border: solid 1px #d5d5d5;
-}
-
-.admin-product-header-second {
-    padding: 30px;
-}
-
-.admin-product-image {
-    width: 10rem;
-    height: 9rem;
-    border-radius: 10px;
-}
-
 /*Header dos produtos */
-.Page-Product header {
+.admin-product-header-second {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
     height: 3rem;
     border-radius: 10px;
 }
 
-.Page-Product header nav {
-    width: 100%;
-    height: 100%;
+
+.admin-product-header-second nav {
+    width: 50%;
 }
 
 /*Menu de produtos  */
-.Page-Product header nav ul {
-    display: flex;
+.admin-product-header-second nav ul {
+    display: flex;;
     align-items: center;
     width: 100%;
     height: 90%;
@@ -42,31 +30,30 @@
 }
 
 .Page-Product header nav ul li {
-    background: transparent;
     border-radius: 10px;
-    padding: 0.2rem 1rem;
+    padding: 0.2rem;
     cursor: pointer;
 }
 
-.Page-Product header nav ul li a {
+.Page-Product header nav ul li button {
     color: #fff;
     font-size: 0.7rem;
     font-weight: normal;
 }
 
-.Page-Product header nav ul li a i {
+.Page-Product header nav ul li button i {
     font-size: 1rem;
 }
 
 /*Seçao de filtros  */
-.Page-Product section .Filtes-stoks {
+.Filtes-stoks {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 1rem;
 }
 
-.Page-Product section .Filtes-stoks span {
+.Filtes-stoks span {
     font-size: 1.5rem;
     color: #3749a6;
     padding-left: 1rem;
@@ -74,17 +61,17 @@
     border-radius: 10px;
 }
 
-.Page-Product section .Filtes-stoks li {
+.Filtes-stoks li {
     display: flex;
     flex-direction: column;
 }
 
-.Page-Product section .Filtes-stoks li label {
+.Filtes-stoks li label {
     color: #000;
     font-size: 0.7rem;
 }
 
-.Page-Product section .Filtes-stoks select {
+.Filtes-stoks select {
     border: none;
     border-bottom: 1px solid #1e3194;
     border-radius: 5px;
@@ -95,11 +82,11 @@
     font-size: .7rem;
 }
 
-.Page-Product section .Filtes-stoks .date-filter input {
+.Filtes-stoks .date-filter input {
     border: none;
     border-bottom: solid 1px #1e3194;
     border-radius: 10px;
-    padding: 0.2rem 0.5rem;
+    padding: 0 0.5rem;
     outline: none;
     font-size: .7rem;
     cursor: pointer;

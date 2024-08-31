@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "../style/adminProducts.css";
 import {
-    MdOutlineSearch,
     MdAdd,
     MdFilterAlt,
     MdDelete
@@ -97,10 +96,6 @@ const AdminProducts = () => {
                 <h1>
                     Produtos <span>Cadastrados</span>
                 </h1>
-                <div className="search-bar">
-                    <i><MdOutlineSearch /></i>
-                    <input type="text" placeholder="Pesquisa" />
-                </div>
             </div>
 
             <header className="admin-product-header-second">
@@ -116,56 +111,54 @@ const AdminProducts = () => {
                         </li>
                     </ul>
                 </nav>
-            </header>
-
-            <section>
-                <ul className="Filtes-stoks">
-                    <span>
-                        <i>
-                            <MdFilterAlt />
-                            ..
-                        </i>
-                    </span>
-                    <li className="category-filter">
-                        <label htmlFor="category">Categoria:</label>
-                        <select
-                            id="category"
-                            value={categoria}
-                            onChange={(e) => setCategoria(e.target.value)}
-                        >
-                            <option value="">Todas</option>
-                            {categoriasOptions.map((categoria) => (
-                                <option key={categoria.id_categoria} value={categoria.nome}>
-                                    {categoria.nome}
-                                </option>
-                            ))}
-                        </select>
-                    </li>
-                    <li className="status-filter">
-                        <label htmlFor="status">Status:</label>
-                        <select
-                            id="status"
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                        >
-                            <option value="">Todos</option>
-                            {statusOptions.map((tipoMovimentacao) => (
-                                <option key={tipoMovimentacao} value={tipoMovimentacao}>
-                                    {tipoMovimentacao}
-                                </option>
-                            ))}
-                        </select>
-                    </li>
-                    <li className="date-filter">
-                        <label htmlFor="date">Data:</label>
-                        <input
-                            id="date"
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                        />
-                    </li>
-                    {/* <li className="date-filter">
+                <section>
+                    <ul className="Filtes-stoks">
+                        <span>
+                            <i>
+                                <MdFilterAlt />
+                                ..
+                            </i>
+                        </span>
+                        <li className="category-filter">
+                            <label htmlFor="category">Categoria:</label>
+                            <select
+                                id="category"
+                                value={categoria}
+                                onChange={(e) => setCategoria(e.target.value)}
+                            >
+                                <option value="">Todas</option>
+                                {categoriasOptions.map((categoria) => (
+                                    <option key={categoria.id_categoria} value={categoria.nome}>
+                                        {categoria.nome}
+                                    </option>
+                                ))}
+                            </select>
+                        </li>
+                        <li className="status-filter">
+                            <label htmlFor="status">Status:</label>
+                            <select
+                                id="status"
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                            >
+                                <option value="">Todos</option>
+                                {statusOptions.map((tipoMovimentacao) => (
+                                    <option key={tipoMovimentacao} value={tipoMovimentacao}>
+                                        {tipoMovimentacao}
+                                    </option>
+                                ))}
+                            </select>
+                        </li>
+                        <li className="date-filter">
+                            <label htmlFor="date">Data:</label>
+                            <input
+                                id="date"
+                                type="date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                            />
+                        </li>
+                        {/* <li className="date-filter">
                         <label htmlFor="date">Data:</label>
                         <select
                             id="date"
@@ -181,8 +174,9 @@ const AdminProducts = () => {
                         </select>
                     </li> */}
 
-                </ul>
-            </section>
+                    </ul>
+                </section>
+            </header>
 
             <section className="stock-list">
                 <table>
