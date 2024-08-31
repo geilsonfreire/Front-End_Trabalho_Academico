@@ -56,14 +56,30 @@ const AddProductModal = ({ onClose }) => {
                                 type="text"
                                 id="name"
                                 name="name"
-                                placeholder="Nome do produto"
                                 value={""}
                                 onChange={""}
                                 required
                             />
                         </div>
+                    </div>
+
+                    <div className="form-seçao-1">
+                        
                         <div>
-                            <label htmlFor="stock">Quantidade</label>
+                            <label htmlFor="stock">Quantidade_minima</label>
+                            <input
+                                className="form-control"
+                                type="number"
+                                id="stock"
+                                name="stock"
+                                value={""}
+                                onChange={""}
+                                required
+                                step="1"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="stock">Quantidade_Atual</label>
                             <input
                                 className="form-control"
                                 type="number"
@@ -100,9 +116,35 @@ const AddProductModal = ({ onClose }) => {
                             />
                         </div>
                     </div>
+                    <div className="form-seçao-2">
+                        <div className="form-data">
+                            <label htmlFor="cost">Data_Entrada</label>
+                            <input
+                                id="data_entrada"
+                                name="data_entrada"
+                                type='date'
+                                className="form-control"
+                                value={""}
+                                onChange={""}
+                                required
+                            />
+                        </div>
+                        <div className="form-type-entrada">
+                            <input
+                                type="checkbox"
+                                className="form-control"
+                                id="tipo_entrada"
+                                name="tipo_entrada"
+                                value={""}
+                                onChange={""}
+                                required
+                            />
+                            <label htmlFor="price">Entrada</label>
+                        </div>
+                    </div>
                     <div className="form-seçao-3">
                         <div className="form-dropdow">
-                            <label htmlFor="subcategory">Tamanho: </label>
+                            <label htmlFor="subcategory">Unidade: </label>
                             <select
                                 id="subcategory"
                                 name="subcategory"
@@ -110,11 +152,15 @@ const AddProductModal = ({ onClose }) => {
                                 onChange={""}
                                 required
                             >
-                                <option value="">Tamanho</option>
-                                <option value="p">P</option>
-                                <option value="m">M</option>
-                                <option value="g">G</option>
-                                <option value="gg">GG</option>
+                                <option value="">Todos</option>
+                                <option value="Unid">P</option>
+                                <option value="Unid">M</option>
+                                <option value="Unid">G</option>
+                                <option value="Unid">GG</option>
+                                <option value="Litros">350ml</option>
+                                <option value="Litros">600ml</option>
+                                <option value="Litros">1L</option>
+                                <option value="Litros">2L</option>                             
                             </select>
                         </div>
                         <div className="form-dropdow">
@@ -126,7 +172,7 @@ const AddProductModal = ({ onClose }) => {
                                 onChange={""}
                                 required
                             >
-                                <option value="">Selecione uma categoria</option>
+                                <option value="">todos</option>
                                
                                     <option key={""} value={""}>
                                         {""}

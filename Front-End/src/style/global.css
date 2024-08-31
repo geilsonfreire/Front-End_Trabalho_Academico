@@ -33,7 +33,8 @@ ol {
 
 /* Estilo da barra de rolagem */
 ::-webkit-scrollbar {
-    width: 2px;
+    width: 4px;
+    height: 4px;
     /* Largura da barra de rolagem */
 }
 
