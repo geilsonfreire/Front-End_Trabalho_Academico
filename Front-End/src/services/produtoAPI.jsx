@@ -1,5 +1,5 @@
 // src/api/produtoApi.js
-const API_BASE_URL = 'http://localhost:3000/api/produtos'; // Ajuste a URL conforme necessário
+const API_BASE_URL = 'http://localhost:3000/api/produtos';
 
 // Função para obter todos os produtos
 export const fetchProdutos = async () => {
