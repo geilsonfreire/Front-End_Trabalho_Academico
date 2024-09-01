@@ -2,42 +2,83 @@ const { Produto, Categoria, Estoque, MovimentacaoEstoque } = require('../models'
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 
-// Criar um novo produto
-exports.createProduto = async (req, res) => {
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+// Função auxiliar para validar associações
+const validateAssociations = async (id_categoria, id_estoque, id_movimentacao) => {
+    if (id_categoria) {
+        const categoria = await Categoria.findByPk(id_categoria);
+        if (!categoria) {
+            throw new Error('Categoria não encontrada.');
         }
+    }
+    if (id_estoque) {
+        const estoque = await Estoque.findByPk(id_estoque);
+        if (!estoque) {
+            throw new Error('Estoque não encontrado.');
+        }
+    }
+    if (id_movimentacao) {
+        const movimentacao = await MovimentacaoEstoque.findByPk(id_movimentacao);
+        if (!movimentacao) {
+            throw new Error('Movimentação de estoque não encontrada.');
+        }
+    }
+};
 
-        const { id_categoria, id_estoque, id_movimentacao } = req.body;
+// Criar um novo produto com dados relacionados
+exports.createProduto = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
+    const {
+        nome, descricao, preco_compra, preco_venda,
+        unidade_de_medida, quantidade_minima,
+        quantidade_atual, data_movimentacao, tipo_movimentacao,
+        id_categoria
+    } = req.body;
+
+    try {
+        // Validar categoria
         if (id_categoria) {
             const categoria = await Categoria.findByPk(id_categoria);
             if (!categoria) {
                 return res.status(400).json({ error: 'Categoria não encontrada.' });
             }
         }
-        if (id_estoque) {
-            const estoque = await Estoque.findByPk(id_estoque);
-            if (!estoque) {
-                return res.status(400).json({ error: 'Estoque não encontrado.' });
-            }
-        }
-        if (id_movimentacao) {
-            const movimentacao = await MovimentacaoEstoque.findByPk(id_movimentacao);
-            if (!movimentacao) {
-                return res.status(400).json({ error: 'Movimentação de estoque não encontrada.' });
-            }
-        }
 
-        const produto = await Produto.create(req.body);
-        res.status(201).json(produto);
+        // Criar o produto
+        const novoProduto = await Produto.create({
+            nome,
+            descricao,
+            preco_compra,
+            preco_venda,
+            unidade_de_medida,
+            id_categoria
+        });
+
+        // Criar o registro no estoque
+        await Estoque.create({
+            id_produto: novoProduto.id_produto,
+            quantidade_minima,
+            quantidade_atual
+        });
+
+        // Criar a movimentação de estoque
+        await MovimentacaoEstoque.create({
+            id_produto: novoProduto.id_produto,
+            tipo_movimentacao,
+            data_movimentacao,
+            quantidade: quantidade_atual
+        });
+
+        return res.status(201).json(novoProduto);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Erro ao criar produto.', message: error.message });
+        console.error("Erro ao criar produto e dados relacionados", error);
+        return res.status(500).json({ message: "Erro ao criar produto e dados relacionados", error: error.message });
     }
 };
+
 
 // Obter todos os produtos com filtros e dados relacionados
 exports.getProdutos = async (req, res) => {
@@ -72,17 +113,17 @@ exports.getProdutos = async (req, res) => {
             include: [
                 {
                     model: Categoria,
-                    as: 'categoria', // Use o alias definido na associação
+                    as: 'categoria',
                     attributes: ['nome']
                 },
                 {
                     model: Estoque,
-                    as: 'estoque', // Use o alias definido na associação
+                    as: 'estoque',
                     attributes: ['quantidade_minima', 'quantidade_atual']
                 },
                 {
                     model: MovimentacaoEstoque,
-                    as: 'movimentacoes', // Use o alias definido na associação
+                    as: 'movimentacoes',
                     attributes: ['tipo_movimentacao', 'data_movimentacao']
                 }
             ],
@@ -140,53 +181,99 @@ exports.getProdutoById = async (req, res) => {
 
 // Atualizar um produto existente
 exports.updateProduto = async (req, res) => {
+    const { id } = req.params;
+    const {
+        nome, descricao, preco_compra, preco_venda,
+        unidade_de_medida, quantidade_minima,
+        quantidade_atual, data_movimentacao, tipo_movimentacao,
+        id_categoria
+    } = req.body;
+
     try {
-        const produto = await Produto.findByPk(req.params.id);
-        if (produto) {
-            const { id_categoria, id_estoque, id_movimentacao } = req.body;
-
-            if (id_categoria) {
-                const categoria = await Categoria.findByPk(id_categoria);
-                if (!categoria) {
-                    return res.status(400).json({ error: 'Categoria não encontrada.' });
-                }
-            }
-            if (id_estoque) {
-                const estoque = await Estoque.findByPk(id_estoque);
-                if (!estoque) {
-                    return res.status(400).json({ error: 'Estoque não encontrado.' });
-                }
-            }
-            if (id_movimentacao) {
-                const movimentacao = await MovimentacaoEstoque.findByPk(id_movimentacao);
-                if (!movimentacao) {
-                    return res.status(400).json({ error: 'Movimentação de estoque não encontrada.' });
-                }
-            }
-
-            await produto.update(req.body);
-            res.status(200).json(produto);
-        } else {
-            res.status(404).json({ error: 'Produto não encontrado.' });
+        const produto = await Produto.findByPk(id);
+        if (!produto) {
+            return res.status(404).json({ error: 'Produto não encontrado.' });
         }
+
+        // Validar categoria
+        if (id_categoria) {
+            const categoria = await Categoria.findByPk(id_categoria);
+            if (!categoria) {
+                return res.status(400).json({ error: 'Categoria não encontrada.' });
+            }
+        }
+
+        await produto.update({
+            nome,
+            descricao,
+            preco_compra,
+            preco_venda,
+            unidade_de_medida,
+            id_categoria
+        });
+
+        // Atualizar o registro no estoque
+        const estoque = await Estoque.findOne({ where: { id_produto: id } });
+        if (estoque) {
+            await estoque.update({
+                quantidade_minima,
+                quantidade_atual
+            });
+        } else {
+            await Estoque.create({
+                id_produto: id,
+                quantidade_minima,
+                quantidade_atual
+            });
+        }
+
+        // Atualizar a movimentação de estoque
+        const movimentacao = await MovimentacaoEstoque.findOne({ where: { id_produto: id } });
+        if (movimentacao) {
+            await movimentacao.update({
+                tipo_movimentacao,
+                data_movimentacao,
+                quantidade: quantidade_atual  // Adicionando o campo quantidade
+            });
+        } else {
+            await MovimentacaoEstoque.create({
+                id_produto: id,
+                tipo_movimentacao,
+                data_movimentacao,
+                quantidade: quantidade_atual  // Adicionando o campo quantidade
+            });
+        }
+
+        return res.status(200).json(produto);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Erro ao atualizar produto.', message: error.message });
+        console.error("Erro ao atualizar produto e dados relacionados", error);
+        return res.status(500).json({ message: "Erro ao atualizar produto e dados relacionados", error: error.message });
     }
 };
 
-// Deletar um produto
+
+// Deletar um produto existente
 exports.deleteProduto = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const produto = await Produto.findByPk(req.params.id);
-        if (produto) {
-            await produto.destroy();
-            res.status(204).send();
-        } else {
-            res.status(404).json({ error: 'Produto não encontrado.' });
+        const produto = await Produto.findByPk(id);
+        if (!produto) {
+            return res.status(404).json({ error: 'Produto não encontrado.' });
         }
+
+        // Deletar o registro no estoque
+        await Estoque.destroy({ where: { id_produto: id } });
+
+        // Deletar a movimentação de estoque
+        await MovimentacaoEstoque.destroy({ where: { id_produto: id } });
+
+        // Deletar o produto
+        await produto.destroy();
+
+        return res.status(204).send();
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Erro ao deletar produto.', message: error.message });
+        console.error("Erro ao deletar produto e dados relacionados", error);
+        return res.status(500).json({ message: "Erro ao deletar produto e dados relacionados", error: error.message });
     }
 };

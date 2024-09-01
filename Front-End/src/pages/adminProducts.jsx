@@ -4,7 +4,7 @@ import "../style/adminProducts.css";
 import {
     MdAdd,
     MdFilterAlt,
-    MdDelete
+    MdDelete,
 } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
