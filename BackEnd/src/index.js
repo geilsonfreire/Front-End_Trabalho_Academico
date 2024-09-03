@@ -4,16 +4,25 @@ const cors = require('cors');
 const morgan = require('morgan'); // Middleware para logging de requisições
 
 // Importar Routes
-const categoriaRoutes = require('./routes/categoriaRoutes');
-const produtoRoutes = require('./routes/produtoRoutes');
-const estoqueRoutes = require('./routes/estoqueRoutes');
+const categoriaRoutes = require('./Routes/categoriaRoutes');
+const produtoRoutes = require('./Routes/produtoRoutes');
+const estoqueRoutes = require('./Routes/estoqueRoutes');
 const movimentacaoEstoqueRoutes = require('./Routes/movimentacaoEstoqueRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
-const roleRoutes = require('./routes/roleRoutes');
-const usuarioRoleRoutes = require('./routes/usuarioRoleRoutes');
+const usuarioRoutes = require('./Routes/usuarioRoutes');
+const roleRoutes = require('./Routes/roleRoutes');
+const usuarioRoleRoutes = require('./Routes/usuarioRoleRoutes');
+const authRoutes = require('./Routes/auhRoutes');
+
+// Importar Middlewares
+const authMiddleware = require('./middleware/authMiddleware');
+const roleMiddleware = require('./middleware/roleMiddleware');
 
 // Inicializar o aplicativo Express
 const app = express();
+
+// Configurações do dotenv
+require('dotenv').config();
+
 
 // Conectar ao banco de dados
 require('./config/db');
@@ -35,9 +44,12 @@ app.use('/api/categorias', categoriaRoutes);
 app.use('/api/produtos', produtoRoutes);
 app.use('/api/estoques', estoqueRoutes);
 app.use('/api/movimentacoes', movimentacaoEstoqueRoutes);
-app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/roles', roleRoutes);
-app.use('/api/usuarios-roles', usuarioRoleRoutes);
+
+// Rotas protegidas - Adicionando o middleware de autenticação
+app.use('/api/usuarios', authMiddleware, usuarioRoutes); // Exemplo: somente usuários autenticados podem acessar
+app.use('/api/roles', authMiddleware, roleMiddleware('Administrador'), roleRoutes); // Exemplo: somente administradores podem acessar
+app.use('/api/usuarios-roles', authMiddleware, usuarioRoleRoutes);
+app.use('/api/auth', authRoutes); // Adiciona as rotas de autenticação
 
 
 // Middleware para tratamento de erros
@@ -47,6 +59,7 @@ app.use((err, req, res, next) => {
 });
 
 // Iniciar o servidor
-app.listen(3000, () => {
-    console.log('Servidor rodando na porta 3000');
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
 });

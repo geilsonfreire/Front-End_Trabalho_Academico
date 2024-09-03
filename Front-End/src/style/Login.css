@@ -1,26 +1,27 @@
 .LoginContainer {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     background: #fff;
+    overflow: hidden;
+    gap: 1rem;
 }
 
 /* Left */
 .LoginContainer .LoginContainerLeft {
-    width: 50%;
+    width: 60%;
     height: 100%;
-}
-
-.LoginContainer .LoginContainerLeft img {
-    width: 100%;
-    height: 100%;
+    background-image: url(../assets//img/Banner.jpg);
+    background-size: cover;
+    background-position: center;
     object-fit: cover;
 }
 
 /* Right */
-.LoginContainer .LoginConatinerRight {
-    width: 50%;
+.LoginContainerRight {
+    width: 40%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -32,7 +33,7 @@ form .InputWithIcon:focus-within .InputIcon {
     color: #00ff26;
 }
 
-.LoginContainer .LoginConatinerRight .EntradaLogin {
+.LoginContainerRight .EntradaLogin {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,7 +47,7 @@ form .InputWithIcon:focus-within .InputIcon {
     -webkit-backdrop-filter: blur(3.5px);
 }
 
-.LoginContainer .LoginConatinerRight .EntradaLogin::before {
+.LoginContainerRight .EntradaLogin::before {
     content: "";
     position: absolute;
     width: 100%;
@@ -58,7 +59,7 @@ form .InputWithIcon:focus-within .InputIcon {
 
 
 /* Header */
-.LoginContainer .LoginConatinerRight .LoginHeader {
+.LoginContainerRight .LoginHeader {
     position: absolute;
     background: #1e3194;
     width: 30%;
@@ -71,17 +72,17 @@ form .InputWithIcon:focus-within .InputIcon {
     align-items: center;
 }
 
-.LoginContainer .LoginConatinerRight .LoginHeader span {
+.LoginContainerRight .LoginHeader span {
     position: absolute;
     width: 100%;
     height: 10%;
     margin-top: 1rem;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1em;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: bold;
-    top: -10px;
+    top: 0px;
 }
 
 /* Form */
@@ -90,7 +91,7 @@ form .InputWithIcon:focus-within .InputIcon {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 60%;
+    width: 80%;
 }
 
 .FormLogin input {
@@ -181,7 +182,7 @@ form .InputWithIcon:focus-within .InputIcon {
     gap: 1rem;
     width: 60%;
     height: 2rem;
-    margin: .5rem;
+    margin: 2rem;
     border: none;
     border-radius: 5px;
     background: #1e3194;
