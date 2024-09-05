@@ -32,20 +32,20 @@ const Login = () => {
             return;
         }
 
-
         if (password.length < 6) {
             toast.error('A senha deve ter pelo menos 6 caracteres.');
             return;
         }
 
         try {
-            await login(emailOrUsername, password);
+            await login(emailOrUsername, password); // Usa a função login do AuthContext
             toast.success('Logado com sucesso!');
-            navigate('/admin'); // Redireciona para a página principal após login
-        } catch (err) {
-            toast.error('Falha na autenticação. Verifique suas credenciais.');
+            navigate('/admin'); // Redireciona para a página de administrador
+        } catch (error) {
+            toast.error('Erro na autenticação. Verifique suas credenciais.');
         }
     };
+
 
     
     return (
@@ -65,10 +65,8 @@ const Login = () => {
                         <div className="InputWithIcon">
                             <BsFillPersonFill className="InputIcon" />
                             <input
-                                id="emailOrUsername"
-                                type="tex"
-                                name="emailOrUsername"
-                                placeholder="Usuário ou E-mail"
+                                type="text"
+                                placeholder="Email ou Nome de Usuário"
                                 value={emailOrUsername}
                                 onChange={(e) => setEmailOrUsername(e.target.value)}
                                 required
@@ -77,9 +75,7 @@ const Login = () => {
 
                         <div className="InputWithIcon">
                             <input
-                                id="password"
-                                type={showPassword ? "text" : "password"}
-                                name="password"
+                                type="password"
                                 placeholder="Senha"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}

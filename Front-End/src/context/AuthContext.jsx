@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
 
     // Verifica o estado de autenticação ao carregar o componente
     useEffect(() => {
-        // Verifica o estado de autenticação ao carregar o componente
         const checkAuth = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -22,14 +21,12 @@ export const AuthProvider = ({ children }) => {
                         setIsAuthenticated(true);
                         setUser(response.data.user);
                     } else {
-                        // Token inválido ou expirado
                         localStorage.removeItem('token');
                         setIsAuthenticated(false);
                         setUser(null);
                     }
                 }
             } catch (error) {
-                // Erro ao verificar autenticação
                 localStorage.removeItem('token');
                 setIsAuthenticated(false);
                 setUser(null);
@@ -40,25 +37,23 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     // Função de login
-    const login = async (email, password) => {
+    const login = async (emailOrUsername, password) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
-            const { token } = response.data;
+            const response = await axios.post('http://localhost:3000/api/auth/login', { emailOrUsername, senha: password });
+            const { token, user } = response.data;
 
-            // Armazena o token em algum lugar seguro, como localStorage
+            // Armazena o token
             localStorage.setItem('token', token);
 
-            // Atualiza o estado de autenticação
+            // Atualiza o estado de autenticação e usuário
             setIsAuthenticated(true);
+            setUser(user);  // O backend já retornou os dados do usuário no login
 
-            // Fetch e atualize o usuário
-            const userResponse = await axios.get('http://localhost:3000/api/auth/user', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setUser(userResponse.data);
         } catch (error) {
+            console.error("Erro de login:", error);
             setIsAuthenticated(false);
             setUser(null);
+            throw error.response?.data?.message || 'Falha ao autenticar';
         }
     };
 
