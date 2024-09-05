@@ -1,42 +1,69 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { usuario, role } = require('../models');
+const { Usuario, Role } = require('../models');
+const { Op } = require('sequelize');
+
+
+// Função para verificar a senha
+const verificarSenha = async (senhaInserida, senhaArmazenada) => {
+    return bcrypt.compare(senhaInserida, senhaArmazenada);
+};
 
 // Função de login
 exports.login = async (req, res) => {
-    const { email, senha } = req.body;
+    const { emailOrUsername, senha } = req.body;
 
     try {
-        const user = await usuario.findOne({
-            where: { email },
+        console.log('emailOrUsername:', emailOrUsername);
+        const user = await Usuario.findOne({
+            where: {
+                [Op.or]: [
+                    { email: emailOrUsername },
+                    { nome: emailOrUsername }
+                ]
+            },
             include: {
-                model: role,
+                model: Role,
                 as: 'roles',
                 attributes: ['nome'],
                 through: { attributes: [] }
             },
         });
 
+        // Verificar se o usuário existe    
         if (!user) {
+            console.log('Usuário não encontrado.');
             return res.status(404).json({ error: 'Usuário não encontrado.' });
         }
+        console.log('Usuario encontrado', user.email);
+        console.log('Senha armazenada:', user.senha);
+        
 
-        const isPasswordValid = bcrypt.compareSync(senha, user.senha);
+        // Verificar se a senha é válida
+        const isPasswordValid = await verificarSenha(senha, user.senha);
+        console.log('Senha inválida:', isPasswordValid);
 
+        // Se a senha não for válida, retornar um erro
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Senha inválida.' });
         }
 
+        // Gerar o token jwt
         const roles = user.roles.map(role => role.nome);
-
+        console.log('Role identificado:', roles);
         const token = jwt.sign(
-            { id_usuario: user.id_usuario, email: user.email, roles },
+            { 
+                id_usuario: user.id_usuario, 
+                email: user.email, 
+                roles 
+            },
             process.env.SECRET,
             { expiresIn: '1h' }
         );
 
         res.status(200).json({ token, message: 'Usuário autenticado.' });
     } catch (error) {
+        console.error('Erro ao autenticar o usuário:', error)
         res.status(500).json({ message: 'Erro ao autenticar o usuário' });
     }
 };
@@ -44,34 +71,45 @@ exports.login = async (req, res) => {
 // Função de verificação de autenticação
 exports.checkAuth = async (req, res) => {
     try {
+        // Verificar se o token está presente no cabeçalho
         const token = req.headers.authorization?.split(' ')[1];
-        if (!token) return res.status(401).json({ isAuthenticated: false });
-
+        if (!token) 
+            return res.status(401).json({ isAuthenticated: false });
+        // Verificar se o token é válido
         jwt.verify(token, process.env.SECRET);
-        res.status(200).json({ isAuthenticated: true });
+        res.status(200).json({ isAuthenticated: true, decoded });
     } catch (error) {
-        res.status(401).json({ isAuthenticated: false });
+        console.log('Erro ao verificar o token:', error);
+        res.status(401).json({ isAuthenticated: false, message: 'Token inválido ou expirado' });
     }
 };
 
 // Função para obter informações do usuário
 exports.getUser = async (req, res) => {
     try {
+        // Verificar se o token está presente no cabeçalho
         const token = req.headers.authorization?.split(' ')[1];
+        if (!token) 
+            return res.status(401).json({ message: 'Token não encontrado' });
+        // Verificar se o token é válido
         const decoded = jwt.verify(token, process.env.SECRET);
-        const user = await usuario.findByPk(decoded.id_usuario, {
+        console.log('Decoded:', decoded);
+        // Obter as informações do usuário
+        const user = await Usuario.findByPk(decoded.id_usuario, {
             include: {
-                model: role,
+                model: Role,
                 as: 'roles',
                 attributes: ['nome'],
                 through: { attributes: [] }
             }
         });
 
-        if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+        if (!user) 
+            return res.status(404).json({ error: 'Usuário não encontrado.' });
 
         res.status(200).json(user);
     } catch (error) {
+        console.log('Erro ao obter informações do usuário:', error);
         res.status(401).json({ message: 'Token inválido' });
     }
 };

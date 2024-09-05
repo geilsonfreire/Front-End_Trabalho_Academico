@@ -18,7 +18,7 @@ import {
 
 // Create a functional component called Login
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [emailOrUsername, setEmailOrUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useContext(AuthContext);
@@ -27,10 +27,11 @@ const Login = () => {
     const handleLogin = async (event) => {
         event.preventDefault(); // Previne o comportamento padrão de recarregar a página
 
-        if (!email || !password) {
+        if (!emailOrUsername || !password) {
             toast.error('Por favor, preencha todos os campos.');
             return;
         }
+
 
         if (password.length < 6) {
             toast.error('A senha deve ter pelo menos 6 caracteres.');
@@ -38,7 +39,7 @@ const Login = () => {
         }
 
         try {
-            await login(email, password);
+            await login(emailOrUsername, password);
             toast.success('Logado com sucesso!');
             navigate('/admin'); // Redireciona para a página principal após login
         } catch (err) {
@@ -64,12 +65,12 @@ const Login = () => {
                         <div className="InputWithIcon">
                             <BsFillPersonFill className="InputIcon" />
                             <input
-                                id="email"
-                                type="email"
-                                name="email"
+                                id="emailOrUsername"
+                                type="tex"
+                                name="emailOrUsername"
                                 placeholder="Usuário ou E-mail"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={emailOrUsername}
+                                onChange={(e) => setEmailOrUsername(e.target.value)}
                                 required
                             />
                         </div>

@@ -112,4 +112,13 @@ http://localhost:3000/roles/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br>
 
  
 
+## autenticaçao de Usuarios 
+ ### Metodos POST 
+http://localhost:3000/auth/login
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+  "emailOrUsername": "Yuri",
+  "senha": "123456"
+}
 

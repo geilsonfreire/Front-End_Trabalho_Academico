@@ -16,5 +16,11 @@ const sequelize = new Sequelize(
     }
 );
 
+// Exporta a instância do Sequelize e o SECRET
+module.exports = {
+    sequelize,
+    secret: process.env.SECRET
+};
+
 // Exporta a instância do Sequelize
 module.exports = sequelize;

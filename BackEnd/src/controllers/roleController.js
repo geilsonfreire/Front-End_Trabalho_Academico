@@ -26,20 +26,24 @@ exports.createRole = [
 
             res.status(201).json(role);
         } catch (error) {
+            console.error('Erro ao criar role:', error);
             res.status(400).json({ error: 'Erro ao criar role.', message: error.message });
         }
     }
 ];
 
+// Função para obter todos os roles
 exports.getRoles = async (req, res) => {
     try {
         const roles = await Role.findAll();
         res.status(200).json(roles);
     } catch (error) {
+        console.error('Erro ao obter roles:', error);
         res.status(400).json({ error: error.message });
     }
 };
 
+// Função para obter um role pelo id
 exports.getRoleById = async (req, res) => {
     try {
         const role = await Role.findByPk(req.params.id);
@@ -49,10 +53,12 @@ exports.getRoleById = async (req, res) => {
             res.status(404).json({ error: 'Role não encontrada' });
         }
     } catch (error) {
+        console.error('Erro ao obter role:', error);
         res.status(400).json({ error: error.message });
     }
 };
 
+// Função para atualizar um role
 exports.updateRole = [
     roleValidation,
     async (req, res) => {
@@ -71,11 +77,13 @@ exports.updateRole = [
                 res.status(404).json({ error: 'Role não encontrada' });
             }
         } catch (error) {
+            console.error('Erro ao atualizar role:', error);
             res.status(400).json({ error: error.message });
         }
     }
 ];
 
+// Função para deletar um role
 exports.deleteRole = async (req, res) => {
     try {
         const role = await Role.findByPk(req.params.id);
@@ -86,6 +94,7 @@ exports.deleteRole = async (req, res) => {
             res.status(404).json({ error: 'Role não encontrada' });
         }
     } catch (error) {
+        console.error('Erro ao deletar role:', error);
         res.status(400).json({ error: error.message });
     }
 };

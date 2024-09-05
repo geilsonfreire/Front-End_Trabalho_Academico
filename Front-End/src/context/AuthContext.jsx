@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const response = await axios.get('/api/auth/check', {
+                    const response = await axios.get('http://localhost:3000/api/auth/check', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     if (response.data.isAuthenticated) {
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     // Função de login
     const login = async (email, password) => {
         try {
-            const response = await axios.post('/api/auth/login', { email, password });
+            const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
             const { token } = response.data;
 
             // Armazena o token em algum lugar seguro, como localStorage
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
 
             // Fetch e atualize o usuário
-            const userResponse = await axios.get('/api/auth/user', {
+            const userResponse = await axios.get('http://localhost:3000/api/auth/user', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUser(userResponse.data);

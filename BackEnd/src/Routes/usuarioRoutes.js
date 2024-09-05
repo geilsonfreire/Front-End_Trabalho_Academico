@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const usuarioController = require('../controllers/usuarioController');
+const { createUsuario, getUsuarios, getUsuarioById, updateUsuario, deleteUsuario } = require('../controllers/usuarioController');
 
-router.post('/', usuarioController.createUsuario);
-router.get('/', usuarioController.getUsuarios);
-router.get('/:id', usuarioController.getUsuarioById);
-router.put('/:id', usuarioController.updateUsuario);
-router.delete('/:id', usuarioController.deleteUsuario);
+// Rota pública para criar um novo usuário
+router.post('/', createUsuario);
+
+// Rotas protegidas para outras operações de usuário no index.js
+router.get('/', getUsuarios); // Listar todos os usuários (opcional)
+router.get('/:id', getUsuarioById); // Obter um usuário por ID
+router.put('/:id', updateUsuario); // Atualizar um usuário por ID
+router.delete('/:id', deleteUsuario); // Deletar um usuário por ID
 
 module.exports = router;

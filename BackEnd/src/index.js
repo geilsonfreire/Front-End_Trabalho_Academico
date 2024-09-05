@@ -11,7 +11,7 @@ const movimentacaoEstoqueRoutes = require('./Routes/movimentacaoEstoqueRoutes');
 const usuarioRoutes = require('./Routes/usuarioRoutes');
 const roleRoutes = require('./Routes/roleRoutes');
 const usuarioRoleRoutes = require('./Routes/usuarioRoleRoutes');
-const authRoutes = require('./Routes/auhRoutes');
+const authRoutes = require('./Routes/authRoutes');
 
 // Importar Middlewares
 const authMiddleware = require('./middleware/authMiddleware');
@@ -39,17 +39,20 @@ app.use(cors({
 
 app.use(express.json());
 
-// Rotas
-app.use('/api/categorias', categoriaRoutes);
-app.use('/api/produtos', produtoRoutes);
-app.use('/api/estoques', estoqueRoutes);
-app.use('/api/movimentacoes', movimentacaoEstoqueRoutes);
+// Rotas Publicas - Sem autenticação
+app.use('/api/auth', authRoutes); 
+app.post('/api/usuarios', usuarioRoutes);
+app.use('/api/usuarios', usuarioRoutes);
 
 // Rotas protegidas - Adicionando o middleware de autenticação
-app.use('/api/usuarios', authMiddleware, usuarioRoutes); // Exemplo: somente usuários autenticados podem acessar
-app.use('/api/roles', authMiddleware, roleMiddleware('Administrador'), roleRoutes); // Exemplo: somente administradores podem acessar
+app.use('/api/categorias', authMiddleware, categoriaRoutes);
+app.use('/api/produtos', authMiddleware, produtoRoutes);
+app.use('/api/estoques', authMiddleware, estoqueRoutes);
+app.use('/api/movimentacoes', authMiddleware, movimentacaoEstoqueRoutes);
+
+// Rotas protegidas - Adicionando o middleware de autenticação
+app.use('/api/roles', authMiddleware, roleMiddleware('Administrador'), roleRoutes); 
 app.use('/api/usuarios-roles', authMiddleware, usuarioRoleRoutes);
-app.use('/api/auth', authRoutes); // Adiciona as rotas de autenticação
 
 
 // Middleware para tratamento de erros

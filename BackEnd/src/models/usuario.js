@@ -38,19 +38,6 @@ module.exports = (sequelize, DataTypes) => {
             onUpdate: 'CASCADE'
         });
     };
-
-    // Hook to create UsuarioRole after a new user is created
-    Usuario.afterCreate(async (usuario, options) => {
-        try {
-            const UsuarioRole = sequelize.models.UsuarioRole;
-            await UsuarioRole.create({
-                id_usuario: usuario.id_usuario,
-                id_role: usuario.id_role
-            });
-        } catch (error) {
-            console.error('Erro ao associar o usuário ao role:', error);
-        }
-    });
     
     return Usuario;
 };

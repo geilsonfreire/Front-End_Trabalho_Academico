@@ -19,6 +19,19 @@ Categoria.hasMany(Produto, { foreignKey: 'id_categoria', as: 'produtos' });
 Estoque.belongsTo(Produto, { foreignKey: 'id_produto', as: 'produto' });
 MovimentacaoEstoque.belongsTo(Produto, { foreignKey: 'id_produto', as: 'produto' });
 
+// Adicionando associações entre Usuario e Role
+Usuario.belongsToMany(Role, {
+    through: UsuarioRole,
+    foreignKey: 'id_usuario',
+    as: 'roles' // Alias da associação
+});
+
+Role.belongsToMany(Usuario, {
+    through: UsuarioRole,
+    foreignKey: 'id_role',
+    as: 'usuarios' // Alias da associação
+});
+
 // Exportando os modelos e a instância do Sequelize
 module.exports = {
     Categoria,
