@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
@@ -7,67 +7,119 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // Verifica o estado de autenticação ao carregar o componente
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    const response = await axios.get('http://localhost:3000/api/auth/check', {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-                    if (response.data.isAuthenticated) {
-                        setIsAuthenticated(true);
-                        setUser(response.data.user);
-                    } else {
-                        localStorage.removeItem('token');
-                        setIsAuthenticated(false);
-                        setUser(null);
-                    }
-                }
-            } catch (error) {
-                localStorage.removeItem('token');
-                setIsAuthenticated(false);
-                setUser(null);
-            }
-        };
+    // Função centralizada para definir o estado de autenticação
+    const setAuthState = ({ token, user, isAuthenticated }) => {
+        if (token) {
+            // Armazena o token no localStorage
+            localStorage.setItem('token', token);
+        } else {
+            // Remove o token se não houver autenticação
+            localStorage.removeItem('token');
+        }
 
-        checkAuth();
-    }, []);
+        // Atualiza os estados de autenticação e usuário
+        setIsAuthenticated(isAuthenticated);
+        setUser(user);
+    };
 
     // Função de login
     const login = async (emailOrUsername, password) => {
         try {
+            // Faz a requisição de login
             const response = await axios.post('http://localhost:3000/api/auth/login', { emailOrUsername, senha: password });
-            const { token, user } = response.data;
+            console.log('Resposta do login:', response.data);
+            const { token, user } = response.data; // Extrai o token e o usuário da resposta
 
-            // Armazena o token
-            localStorage.setItem('token', token);
+            // Atualiza o estado de autenticação, salva o token e os dados do usuário
+            setAuthState({
+                token,
+                user,
+                isAuthenticated: true,
+            });
+            console.log('dados do suário logado:', user);
 
-            // Atualiza o estado de autenticação e usuário
-            setIsAuthenticated(true);
-            setUser(user);  // O backend já retornou os dados do usuário no login
+            // Redireciona para a última página visitada
+            const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/admin';
+            window.location.href = lastVisitedPage;
 
         } catch (error) {
             console.error("Erro de login:", error);
-            setIsAuthenticated(false);
-            setUser(null);
+            // Se ocorrer um erro, reseta o estado de autenticação
+            setAuthState({
+                token: null,
+                user: null,
+                isAuthenticated: false,
+            });
             throw error.response?.data?.message || 'Falha ao autenticar';
         }
     };
 
+    // Verifica o estado de autenticação ao carregar o componente
+    const checkAuth = useCallback(async () => {
+        try {
+            const token = localStorage.getItem('token');  // Obtém o token do localStorage
+            console.log('Token encontrado:', token);
+
+            if (token) {
+                const response = await axios.get('http://localhost:3000/api/auth/check', {
+                    headers: { Authorization: `Bearer ${token}` }
+                }); // Faz a requisição para verificar o token
+                console.log('Resposta do checkAuth:', response.data);
+
+                if (response.data.isAuthenticated) {
+                    // Atualiza o estado se a autenticação for válida
+                    setAuthState({
+                        token,
+                        user: response.data.decoded,  // Dados do usuário decodificados do token
+                        isAuthenticated: true,
+                    });
+                } else {
+                    // Se o token for inválido, reseta o estado e remove o token
+                    setAuthState({
+                        token: null,
+                        user: null,
+                        isAuthenticated: false,
+                    });
+                }
+            } else {
+                // Se não houver token no localStorage, reseta o estado
+                setAuthState({
+                    token: null,
+                    user: null,
+                    isAuthenticated: false,
+                });
+            }
+        } catch (error) {
+            console.log('Erro ao verificar autenticação:', error);
+            // Em caso de erro, reseta o estado e remove o token
+            setAuthState({
+                token: null,
+                user: null,
+                isAuthenticated: false,
+            });
+        }finally{
+            setLoading(false);
+        }
+    }, []);
+    useEffect(() => {
+        checkAuth();// Executa a função de verificação de autenticação
+    }, [checkAuth]);
+
+
     // Função de logout
     const logout = () => {
-        // Remove o token e limpa o estado de autenticação
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        setUser(null);
+        setAuthState({
+            token: null,
+            user: null,
+            isAuthenticated: false,
+        });
     };
 
     //  Retorna o contexto de autenticação
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, user, login, checkAuth, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

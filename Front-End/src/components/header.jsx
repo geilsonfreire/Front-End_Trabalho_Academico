@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 // Import Bibliotecas
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect} from "react";
 
 // Import CSS
 import "../style/header.css";
@@ -19,40 +17,18 @@ import {
 } from "react-icons/md";
 
 const Header = () => {
-    const [userName, setUserName] = useState("");
-    const [userImage, setUserImage] = useState("");
-    const [isLogged, setIsLogged] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem("usuarios"));
-
-    // Verifica se o usuário está logado e se é um admin
-   /*  useEffect(() => {
-        if (user.tipo === 2) {
-            setIsLogged(true);
-            setIsAdmin(true);
-            setUserName(user.displayName);
-            setUserImage(user.image);
-        } else {
-            navigate("/");
-        }
-    }, [user, navigate]); */
-
-
-    // Estado do dropdown icone
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
-    const menuDropDownRef = useRef(null);
+    
     const toggleDropdown = () => {
         setIsDropdownOpen(PrevState => !PrevState);
     }; // Alterna o estado de aberto/fechado do dropdown   
+
     useEffect(() => {
         const handleClickOutside = (event) => {
+            // Verifica se o clique está fora do dropdown e do botão de abrir/fechar
             if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target) &&
-                menuDropDownRef.current &&
-                !menuDropDownRef.current.contains(event.target)
+                !event.target.closest('.menu-dropdow') &&
+                !event.target.closest('.container-menu-dropdown')
             ) {
                 setIsDropdownOpen(false);
             }
@@ -96,7 +72,7 @@ const Header = () => {
 
                 <div className="menu-dropdow"
                     onClick={toggleDropdown} // Alterna o estado de aberto/fechado do dropdown
-                    ref={dropdownRef} // Referência para o dropdown
+                    
                 >
                     <i>
                         {isDropdownOpen ? <MdArrowCircleUp /> : <MdArrowCircleDown />}
@@ -106,7 +82,7 @@ const Header = () => {
                     <MenuDropDownPerfil
                         isDropdownOpen={isDropdownOpen}
                         setIsDropdownOpen={setIsDropdownOpen}
-                        ref={menuDropDownRef}
+                       
                     />
                 )}
             </div>

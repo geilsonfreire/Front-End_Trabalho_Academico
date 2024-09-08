@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 // Import Bibliotecas
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-toastify';
 
@@ -21,8 +21,18 @@ const Login = () => {
     const [emailOrUsername, setEmailOrUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const { login } = useContext(AuthContext);
+    const { isAuthenticated, login } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    // Redireciona se já estiver autenticado
+    useEffect(() => {
+        if (isAuthenticated) { // Se estiver autenticado
+            navigate('/admin'); // Redireciona para a página de administrador
+        } else {
+            navigate('/'); // Redireciona para a página de login
+        }
+    }, [isAuthenticated, navigate]); 
+
 
     const handleLogin = async (event) => {
         event.preventDefault(); // Previne o comportamento padrão de recarregar a página
@@ -40,14 +50,12 @@ const Login = () => {
         try {
             await login(emailOrUsername, password); // Usa a função login do AuthContext
             toast.success('Logado com sucesso!');
-            navigate('/admin'); // Redireciona para a página de administrador
         } catch (error) {
             toast.error('Erro na autenticação. Verifique suas credenciais.');
         }
     };
 
 
-    
     return (
         <main className="LoginContainer">
             {/* Left */}
@@ -66,7 +74,7 @@ const Login = () => {
                             <BsFillPersonFill className="InputIcon" />
                             <input
                                 type="text"
-                                placeholder="Email ou Nome de Usuário"
+                                placeholder="Usuário ou E-mail"
                                 value={emailOrUsername}
                                 onChange={(e) => setEmailOrUsername(e.target.value)}
                                 required
@@ -75,7 +83,7 @@ const Login = () => {
 
                         <div className="InputWithIcon">
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 placeholder="Senha"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}

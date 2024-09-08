@@ -1,8 +1,9 @@
 // Import Bibliotecas
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 
 // Import Componentes
 import App from './App.jsx'
@@ -13,10 +14,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import './style/customToast.css'; // Customização do Toast
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <AuthProvider>
+    <AuthProvider>
+        <Router>
             <App />
             <ToastContainer className="custom-toast" />
-        </AuthProvider>
-    </React.StrictMode>,
+        </Router>
+    </AuthProvider>
 )

@@ -61,10 +61,19 @@ exports.login = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({ token, message: 'Usuário autenticado.' });
+        // Retornar token e dados do usuário
+        return res.status(200).json({
+            message: 'Usuário autenticado',
+            token: token,
+            user: {
+                id: user.id_usuario,    
+                email: user.email,
+                roles: roles 
+            }
+        });
     } catch (error) {
-        console.error('Erro ao autenticar o usuário:', error)
-        res.status(500).json({ message: 'Erro ao autenticar o usuário' });
+        console.error('Erro ao autenticar o usuário:', error.message, error.stack);
+        res.status(500).json({ message: 'Erro ao autenticar o usuário', error: error.message });
     }
 };
 
@@ -76,7 +85,7 @@ exports.checkAuth = async (req, res) => {
         if (!token) 
             return res.status(401).json({ isAuthenticated: false });
         // Verificar se o token é válido
-        jwt.verify(token, process.env.SECRET);
+        const decoded = jwt.verify(token, process.env.SECRET);
         res.status(200).json({ isAuthenticated: true, decoded });
     } catch (error) {
         console.log('Erro ao verificar o token:', error);

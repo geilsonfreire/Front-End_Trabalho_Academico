@@ -12,6 +12,8 @@ import { BiSolidCategory } from "react-icons/bi";
 
 // Imports de Componentes
 import AddCategoryModal from "../components/adminCategoryModal";
+import { fetchCategorias } from "../services/categoriasAPI";
+
 
 const AddProductModal = ({ onClose }) => {
     // Estados para os inputs do formulário
@@ -33,8 +35,8 @@ const AddProductModal = ({ onClose }) => {
     useEffect(() => {
         const loadCategorias = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/categorias");
-                setCategorias(response.data);
+                const categoriasData = await fetchCategorias();
+                setCategorias(categoriasData);
             } catch (error) {
                 console.error("Erro ao carregar categorias", error);
                 toast.error("Erro ao carregar categorias.");
@@ -43,12 +45,13 @@ const AddProductModal = ({ onClose }) => {
         loadCategorias();
     }, []);
 
-
+    // Função para abrir o modal de categoria
     const handleAddCategoryClick = () => {
         console.log("Abrindo modal");
         setIsModalCategoryOpen(true);
     };
 
+    // Função para fechar o modal de categoria
     const handleCloseCategoryModal = () => {
         console.log("Fechando modal");
         setIsModalCategoryOpen(false);

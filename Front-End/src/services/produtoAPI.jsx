@@ -1,16 +1,30 @@
 // src/api/produtoApi.js
 const API_BASE_URL = 'http://localhost:3000/api/produtos';
 
+// Função auxiliar para lidar com erros de resposta
+const handleResponse = async (response) => {
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Erro ao processar a requisição.');
+    }
+    return await response.json();
+};
+
+// Função para obter o token JWT
+const getToken = () => localStorage.getItem('token');
+
 // Função para obter todos os produtos
 export const fetchProdutos = async () => {
     try {
-        const response = await fetch(API_BASE_URL);
-        if (!response.ok) {
-            throw new Error('Erro ao buscar produtos.');
-        }
-        return await response.json();
+        const response = await fetch(API_BASE_URL, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'application/json'
+            },
+        });
+        return await handleResponse(response);
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao buscar produtos:', error);
         throw error;
     }
 };
@@ -18,13 +32,15 @@ export const fetchProdutos = async () => {
 // Função para obter um produto por ID
 export const fetchProdutoById = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/${id}`);
-        if (!response.ok) {
-            throw new Error('Erro ao buscar produto.');
-        }
-        return await response.json();
+        const response = await fetch(`${API_BASE_URL}/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'application/json'
+            },
+        });
+        return await handleResponse(response);
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao buscar produto por ID:', error);
         throw error;
     }
 };
@@ -35,16 +51,14 @@ export const createProduto = async (produto) => {
         const response = await fetch(API_BASE_URL, {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${getToken()}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(produto)
         });
-        if (!response.ok) {
-            throw new Error('Erro ao criar produto.');
-        }
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao criar produto:', error);
         throw error;
     }
 };
@@ -55,16 +69,14 @@ export const updateProduto = async (id, produto) => {
         const response = await fetch(`${API_BASE_URL}/${id}`, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${getToken()}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(produto)
         });
-        if (!response.ok) {
-            throw new Error('Erro ao atualizar produto.');
-        }
-        return await response.json();
+        return await handleResponse(response);
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao atualizar produto:', error);
         throw error;
     }
 };
@@ -73,13 +85,15 @@ export const updateProduto = async (id, produto) => {
 export const deleteProduto = async (id) => {
     try {
         const response = await fetch(`${API_BASE_URL}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'application/json'
+            },
         });
-        if (!response.ok) {
-            throw new Error('Erro ao deletar produto.');
-        }
+        await handleResponse(response);
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao deletar produto:', error);
         throw error;
     }
 }
