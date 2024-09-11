@@ -60,9 +60,18 @@ const AdminProducts = () => {
                 if (date) queryParams.append('date', date);
 
                 const produtosData = await fetchProdutos(queryParams.toString());
-                setProdutos(produtosData);
+
+                console.log('Dados de produtos após fetch:', produtosData);
+
+                // Verifique se produtosData é um array
+                if (Array.isArray(produtosData)) {
+                    setProdutos(produtosData);
+                } else {
+                    throw new Error("Dados de produtos inválidos.");
+                }
             } catch (error) {
                 toast.error("Erro ao carregar produtos.");
+                console.error("Erro ao carregar produtos:", error);
             } finally {
                 setLoading(false);
             }
@@ -89,6 +98,8 @@ const AdminProducts = () => {
     const handleCloseProductModal = () => {
         setIsModalProductOpen(false);
     };
+
+ 
 
     return (
         <main className="Page-Product">
@@ -158,22 +169,6 @@ const AdminProducts = () => {
                                 onChange={(e) => setDate(e.target.value)}
                             />
                         </li>
-                        {/* <li className="date-filter">
-                        <label htmlFor="date">Data:</label>
-                        <select
-                            id="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                        >
-                            <option value="">Todas</option>
-                            {datasOptions.map((data) => (
-                                <option key={data} value={data}>
-                                    {data}
-                                </option>
-                            ))}
-                        </select>
-                    </li> */}
-
                     </ul>
                 </section>
             </header>
@@ -197,7 +192,7 @@ const AdminProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {produtos.map(produto => (
+                        {produtos.length > 0 && produtos.map(produto => (
                             <tr key={produto.id_produto}>
                                 <td>{produto.nome}</td>
                                 <td>{produto.categoria?.nome || 'N/A'}</td>
