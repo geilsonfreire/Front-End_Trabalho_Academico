@@ -42,13 +42,13 @@ app.use(express.json());
 // Rotas Publicas - Sem autenticação
 app.use('/api/auth', authRoutes); 
 app.post('/api/usuarios', usuarioRoutes);
-app.use('/api/usuarios', usuarioRoutes);
 
 // Rotas protegidas - Adicionando o middleware de autenticação
 app.use('/api/categorias', authMiddleware, categoriaRoutes);
 app.use('/api/produtos', authMiddleware, produtoRoutes);
 app.use('/api/estoques', authMiddleware, estoqueRoutes);
 app.use('/api/movimentacoes', authMiddleware, movimentacaoEstoqueRoutes);
+app.use('/api/usuarios', authMiddleware, usuarioRoutes);
 
 // Rotas protegidas - Adicionando o middleware de autenticação
 app.use('/api/roles', authMiddleware, roleMiddleware('Administrador'), roleRoutes); 
