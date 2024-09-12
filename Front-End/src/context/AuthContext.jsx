@@ -9,13 +9,12 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [sessionExpired, setSessionExpired] = useState(false);
     const navigate = useNavigate();
 
     // Função centralizada para definir o estado de autenticação
     const setAuthState = ({ token, user, isAuthenticated, expiresIn }) => {
         const now = new Date().getTime(); // Obtém a data atual em milissegundos
-
-
         if (token) {
             // Armazena o token no localStorage
             localStorage.setItem('token', token);
@@ -45,6 +44,7 @@ export const AuthProvider = ({ children }) => {
                 user: null,
                 isAuthenticated: false,
             });
+            setSessionExpired(true);
             navigate('/'); // Redireciona usando React Router
         } else {
             console.log('Token válido, prossiga...');
@@ -67,6 +67,7 @@ export const AuthProvider = ({ children }) => {
                 expiresIn: expiresIn || 3600, // Define o tempo de expiração (1h por padrão)
             });
             console.log('dados do suário logado:', user);
+            setSessionExpired(false);
 
             // Redireciona para a última página visitada
             const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/admin';
@@ -152,7 +153,16 @@ export const AuthProvider = ({ children }) => {
 
     //  Retorna o contexto de autenticação
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, login, checkAuth, logout, loading }}>
+        <AuthContext.Provider value={{ 
+            isAuthenticated, 
+            checkTokenExpiration, 
+            sessionExpired, 
+            user, 
+            login, 
+            checkAuth, 
+            logout, 
+            loading 
+        }}>
             {children}
         </AuthContext.Provider>
     );
