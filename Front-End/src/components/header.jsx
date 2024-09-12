@@ -1,11 +1,12 @@
 // Import Bibliotecas
-import { useState, useEffect} from "react";
+import { useState, useEffect, useContext } from "react";
 
 // Import CSS
 import "../style/header.css";
 
 // Import components
 import MenuDropDownPerfil from "../components/MenuDropDownPerfil";
+import AuthContext from '../context/AuthContext';
 
 // Imports icons e imagens
 import LogoPerfil from "../assets/img/Ge.jpg";
@@ -18,10 +19,15 @@ import {
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    
+    const { user, logout } = useContext(AuthContext);
+
     const toggleDropdown = () => {
         setIsDropdownOpen(PrevState => !PrevState);
     }; // Alterna o estado de aberto/fechado do dropdown   
+
+    useEffect(() => {
+        console.log('Dados do usuário no Header:', user);
+    }, [user]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -63,16 +69,23 @@ const Header = () => {
                 <div className="profile">
                     <div className="perfill-name-img">
                         <img src={LogoPerfil} alt="User Profile" />
-                        <span className="user-name">Geilson Freire</span>
-                    </div>
-                    <div className="pefill-adim-tipo">
-                        <span className="user-type">Admin</span>
+                        <div className="pefill-adim-span">
+                            <span
+                                className="user-name">
+                                {user?.email || ""}
+                            </span>
+                            <span
+                                className="user-type">
+                                {user?.roles?.[0] || ""}
+
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 <div className="menu-dropdow"
-                    onClick={toggleDropdown} // Alterna o estado de aberto/fechado do dropdown
-                    
+                    onClick={toggleDropdown}
+
                 >
                     <i>
                         {isDropdownOpen ? <MdArrowCircleUp /> : <MdArrowCircleDown />}
@@ -82,7 +95,7 @@ const Header = () => {
                     <MenuDropDownPerfil
                         isDropdownOpen={isDropdownOpen}
                         setIsDropdownOpen={setIsDropdownOpen}
-                       
+                        logout={logout}
                     />
                 )}
             </div>

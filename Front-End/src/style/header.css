@@ -43,7 +43,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-   
 }
 
 .perfill-name-img {
@@ -51,6 +50,7 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    padding: 0 1rem;
     cursor: pointer;
 }
 
@@ -64,29 +64,34 @@
     transform: scale(1.1);
 }
 
+.pefill-adim-span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .user-name {
     cursor: default;
     color: #000;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
 
 .user-name:hover {
-    color: #3749A6;
-}
-
-/*Perfil Type */
-.pefill-adim-tipo .user-type {
-    display: flex;
-    cursor: default;
+    color: #0000006c;
 }
 
 .user-type {
-    font-size: 12px;
-    color: #00ff26;
+    font-size: 10px;
+    color: #0000006c;
+    letter-spacing: 2px;
+    font-weight: bold;
 }
 
 .user-type:hover {
-    color: #3749A6;
-    transform: scale(1.1);
+    color: blue;
 }
 
 /* Menu DropDow */
