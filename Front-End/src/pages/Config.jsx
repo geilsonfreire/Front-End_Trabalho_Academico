@@ -22,10 +22,13 @@ import { getUsuarios, atualizarUsuario, deletarUsuario } from "../services/userA
 const rolePriority = ["Administrador", "Operador"];
 
 const getHighestPriorityRole = (roles) => {
-    // Ordena os papéis de acordo com a prioridade
-    const sortedRoles = roles.sort((a, b) => rolePriority.indexOf(a) - rolePriority.indexOf(b));
-    // Retorna o papel com a maior prioridade
-    return sortedRoles[0] || "Nenhum papel atribuído";
+    // Converte os IDs de papéis para os nomes correspondentes
+    const highestRole = roles
+        .map(role => rolePriority[role - 1]) // Converte o ID do papel para o nome
+        .sort((a, b) => rolePriority.indexOf(a) - rolePriority.indexOf(b)); // Ordena pelo índice de prioridade
+
+    // Retorna o papel com maior prioridade ou "Nenhum papel atribuído"
+    return highestRole[0] || "Nenhum papel atribuído";
 };
 
 const Configuracoes = () => {
@@ -65,19 +68,22 @@ const Configuracoes = () => {
     const handleSaveClick = async (id) => {
         try {
             // Verifique se os papéis são enviados como um array de IDs
-            const roles = changes[id]?.roles.map(role => role.value) || [];
+            const roles = changes[id]?.roles.map(role => role) || [];
 
             const usuarioData = {
                 ...changes[id],
-                roles // Certifique-se de que isso é um array de IDs de papéis
+                roles
             };
 
             console.log('Dados enviados para atualização:', usuarioData);
 
+            // Atualizar o usuário no backend
             await atualizarUsuario(id, usuarioData);
+            // Atualizar a lista de usuários localmente no front-end
             setUsuarios(usuarios.map(user =>
-                user.id_usuario === id ? { ...user, ...changes[id] } : user
+                user.id_usuario === id ? { ...user, roles: [rolePriority[roles[0] - 1]], ...changes[id] } : user
             ));
+
             setEditingUserId(null);
             toast.success("Alterações salvas com sucesso!");
         } catch (error) {
@@ -99,12 +105,13 @@ const Configuracoes = () => {
     };
 
     // Função para alterar o papel localmente (apenas no estado, não salva ainda)
-    const handleRoleChange = (id, newRole) => {
+    const handleRoleChange = (id, newRoleId) => {
+        // Atualizando estado com o ID do papel
         setChanges(prevChanges => ({
             ...prevChanges,
             [id]: {
                 ...prevChanges[id],
-                roles: [newRole] // Atualizando para um único papel
+                roles: [newRoleId] // Atualizando para o ID correto
             }
         }));
     };
@@ -169,8 +176,8 @@ const Configuracoes = () => {
                                                 onChange={(e) => handleRoleChange(user.id_usuario, e.target.value)}
                                                 disabled={editingUserId !== user.id_usuario}
                                             >
-                                                <option value="Administrador">Administrador</option>
-                                                <option value="Operador">Operador</option>
+                                                <option value="1">Administrador</option>
+                                                <option value="2">Operador</option>
                                             </select>
                                         </td>
                                         <td className="btn-user">
