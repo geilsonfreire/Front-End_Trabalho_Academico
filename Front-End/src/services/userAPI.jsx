@@ -19,6 +19,22 @@ export const cadastrarUsuario = async (usuarioData) => {
     }
 };
 
+// Função para obter a lista de usuários (GET)
+export const getUsuarios = async () => {
+    try {
+        const response = await axios.get(API_URL, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}` // Autenticação JWT
+            }
+        });
+        console.log('Usuários obtidos com sucesso:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao obter usuários:', error.response.data);
+        throw error.response.data; // Propaga o erro para ser tratado no front-end
+    }
+};
+
 // Função para atualizar um usuário (PUT)
 export const atualizarUsuario = async (id, usuarioData) => {
     try {
