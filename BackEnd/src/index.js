@@ -38,6 +38,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Rotas Publicas - Sem autenticação
 app.use('/api/auth', authRoutes); 

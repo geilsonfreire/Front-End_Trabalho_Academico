@@ -97,6 +97,19 @@ http://localhost:3000/api/usuarios - RETORNA TODOS OS VALORES <br>
 http://localhost:3000/api/usuarios/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
 
 
+### Metodos PUT 
+http://localhost:3000/api/usuarios/:id - RETORNA APENAS O VALOR RELACIONADO AO ID <br> 
+- Header: key: Content-Type  value: application/json <br>
+- body: 
+{
+    "nome": "Geilson",
+    "email": "geilsonf@gmail.com",
+    "senha": "123456", 
+    "status": true,
+    "roles": [1] 
+}
+
+
 ## Role - Papeis dos Usuarios 
  ### Metodos POST 
 http://localhost:3000/api/roles

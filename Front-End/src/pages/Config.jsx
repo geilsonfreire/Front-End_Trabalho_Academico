@@ -64,7 +64,17 @@ const Configuracoes = () => {
     // Função para salvar as alterações
     const handleSaveClick = async (id) => {
         try {
-            await atualizarUsuario(id, changes[id]);
+            // Verifique se os papéis são enviados como um array de IDs
+            const roles = changes[id]?.roles.map(role => role.value) || [];
+
+            const usuarioData = {
+                ...changes[id],
+                roles // Certifique-se de que isso é um array de IDs de papéis
+            };
+
+            console.log('Dados enviados para atualização:', usuarioData);
+
+            await atualizarUsuario(id, usuarioData);
             setUsuarios(usuarios.map(user =>
                 user.id_usuario === id ? { ...user, ...changes[id] } : user
             ));
