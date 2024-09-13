@@ -130,7 +130,7 @@
 }
 
 .Page-Product .stock-list table tbody tr td {
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

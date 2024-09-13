@@ -15,7 +15,7 @@ export const cadastrarUsuario = async (usuarioData) => {
         return response.data;
     } catch (error) {
         console.error('Erro ao criar usuário:', error.response.data);
-        throw error.response.data; // Propaga o erro para ser tratado no front-end
+        throw error.response.data;
     }
 };
 
@@ -27,11 +27,19 @@ export const getUsuarios = async () => {
                 Authorization: `Bearer ${localStorage.getItem('token')}` // Autenticação JWT
             }
         });
-        console.log('Usuários obtidos com sucesso:', response.data);
-        return response.data;
+        const usuarios = response.data.map(user => ({
+            id_usuario: user.id,
+            nome: user.nome,
+            email: user.email,
+            senha: user.senha,
+            status: user.status,
+            roles: user.roles || []
+        }));
+        console.log('Usuários obtidos com sucesso:', usuarios);
+        return usuarios;
     } catch (error) {
         console.error('Erro ao obter usuários:', error.response.data);
-        throw error.response.data; // Propaga o erro para ser tratado no front-end
+        throw error.response?.data || error.message; // Propaga o erro para ser tratado no front-end
     }
 };
 
@@ -50,6 +58,7 @@ export const atualizarUsuario = async (id, usuarioData) => {
         throw error.response.data; // Propaga o erro para ser tratado no front-end
     }
 };
+
 
 // Função para deletar um usuário (DELETE)
 export const deletarUsuario = async (id) => {

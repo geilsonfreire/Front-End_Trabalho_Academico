@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 
 // Importar models
-const { Usuario, UsuarioRole } = require('../models');
+const { Usuario, UsuarioRole, Role } = require('../models');
 
 // Importar validações
 const { validationResult } = require('express-validator');
@@ -51,11 +51,31 @@ exports.createUsuario = [
     }
 ];
 
-// Função para obter todos os usuários
+
+// Função para obter todos os usuários com seus papéis (roles)
 exports.getUsuarios = async (req, res) => {
     try {
-        const usuarios = await Usuario.findAll();
-        res.status(200).json(usuarios);
+        const usuarios = await Usuario.findAll({
+            include: [
+                {
+                    model: Role,
+                    as: 'roles', // Nome do relacionamento definido no modelo
+                    attributes: ['nome'] // Campos que deseja incluir da tabela Role
+                }
+            ]
+        });
+
+        // Formatando a resposta para incluir apenas o array de nomes dos papéis
+        const usuariosComRoles = usuarios.map(usuario => ({
+            id: usuario.id_usuario,
+            nome: usuario.nome,
+            email: usuario.email,
+            senha: usuario.senha,
+            status: usuario.status,
+            roles: usuario.roles.map(role => role.nome) // Obtendo apenas o nome dos papéis
+        }));
+
+        res.status(200).json(usuariosComRoles);
     } catch (error) {
         console.error('Erro ao obter usuários:', error);
         res.status(400).json({ error: error.message });

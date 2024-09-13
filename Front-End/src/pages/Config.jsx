@@ -18,6 +18,16 @@ import "../style/Config.css";
 // Importação dos Serviços de API
 import { getUsuarios, atualizarUsuario, deletarUsuario } from "../services/userAPI";
 
+// Ordem de prioridade dos papéis
+const rolePriority = ["Administrador", "Operador"];
+
+const getHighestPriorityRole = (roles) => {
+    // Ordena os papéis de acordo com a prioridade
+    const sortedRoles = roles.sort((a, b) => rolePriority.indexOf(a) - rolePriority.indexOf(b));
+    // Retorna o papel com a maior prioridade
+    return sortedRoles[0] || "Nenhum papel atribuído";
+};
+
 const Configuracoes = () => {
     const [usuarios, setUsuarios] = useState([]);
     const [editingUserId, setEditingUserId] = useState(null); 
@@ -28,6 +38,7 @@ const Configuracoes = () => {
         const fetchUsuarios = async () => {
             try {
                 const data = await getUsuarios();
+                console.log("Usuários obtidos com sucesso do db:", data);
                 setUsuarios(data);
             } catch (error) {
                 console.error("Erro ao obter usuarios", error);
@@ -40,11 +51,12 @@ const Configuracoes = () => {
     // Função para ativar o modo de edição para um usuário
     const handleEditClick = (id) => {
         setEditingUserId(id);
+        const user = usuarios.find(user => user.id_usuario === id);
         setChanges(prevChanges => ({
             ...prevChanges,
             [id]: {
-                isActive: usuarios.find(user => user.id === id).isActive,
-                role: usuarios.find(user => user.id === id).role
+                isActive: user.status,
+                roles: user.roles || []
             }
         }));
     };
@@ -54,7 +66,7 @@ const Configuracoes = () => {
         try {
             await atualizarUsuario(id, changes[id]);
             setUsuarios(usuarios.map(user =>
-                user.id === id ? { ...user, ...changes[id] } : user
+                user.id_usuario === id ? { ...user, ...changes[id] } : user
             ));
             setEditingUserId(null);
             toast.success("Alterações salvas com sucesso!");
@@ -65,39 +77,33 @@ const Configuracoes = () => {
     };
 
 
-    // Função para atualizar o status do usuário
-    const handleStatusChange = async (id, newStatus) => {
-        try {
-            await atualizarUsuario(id, { isActive: newStatus });
-            setUsuarios(usuarios.map(user =>
-                user.id === id ? { ...user, isActive: newStatus } : user
-            ));
-            toast.success("Status atualizado com sucesso!");
-        } catch (error) {
-            console.error("Erro ao atualizar status:", error);
-            toast.error("Erro ao atualizar status.");
-        }
+    // Função para alterar o status localmente (apenas no estado, não salva ainda)
+    const handleStatusChange = (id, newStatus) => {
+        setChanges(prevChanges => ({
+            ...prevChanges,
+            [id]: {
+                ...prevChanges[id],
+                isActive: newStatus
+            }
+        }));
     };
 
-    // Função para atualizar o papel do usuário
-    const handleRoleChange = async (id, newRole) => {
-        try {
-            await atualizarUsuario(id, { role: newRole });
-            setUsuarios(usuarios.map(user =>
-                user.id === id ? { ...user, role: newRole } : user
-            ));
-            toast.success('Papel do usuário atualizado com sucesso');
-        } catch (error) {
-            console.error("Erro ao atualizar papel do usuário", error);
-            toast.error('Erro ao atualizar papel do usuário');
-        }
+    // Função para alterar o papel localmente (apenas no estado, não salva ainda)
+    const handleRoleChange = (id, newRole) => {
+        setChanges(prevChanges => ({
+            ...prevChanges,
+            [id]: {
+                ...prevChanges[id],
+                roles: [newRole] // Atualizando para um único papel
+            }
+        }));
     };
 
     // Função para deletar um usuário
     const handleDelete = async (id) => {
         try {
             await deletarUsuario(id);
-            setUsuarios(usuarios.filter(user => user.id !== id));
+            setUsuarios(usuarios.filter(user => user.id_usuario !== id));
             toast.success('Usuário deletado com sucesso');
         } catch (error) {
             console.error("Erro ao deletar usuário", error);
@@ -133,15 +139,15 @@ const Configuracoes = () => {
                         <tbody>
                             {usuarios && usuarios.length > 0 ? (
                                 usuarios.map((user) => (
-                                    <tr key={user.id}>
+                                    <tr key={user.id_usuario}>
                                         <td>{user.nome}</td>
                                         <td>{user.email}</td>
                                         <td>{user.senha}</td>
                                         <td>
                                             <select
-                                                value={changes[user.id]?.isActive ?? user.isActive}
-                                                onChange={(e) => handleStatusChange(user.id, e.target.value)}
-                                                disabled={editingUserId !== user.id}
+                                                value={changes[user.id_usuario]?.isActive ?? user.status}
+                                                onChange={(e) => handleStatusChange(user.id_usuario, e.target.value)}
+                                                disabled={editingUserId !== user.id_usuario}
                                             >
                                                 <option value={true}>Ativo</option>
                                                 <option value={false}>Inativo</option>
@@ -149,20 +155,20 @@ const Configuracoes = () => {
                                         </td>
                                         <td>
                                             <select
-                                                value={changes[user.id]?.role ?? user.role}
-                                                onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                                                disabled={editingUserId !== user.id}
+                                                value={changes[user.id_usuario]?.roles[0] ?? getHighestPriorityRole(user.roles)}
+                                                onChange={(e) => handleRoleChange(user.id_usuario, e.target.value)}
+                                                disabled={editingUserId !== user.id_usuario}
                                             >
-                                                <option value="ADM">Administrador</option>
+                                                <option value="Administrador">Administrador</option>
                                                 <option value="Operador">Operador</option>
                                             </select>
                                         </td>
                                         <td className="btn-user">
-                                            {editingUserId === user.id ? (
+                                            {editingUserId === user.id_usuario ? (
                                                 <>
                                                     <button
                                                         className="btn SaveBtn"
-                                                        onClick={() => handleSaveClick(user.id)}
+                                                        onClick={() => handleSaveClick(user.id_usuario)}
                                                     >
                                                         <MdSave />
                                                     </button>
@@ -177,13 +183,13 @@ const Configuracoes = () => {
                                                 <>
                                                     <button
                                                         className="btn EditBtn"
-                                                        onClick={() => handleEditClick(user.id)}
+                                                        onClick={() => handleEditClick(user.id_usuario)}
                                                     >
                                                         <MdEdit />
                                                     </button>
                                                     <button
                                                         className="btn DeleteBtn"
-                                                        onClick={() => handleDelete(user.id)}
+                                                        onClick={() => handleDelete(user.id_usuario)}
                                                     >
                                                         <MdDeleteForever />
                                                     </button>
