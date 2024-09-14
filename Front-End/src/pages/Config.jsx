@@ -18,22 +18,16 @@ import "../style/Config.css";
 // Importação dos Serviços de API
 import { getUsuarios, atualizarUsuario, deletarUsuario } from "../services/userAPI";
 
-// Ordem de prioridade dos papéis
-const rolePriority = ["Administrador", "Operador"];
-
-const getHighestPriorityRole = (roles) => {
-    // Converte os IDs de papéis para os nomes correspondentes
-    const highestRole = roles
-        .map(role => rolePriority[role - 1]) // Converte o ID do papel para o nome
-        .sort((a, b) => rolePriority.indexOf(a) - rolePriority.indexOf(b)); // Ordena pelo índice de prioridade
-
-    // Retorna o papel com maior prioridade ou "Nenhum papel atribuído"
-    return highestRole[0] || "Nenhum papel atribuído";
+// Mapeamento de papéis de usuário
+const roleMapping = {
+    1: "Administrador",
+    2: "Operador"
 };
+
 
 const Configuracoes = () => {
     const [usuarios, setUsuarios] = useState([]);
-    const [editingUserId, setEditingUserId] = useState(null); 
+    const [editingUserId, setEditingUserId] = useState(null);
     const [changes, setChanges] = useState({});
 
     // Função para atualizar o status do usuário
@@ -64,12 +58,16 @@ const Configuracoes = () => {
         }));
     };
 
+
     // Função para salvar as alterações
     const handleSaveClick = async (id) => {
         try {
-            // Verifique se os papéis são enviados como um array de IDs
-            const roles = changes[id]?.roles.map(role => role) || [];
 
+            // Mapear o papel selecionado para o ID correspondente
+            const roleId = Object.keys(roleMapping).find(key => roleMapping[key] === changes[id]?.roles[0]);
+
+            // Verifique se os papéis são enviados como um array de IDs e convertido para número
+            const roles = roleId ? [parseInt(roleId, 10)] : [];
             const usuarioData = {
                 ...changes[id],
                 roles
@@ -79,9 +77,10 @@ const Configuracoes = () => {
 
             // Atualizar o usuário no backend
             await atualizarUsuario(id, usuarioData);
+
             // Atualizar a lista de usuários localmente no front-end
             setUsuarios(usuarios.map(user =>
-                user.id_usuario === id ? { ...user, roles: [rolePriority[roles[0] - 1]], ...changes[id] } : user
+                user.id_usuario === id ? { ...user, roles: changes[id]?.roles, ...changes[id] } : user
             ));
 
             setEditingUserId(null);
@@ -105,13 +104,13 @@ const Configuracoes = () => {
     };
 
     // Função para alterar o papel localmente (apenas no estado, não salva ainda)
-    const handleRoleChange = (id, newRoleId) => {
+    const handleRoleChange = (id, newRole) => {
         // Atualizando estado com o ID do papel
         setChanges(prevChanges => ({
             ...prevChanges,
             [id]: {
                 ...prevChanges[id],
-                roles: [newRoleId] // Atualizando para o ID correto
+                roles: [newRole] // Atualizando para o ID correto
             }
         }));
     };
@@ -165,6 +164,7 @@ const Configuracoes = () => {
                                                 value={changes[user.id_usuario]?.isActive ?? user.status}
                                                 onChange={(e) => handleStatusChange(user.id_usuario, e.target.value)}
                                                 disabled={editingUserId !== user.id_usuario}
+
                                             >
                                                 <option value={true}>Ativo</option>
                                                 <option value={false}>Inativo</option>
@@ -172,12 +172,18 @@ const Configuracoes = () => {
                                         </td>
                                         <td>
                                             <select
-                                                value={changes[user.id_usuario]?.roles[0] ?? getHighestPriorityRole(user.roles)}
-                                                onChange={(e) => handleRoleChange(user.id_usuario, e.target.value)}
+                                                value={(changes[user.id_usuario]?.roles[0] ?? user.roles[0]) || ''}
+                                                onChange={(e) => {
+                                                    const newRole = e.target.value;
+                                                    handleRoleChange(user.id_usuario, newRole);
+                                                }}
                                                 disabled={editingUserId !== user.id_usuario}
                                             >
-                                                <option value="1">Administrador</option>
-                                                <option value="2">Operador</option>
+                                                {Object.entries(roleMapping).map(([roleId, roleName]) => (
+                                                    <option key={roleId} value={roleName}>
+                                                        {roleName} {/* Exibe o nome do papel */}
+                                                    </option>
+                                                ))}
                                             </select>
                                         </td>
                                         <td className="btn-user">

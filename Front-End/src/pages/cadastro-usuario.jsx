@@ -93,7 +93,10 @@ const Cadastro_Usuario = () => {
                 isActive: true,
                 role: "Operador",
             });
-            nameInputRef.current.focus(); // Focar no campo "Nome"
+            // Verifique se nameInputRef está disponível antes de chamar focus
+            if (nameInputRef.current) {
+                nameInputRef.current.focus(); // Focar no campo "Nome"
+            }
         } catch (error) {
             console.error("Erro ao cadastrar usuário:", error);
 
@@ -127,6 +130,7 @@ const Cadastro_Usuario = () => {
                                 placeholder="Nome"
                                 onChange={handleInputChange}
                                 value={usuarioData.name}
+                                ref={nameInputRef}
                             />
                         </div>
 

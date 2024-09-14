@@ -46,16 +46,23 @@ export const getUsuarios = async () => {
 // Função para atualizar um usuário (PUT)
 export const atualizarUsuario = async (id, usuarioData) => {
     try {
-        const response = await axios.put(`${API_URL}/${id}`, usuarioData, {
+        // Certifique-se de que roles são números
+        const data = {
+            ...usuarioData,
+            roles: usuarioData.roles.map(role => parseInt(role, 10)) // Converte papéis para números
+        };
+
+        const response = await axios.put(`${API_URL}/${id}`, data, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}` // Autenticação JWT
             }
         });
+
         console.log('Usuário atualizado com sucesso:', response.data);
         return response.data;
     } catch (error) {
         console.error('Erro ao atualizar usuário:', error.response.data);
-        throw error.response.data; // Propaga o erro para ser tratado no front-end
+        throw error.response?.data || error.message; // Propaga o erro para ser tratado no front-end
     }
 };
 
