@@ -62,7 +62,6 @@ const MovimentacaoEstoque = () => {
                             required
                         />
                     </div>
-
                     <button type="submit" className="BtnMovimentacao">
                         Registrar Movimentação
                     </button>
