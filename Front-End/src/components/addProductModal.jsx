@@ -15,7 +15,7 @@ import { fetchCategorias } from "../services/categoriasAPI";
 import { createProduto } from "../services/produtoAPI";
 
 
-const AddProductModal = ({ onClose, onAddProduto }) => {
+const AddProductModal = ({ onClose, onAddProduto}) => {
     // Estados para os inputs do formulário
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
@@ -29,6 +29,7 @@ const AddProductModal = ({ onClose, onAddProduto }) => {
     const [categorias, setCategorias] = useState([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
     const [isModalCategoryOpen, setIsModalCategoryOpen] = useState(false);
+
 
 
     // Carregar categorias ao montar o componente
@@ -53,7 +54,7 @@ const AddProductModal = ({ onClose, onAddProduto }) => {
     const handleCloseCategoryModal = () => {
         setIsModalCategoryOpen(false);
     };
-   
+
     // Função para submissão do formulário
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -267,8 +268,13 @@ const AddProductModal = ({ onClose, onAddProduto }) => {
                     </div>
 
                     <div className="modal-buttons">
-                        <button type="submit">Salvar</button>
-                        <button type="button" onClick={onClose}>
+                        <button
+                            type="submit">
+                            Salvar
+                        </button>
+                        <button
+                            type="button"
+                            onClick={onClose}>
                             Cancelar
                         </button>
                     </div>

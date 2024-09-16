@@ -163,18 +163,38 @@
     font-size: 1.1rem;
 }
 
+/* Button Edit*/
 .Page-Product .stock-list table tbody tr td .btn-edit svg {
-    color: #fff;
+    color: blue;
 }
 
 .Page-Product .stock-list table tbody tr td .btn-edit svg:hover {
     color: #00ff26
 }
 
+/* Button Delete*/
 .Page-Product .stock-list table tbody tr td .btn-delete svg {
-    color: #fff;
+    color: #d66a05;
 }
 
 .Page-Product .stock-list table tbody tr td .btn-delete svg:hover {
-    color: rgba(255, 0, 0, 0.692);
+    color: red;
+}
+
+/*Button Salve*/
+.Page-Product .stock-list table tbody tr td .btn-save svg {
+    color: blue;
+}
+
+.Page-Product .stock-list table tbody tr td .btn-save svg:hover {
+    color: #00ff26
+}
+
+/*Button Cancel*/
+.Page-Product .stock-list table tbody tr td .btn-cancel svg {
+    color: #d66a05;
+}
+
+.Page-Product .stock-list table tbody tr td .btn-cancel svg:hover {
+    color: red;
 }

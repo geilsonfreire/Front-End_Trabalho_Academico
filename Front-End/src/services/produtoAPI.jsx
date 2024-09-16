@@ -85,9 +85,9 @@ export const createProduto = async (produtoData) => {
 
 
 // Função para atualizar um produto existente
-export const updateProduto = async (id, produto) => {
+export const updateProduto = async (id, produtoData) => {
     try {
-        const response = await axios.put(`${API_BASE_URL}/${id}`, produto, {
+        const response = await axios.put(`${API_BASE_URL}/${id}`, produtoData, {
             headers: {
                 'Authorization': `Bearer ${getToken()}`,
                 'Content-Type': 'application/json'

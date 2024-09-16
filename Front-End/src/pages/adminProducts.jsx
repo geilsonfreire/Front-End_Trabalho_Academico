@@ -1,16 +1,21 @@
+// Imports Bibliotecas
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+
+// Imports Css
 import "../style/adminProducts.css";
+
+// Imports de Icones
 import {
     MdAdd,
     MdFilterAlt,
     MdDelete,
 } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 
 // Importando o componente
 import AddProductModal from "../components/addProductModal";
-import { fetchProdutos, deleteProduto } from "../services/produtoAPI";
+import { fetchProdutos, deleteProduto, updateProduto } from "../services/produtoAPI";
 import { fetchCategorias, fetchTiposEDatas } from "../services/filtroAPI";
 
 const AdminProducts = () => {
@@ -29,6 +34,10 @@ const AdminProducts = () => {
     const [statusOptions, setStatusOptions] = useState([]);
     // eslint-disable-next-line no-unused-vars
     const [datasOptions, setDatasOptions] = useState([]);
+
+    // Estados de controle de edições
+    const [editingProductId, setEditingProductId] = useState(null);
+    const [editedProductData, setEditedProductData] = useState({});
 
     // Função para carregar os filtros (Categorias / Status)
     useEffect(() => {
@@ -59,8 +68,6 @@ const AdminProducts = () => {
                 if (date) queryParams.append('date', date);
 
                 const produtosData = await fetchProdutos(queryParams.toString());
-
-                console.log('Dados de produtos após fetch:', produtosData);
 
                 // Verifique se produtosData é um array
                 if (Array.isArray(produtosData)) {
@@ -95,15 +102,49 @@ const AdminProducts = () => {
         setProdutos((prevProdutos) => [...prevProdutos, newProduto]);
     };
 
+    // Função para abrir o modal de produto
     const handleAddProductClick = () => {
         setIsModalProductOpen(true);
     };
 
+    // Função para fechar o modal de produto
     const handleCloseProductModal = () => {
         setIsModalProductOpen(false);
     };
 
- 
+    // Função para editar um produto
+    const handleEditProduct = (produto) => {
+        setEditingProductId(produto.id_produto);
+        setEditedProductData({ ...produto });
+    };
+
+    // Função para salvar inputs edição de um produto
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setEditedProductData(prev => ({ ...prev, [name]: value }));
+    };
+
+    // Função para cancelar a edição
+    const handleCancelEdit = () => {
+        setEditingProductId(null);
+        setEditedProductData({});
+    };
+
+    // Função para salvar a edição de um produto
+    const handleSaveEdit = async (id) => {
+        try {
+            await updateProduto(editedProductData);
+            setProdutos(produtos.map(produto =>
+                produto.id_produto === id ? editedProductData : produto
+            ));
+            setEditingProductId(null);
+            toast.success("Produto atualizado com sucesso.");
+        } catch (error) {
+            toast.error('Erro ao atualizar produto.');
+        }
+    };
+
+
 
     return (
         <main className="Page-Product">
@@ -198,34 +239,183 @@ const AdminProducts = () => {
                     <tbody>
                         {produtos.length > 0 && produtos.map(produto => (
                             <tr key={produto.id_produto}>
-                                <td>{produto.nome}</td>
-                                <td>{produto.categoria?.nome || 'N/A'}</td>
-                                <td>{produto.descricao}</td>
-                                <td>{produto.preco_compra}</td>
-                                <td>{produto.preco_venda}</td>
-                                <td>{produto.estoque?.quantidade_minima || 'N/A'}</td>
-                                <td>{produto.estoque?.quantidade_atual || 'N/A'}</td>
-                                <td>{produto.unidade_de_medida}</td>
-                                <td>{produto.movimentacoes?.[0]?.tipo_movimentacao || 'N/A'}</td>
-                                <td>{produto.movimentacoes?.[0]?.data_movimentacao || 'N/A'}</td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="text"
+                                            name="nome"
+                                            value={editedProductData.nome}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.nome
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <select
+                                            name="id_categoria"
+                                            value={editedProductData.id_categoria}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="">Selecione</option>
+                                            {categoriasOptions.map(categoria => (
+                                                <option key={categoria.id_categoria} value={categoria.id_categoria}>
+                                                    {categoria.nome}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        produto.categoria?.nome || 'N/A'
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="text"
+                                            name="descricao"
+                                            value={editedProductData.descricao}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.descricao
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="number"
+                                            name="preco_compra"
+                                            value={editedProductData.preco_compra}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.preco_compra
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="number"
+                                            name="preco_venda"
+                                            value={editedProductData.preco_venda}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.preco_venda
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="number"
+                                            name="quantidade_minima"
+                                            value={editedProductData.quantidade_minima}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.estoque?.quantidade_minima || 'N/A'
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="number"
+                                            name="quantidade_atual"
+                                            value={editedProductData.quantidade_atual}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.estoque?.quantidade_atual || 'N/A'
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="text"
+                                            name="unidade_de_medida"
+                                            value={editedProductData.unidade_de_medida}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.unidade_de_medida
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <select
+                                            name="tipo_movimentacao"
+                                            value={editedProductData.tipo_movimentacao}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="">Selecione</option>
+                                            {statusOptions.map(status => (
+                                                <option key={status} value={status}>
+                                                    {status}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        produto.movimentacoes?.[0]?.tipo_movimentacao || 'N/A'
+                                    )}
+                                </td>
+                                <td>
+                                    {editingProductId === produto.id_produto ? (
+                                        <input
+                                            type="date"
+                                            name="data_movimentacao"
+                                            value={editedProductData.data_movimentacao}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        produto.movimentacoes?.[0]?.data_movimentacao || 'N/A'
+                                    )}
+                                </td>
                                 <td>{produto.updated_at}</td>
                                 <td className="td-btn">
-                                    <button
-                                        className="btn-edit">
-                                        <FaEdit />
-                                    </button>
-                                    <button
-                                        className="btn-delete"
-                                        onClick={() => handleDeleteProduct(produto.id_produto)}>
-                                        <MdDelete />
-                                    </button>
+                                    {editingProductId === produto.id_produto ? (
+                                        <>
+                                            <button
+                                                className="btn-save"
+                                                onClick={() => handleSaveEdit(produto.id_produto)}
+                                            >
+                                                <FaSave />
+                                            </button>
+                                            <button
+                                                className="btn-cancel"
+                                                onClick={handleCancelEdit}
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button
+                                                className="btn-edit"
+                                                onClick={() => handleEditProduct(produto)}
+                                            >
+                                                <FaEdit />
+                                            </button>
+                                            <button
+                                                className="btn-delete"
+                                                onClick={() => handleDeleteProduct(produto.id_produto)}
+                                            >
+                                                <MdDelete />
+                                            </button>
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </section>
-            {isModalProductOpen && <AddProductModal onClose={handleCloseProductModal} onAddProduto={handleAddProdutoToList} />}
+            {
+                isModalProductOpen && <AddProductModal
+                    onClose={handleCloseProductModal}
+                    onAddProduto={handleAddProdutoToList}
+                />
+            }
         </main>
     );
 };
