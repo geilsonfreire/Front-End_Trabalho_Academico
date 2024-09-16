@@ -9,9 +9,11 @@ import "../style/adminProducts.css";
 import {
     MdAdd,
     MdFilterAlt,
-    MdDelete,
+    MdDeleteForever,
+    MdEdit,
+    MdSave,
+    MdCancel
 } from "react-icons/md";
-import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 
 // Importando o componente
 import AddProductModal from "../components/addProductModal";
@@ -21,7 +23,6 @@ import { fetchCategorias, fetchTiposEDatas } from "../services/filtroAPI";
 const AdminProducts = () => {
     const [isModalProductOpen, setIsModalProductOpen] = useState(false);
     const [produtos, setProdutos] = useState([]);
-    // eslint-disable-next-line no-unused-vars
     const [loading, setLoading] = useState(true);
 
     // Estados para os filtros
@@ -121,27 +122,65 @@ const AdminProducts = () => {
     // Função para salvar inputs edição de um produto
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEditedProductData(prev => ({ ...prev, [name]: value }));
+        setEditedProductData((prev) => {
+            // Somente atualize os campos que foram modificados
+            if (prev[name] !== value) {
+                return { ...prev, [name]: value };
+            }
+            return prev;
+        });
     };
+    
+    // Função para salvar a edição de um produto (com atualizações parciais)
+    const handleSaveEdit = async (id) => {
+        try {
+            // Encontre o produto original com base no ID
+            const originalProduct = produtos.find(produto => produto.id_produto === id);
+            if (!originalProduct) {
+                throw new Error("Produto não encontrado.");
+            }
+
+            // Crie um objeto para armazenar apenas os campos alterados
+            const updatedFields = {};
+
+            // Verifique cada campo editado e compare com o original, adicionando ao objeto apenas os campos alterados
+            Object.keys(editedProductData).forEach(key => {
+                if (editedProductData[key] !== originalProduct[key]) {
+                    updatedFields[key] = editedProductData[key];
+                }
+            });
+
+            // Se não houver campos alterados, não faça a atualização
+            if (Object.keys(updatedFields).length === 0) {
+                toast.info("Nenhuma alteração foi feita.");
+                setEditingProductId(null);
+                setEditedProductData({});
+                return;
+            }
+
+            // Atualizar o produto no backend apenas com os campos alterados
+            await updateProduto(id, updatedFields);
+
+            // Atualizar a lista de produtos localmente no front-end
+            setProdutos(produtos.map(produto =>
+                produto.id_produto === id ? { ...produto, ...updatedFields } : produto
+            ));
+
+            // Desativar o modo de edição
+            setEditingProductId(null);
+            setEditedProductData({});
+            toast.success("Produto atualizado com sucesso!");
+        } catch (error) {
+            toast.error("Erro ao atualizar produto.");
+            console.error("Erro ao atualizar produto:", error);
+        }
+    };
+
 
     // Função para cancelar a edição
     const handleCancelEdit = () => {
         setEditingProductId(null);
         setEditedProductData({});
-    };
-
-    // Função para salvar a edição de um produto
-    const handleSaveEdit = async (id) => {
-        try {
-            await updateProduto(editedProductData);
-            setProdutos(produtos.map(produto =>
-                produto.id_produto === id ? editedProductData : produto
-            ));
-            setEditingProductId(null);
-            toast.success("Produto atualizado com sucesso.");
-        } catch (error) {
-            toast.error('Erro ao atualizar produto.');
-        }
     };
 
 
@@ -244,7 +283,7 @@ const AdminProducts = () => {
                                         <input
                                             type="text"
                                             name="nome"
-                                            value={editedProductData.nome}
+                                            value={editedProductData.nome || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -255,7 +294,7 @@ const AdminProducts = () => {
                                     {editingProductId === produto.id_produto ? (
                                         <select
                                             name="id_categoria"
-                                            value={editedProductData.id_categoria}
+                                            value={editedProductData.id_categoria || ''}
                                             onChange={handleInputChange}
                                         >
                                             <option value="">Selecione</option>
@@ -274,7 +313,7 @@ const AdminProducts = () => {
                                         <input
                                             type="text"
                                             name="descricao"
-                                            value={editedProductData.descricao}
+                                            value={editedProductData.descricao || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -286,7 +325,7 @@ const AdminProducts = () => {
                                         <input
                                             type="number"
                                             name="preco_compra"
-                                            value={editedProductData.preco_compra}
+                                            value={editedProductData.preco_compra || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -298,7 +337,7 @@ const AdminProducts = () => {
                                         <input
                                             type="number"
                                             name="preco_venda"
-                                            value={editedProductData.preco_venda}
+                                            value={editedProductData.preco_venda || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -310,7 +349,7 @@ const AdminProducts = () => {
                                         <input
                                             type="number"
                                             name="quantidade_minima"
-                                            value={editedProductData.quantidade_minima}
+                                            value={editedProductData.quantidade_minima || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -322,7 +361,7 @@ const AdminProducts = () => {
                                         <input
                                             type="number"
                                             name="quantidade_atual"
-                                            value={editedProductData.quantidade_atual}
+                                            value={editedProductData.quantidade_atual || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -334,7 +373,7 @@ const AdminProducts = () => {
                                         <input
                                             type="text"
                                             name="unidade_de_medida"
-                                            value={editedProductData.unidade_de_medida}
+                                            value={editedProductData.unidade_de_medida || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -345,7 +384,7 @@ const AdminProducts = () => {
                                     {editingProductId === produto.id_produto ? (
                                         <select
                                             name="tipo_movimentacao"
-                                            value={editedProductData.tipo_movimentacao}
+                                            value={editedProductData.tipo_movimentacao || ''}
                                             onChange={handleInputChange}
                                         >
                                             <option value="">Selecione</option>
@@ -364,7 +403,7 @@ const AdminProducts = () => {
                                         <input
                                             type="date"
                                             name="data_movimentacao"
-                                            value={editedProductData.data_movimentacao}
+                                            value={editedProductData.data_movimentacao || ''} 
                                             onChange={handleInputChange}
                                         />
                                     ) : (
@@ -379,13 +418,13 @@ const AdminProducts = () => {
                                                 className="btn-save"
                                                 onClick={() => handleSaveEdit(produto.id_produto)}
                                             >
-                                                <FaSave />
+                                                <MdSave />
                                             </button>
                                             <button
                                                 className="btn-cancel"
                                                 onClick={handleCancelEdit}
                                             >
-                                                <FaTimes />
+                                                <MdCancel />
                                             </button>
                                         </>
                                     ) : (
@@ -394,21 +433,27 @@ const AdminProducts = () => {
                                                 className="btn-edit"
                                                 onClick={() => handleEditProduct(produto)}
                                             >
-                                                <FaEdit />
+                                                <MdEdit />
                                             </button>
                                             <button
                                                 className="btn-delete"
                                                 onClick={() => handleDeleteProduct(produto.id_produto)}
                                             >
-                                                <MdDelete />
+                                                <MdDeleteForever />
                                             </button>
                                         </>
                                     )}
                                 </td>
                             </tr>
                         ))}
+                        {produtos.length === 0 && !loading && (
+                            <tr>
+                                <td colSpan="12">Nenhum produto encontrado.</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
+                {loading && <div>Carregando...</div>}
             </section>
             {
                 isModalProductOpen && <AddProductModal

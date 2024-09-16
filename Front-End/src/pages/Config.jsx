@@ -30,7 +30,7 @@ const Configuracoes = () => {
     const [editingUserId, setEditingUserId] = useState(null);
     const [changes, setChanges] = useState({});
 
-    // Função para atualizar o status do usuário
+    // Função para carregar os usuários
     useEffect(() => {
         const fetchUsuarios = async () => {
             try {
