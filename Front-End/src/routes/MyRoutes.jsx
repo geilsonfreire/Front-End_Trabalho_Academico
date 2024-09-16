@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../pages/Login.jsx";
 import Home from '../pages/Home.jsx';
 import CadastroUsuario from "../pages/cadastro-usuario.jsx";
-import AdminProducts from "../pages/AdminProducts.jsx";
+import AdminProducts from "../pages/adminProducts.jsx";
 import AdminDashBoard from "../pages/AdminDashBoard.jsx";
 import MovimentacaoEstoque from "../pages/MovimentacaoEstoque.jsx";
 import Config from "../pages/Config.jsx";

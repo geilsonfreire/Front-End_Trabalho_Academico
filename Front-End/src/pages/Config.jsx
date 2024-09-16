@@ -35,10 +35,9 @@ const Configuracoes = () => {
         const fetchUsuarios = async () => {
             try {
                 const data = await getUsuarios();
-                console.log("Usuários obtidos com sucesso do db:", data);
+                
                 setUsuarios(data);
             } catch (error) {
-                console.error("Erro ao obter usuarios", error);
                 toast.error('Erro ao carregar usuários');
             }
         };
@@ -73,7 +72,6 @@ const Configuracoes = () => {
                 roles
             };
 
-            console.log('Dados enviados para atualização:', usuarioData);
 
             // Atualizar o usuário no backend
             await atualizarUsuario(id, usuarioData);
@@ -86,7 +84,6 @@ const Configuracoes = () => {
             setEditingUserId(null);
             toast.success("Alterações salvas com sucesso!");
         } catch (error) {
-            console.error("Erro ao salvar alterações", error);
             toast.error("Erro ao salvar alterações.");
         }
     };
@@ -122,7 +119,6 @@ const Configuracoes = () => {
             setUsuarios(usuarios.filter(user => user.id_usuario !== id));
             toast.success('Usuário deletado com sucesso');
         } catch (error) {
-            console.error("Erro ao deletar usuário", error);
             toast.error('Erro ao deletar usuário');
         }
     };

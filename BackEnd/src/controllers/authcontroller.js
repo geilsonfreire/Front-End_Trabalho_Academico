@@ -32,16 +32,12 @@ exports.login = async (req, res) => {
 
         // Verificar se o usuário existe    
         if (!user) {
-            console.log('Usuário não encontrado.');
             return res.status(404).json({ error: 'Usuário não encontrado.' });
         }
-        console.log('Usuario encontrado', user.email);
-        console.log('Senha armazenada:', user.senha);
         
 
         // Verificar se a senha é válida
         const isPasswordValid = await verificarSenha(senha, user.senha);
-        console.log('Senha inválida:', isPasswordValid);
 
         // Se a senha não for válida, retornar um erro
         if (!isPasswordValid) {
@@ -50,7 +46,6 @@ exports.login = async (req, res) => {
 
         // Gerar o token jwt
         const roles = user.roles.map(role => role.nome);
-        console.log('Role identificado:', roles);
         const token = jwt.sign(
             { 
                 id_usuario: user.id_usuario, 
@@ -102,7 +97,6 @@ exports.getUser = async (req, res) => {
             return res.status(401).json({ message: 'Token não encontrado' });
         // Verificar se o token é válido
         const decoded = jwt.verify(token, process.env.SECRET);
-        console.log('Decoded:', decoded);
         // Obter as informações do usuário
         const user = await Usuario.findByPk(decoded.id_usuario, {
             include: {

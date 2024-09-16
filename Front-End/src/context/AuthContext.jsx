@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
             setSessionExpired(true);
             navigate('/'); // Redireciona usando React Router
         } else {
-            console.log('Token válido, prossiga...');
+            setSessionExpired(false);
         }
     }, [navigate]);
 
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
         try {
             // Faz a requisição de login
             const response = await axios.post('http://localhost:3000/api/auth/login', { emailOrUsername, senha: password });
-            console.log('Resposta do login:', response.data);
+           
             const { token, user, expiresIn } = response.data; // Extrai o token e o usuário da resposta
 
             // Atualiza o estado de autenticação, salva o token e os dados do usuário
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
                 isAuthenticated: true,
                 expiresIn: expiresIn || 3600, // Define o tempo de expiração (1h por padrão)
             });
-            console.log('dados do suário logado:', user);
+        
             setSessionExpired(false);
 
             // Redireciona para a última página visitada
@@ -91,14 +91,14 @@ export const AuthProvider = ({ children }) => {
             // Verifica a expiração do token
             checkTokenExpiration();
 
-            const token = localStorage.getItem('token');  // Obtém o token do localStorage
-            console.log('Token encontrado:', token);
+            const token = localStorage.getItem('token'); 
+            // console.log('Token encontrado:', token);
 
             if (token) {
                 const response = await axios.get('http://localhost:3000/api/auth/check', {
                     headers: { Authorization: `Bearer ${token}` }
                 }); // Faz a requisição para verificar o token
-                console.log('Resposta do checkAuth:', response.data);
+                
 
                 if (response.data.isAuthenticated) {
                     // Atualiza o estado se a autenticação for válida

@@ -26,7 +26,7 @@ const Header = () => {
     }; // Alterna o estado de aberto/fechado do dropdown   
 
     useEffect(() => {
-        console.log('Dados do usuário no Header:', user);
+        
     }, [user]);
 
     useEffect(() => {

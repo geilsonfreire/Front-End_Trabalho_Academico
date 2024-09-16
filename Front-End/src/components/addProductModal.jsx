@@ -1,5 +1,4 @@
 // Import Bibliotecas
-import axios from "axios";
 import PropTypes from 'prop-types';
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -13,9 +12,10 @@ import { BiSolidCategory } from "react-icons/bi";
 // Imports de Componentes
 import AddCategoryModal from "../components/adminCategoryModal";
 import { fetchCategorias } from "../services/categoriasAPI";
+import { createProduto } from "../services/produtoAPI";
 
 
-const AddProductModal = ({ onClose }) => {
+const AddProductModal = ({ onClose, onAddProduto }) => {
     // Estados para os inputs do formulário
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
@@ -38,7 +38,6 @@ const AddProductModal = ({ onClose }) => {
                 const categoriasData = await fetchCategorias();
                 setCategorias(categoriasData);
             } catch (error) {
-                console.error("Erro ao carregar categorias", error);
                 toast.error("Erro ao carregar categorias.");
             }
         };
@@ -47,13 +46,11 @@ const AddProductModal = ({ onClose }) => {
 
     // Função para abrir o modal de categoria
     const handleAddCategoryClick = () => {
-        console.log("Abrindo modal");
         setIsModalCategoryOpen(true);
     };
 
     // Função para fechar o modal de categoria
     const handleCloseCategoryModal = () => {
-        console.log("Fechando modal");
         setIsModalCategoryOpen(false);
     };
    
@@ -76,9 +73,10 @@ const AddProductModal = ({ onClose }) => {
         };
 
         try {
-            // Fazer requisição ao backend para salvar o produto
-            await axios.post("http://localhost:3000/api/produtos", produtoData);
+            // Fazer requisição ao backend utilizando a função do arquivo produtosAPI
+            const newProduto = await createProduto(produtoData);
             toast.success("Produto adicionado com sucesso!");
+            onAddProduto(newProduto);
             onClose(); // Fechar modal após salvar
         } catch (error) {
             console.error("Erro ao salvar produto", error);
@@ -283,6 +281,7 @@ const AddProductModal = ({ onClose }) => {
 
 AddProductModal.propTypes = {
     onClose: PropTypes.func.isRequired,
+    onAddProduto: PropTypes.func.isRequired,
 };
 
 export default AddProductModal;

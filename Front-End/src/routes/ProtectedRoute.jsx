@@ -8,7 +8,6 @@ const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation(); // Para acessar a página atual
     const { isAuthenticated, sessionExpired, checkTokenExpiration } = useContext(AuthContext); // Obtém o estado de autenticação do contexto
-    console.log('Estado de autenticação (ProtectedRoute):', isAuthenticated);
 
     // Efeito para lidar com a expiração da sessão
     useEffect(() => {
@@ -26,7 +25,6 @@ const ProtectedRoute = ({ children }) => {
         if (isAuthenticated && location.pathname === '/') {
             const lastVisitedPage = localStorage.getItem('lastVisitedPage');
             if (lastVisitedPage) {
-                console.log('Redirecionando para a última página visitada:', lastVisitedPage);
                 navigate(lastVisitedPage, { replace: true });
             } else {
                 // Caso não tenha página visitada armazenada, redireciona para `/admin`
@@ -40,11 +38,7 @@ const ProtectedRoute = ({ children }) => {
     }, [isAuthenticated, location, navigate, checkTokenExpiration]);
 
     if (!isAuthenticated) {// Se não estiver autenticado
-        console.log('Estado de autenticação (ProtectedRoute):', isAuthenticated);
-        console.log('Redirecionando para a página de login...');
         return <Navigate to="/" replace />; // Redireciona para a página de login
-    } else {
-        console.log('Usuário autenticado. Renderizando children...');
     }
     return children;
 }

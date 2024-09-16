@@ -24,7 +24,6 @@ export const fetchProdutos = async (queryString = '') => {
                 'Content-Type': 'application/json'
             },
         });
-        console.log('Dados dos produtos recebidos:', response.data);
         return response.data;
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
@@ -50,20 +49,40 @@ export const fetchProdutoById = async (id) => {
 };
 
 // Função para adicionar um novo produto
-export const createProduto = async (produto) => {
+export const createProduto = async (produtoData) => {
     try {
-        const response = await axios.post(API_BASE_URL, produto, {
+        const token = localStorage.getItem('token'); // Certifique-se de que o token existe
+        if (!token) {
+            console.error("Token não encontrado.");
+            return;
+        }
+
+        const config = {
             headers: {
-                'Authorization': `Bearer ${getToken()}`,
-                'Content-Type': 'application/json'
-            },
-        });
-        return handleResponse(response);
+                Authorization: `Bearer ${token}`,
+            }
+        };
+
+        console.log("Enviando dados para:", API_BASE_URL);  // Debug para verificar a URL
+        console.log("Dados do produto:", produtoData);      // Debug para verificar os dados que estão sendo enviados
+
+        const response = await axios.post(API_BASE_URL, produtoData, config);
+        console.log("Resposta do servidor:", response.data); // Debug para verificar a resposta
+
+        return response.data;
     } catch (error) {
         console.error('Erro ao criar produto:', error);
+        if (error.response) {
+            console.error('Erro de resposta do servidor:', error.response);
+        } else if (error.request) {
+            console.error('Nenhuma resposta recebida:', error.request);
+        } else {
+            console.error('Erro na configuração da requisição:', error.message);
+        }
         throw error;
     }
 };
+
 
 // Função para atualizar um produto existente
 export const updateProduto = async (id, produto) => {

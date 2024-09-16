@@ -19,13 +19,11 @@ const MenuDropDownPerfil = ({ isDropdownOpen, setIsDropdownOpen }) => {
     const navigate = useNavigate();
 
     const handleNavigate = (path) => { 
-        console.log('Navegando para:', path);
         setIsDropdownOpen(false);
         navigate(path);
     };
 
     const handleLogout = () => {
-        console.log('Deslogado!');
         logout(); // Chama a função logout do contexto
         navigate('/'); // Redireciona para a página inicial após logout
     };

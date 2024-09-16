@@ -17,7 +17,6 @@ const AdminCategoryModal = ({ onClose }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        console.log('Dados enviados:', { nome: name }); 
         try {
             await addCategoria({ nome: name });
             toast.success("Categoria adicionada com sucesso.");

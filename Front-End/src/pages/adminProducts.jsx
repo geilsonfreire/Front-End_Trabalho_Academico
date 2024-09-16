@@ -42,7 +42,6 @@ const AdminProducts = () => {
                 setStatusOptions(tiposMovimentacoes);
                 setDatasOptions(datasMovimentacoes);
             } catch (error) {
-                console.error('Erro ao carregar filtros:', error);
                 toast.error('Erro ao carregar filtros.');
             }
         };
@@ -89,6 +88,11 @@ const AdminProducts = () => {
         } catch (error) {
             toast.error("Erro ao deletar produto.");
         }
+    };
+
+    // Função para adicionar produto à lista
+    const handleAddProdutoToList = (newProduto) => {
+        setProdutos((prevProdutos) => [...prevProdutos, newProduto]);
     };
 
     const handleAddProductClick = () => {
@@ -221,7 +225,7 @@ const AdminProducts = () => {
                     </tbody>
                 </table>
             </section>
-            {isModalProductOpen && <AddProductModal onClose={handleCloseProductModal} />}
+            {isModalProductOpen && <AddProductModal onClose={handleCloseProductModal} onAddProduto={handleAddProdutoToList} />}
         </main>
     );
 };

@@ -11,7 +11,6 @@ export const cadastrarUsuario = async (usuarioData) => {
                 Authorization: `Bearer ${localStorage.getItem('token')}` // Autenticação JWT
             }
         });
-        console.log('Usuário criado com sucesso:', response.data);
         return response.data;
     } catch (error) {
         console.error('Erro ao criar usuário:', error.response.data);
@@ -35,7 +34,6 @@ export const getUsuarios = async () => {
             status: user.status,
             roles: user.roles || []
         }));
-        console.log('Usuários obtidos com sucesso:', usuarios);
         return usuarios;
     } catch (error) {
         console.error('Erro ao obter usuários:', error.response.data);
@@ -58,7 +56,6 @@ export const atualizarUsuario = async (id, usuarioData) => {
             }
         });
 
-        console.log('Usuário atualizado com sucesso:', response.data);
         return response.data;
     } catch (error) {
         console.error('Erro ao atualizar usuário:', error.response.data);
@@ -75,7 +72,6 @@ export const deletarUsuario = async (id) => {
                 Authorization: `Bearer ${localStorage.getItem('token')}` // Autenticação JWT
             }
         });
-        console.log('Usuário deletado com sucesso');
     } catch (error) {
         console.error('Erro ao deletar usuário:', error.response.data);
         throw error.response.data; // Propaga o erro para ser tratado no front-end

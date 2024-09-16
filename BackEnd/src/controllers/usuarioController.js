@@ -123,7 +123,6 @@ exports.updateUsuario = [
     usuarioValidation,
     async (req, res) => {
         try {
-            console.log('Dados recebidos para atualização:', req.body);
             // Verificar se há erros de validação
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -132,7 +131,6 @@ exports.updateUsuario = [
 
             // Encontrar o usuário
             const usuario = await Usuario.findByPk(req.params.id);
-            console.log('Usuário encontrado:', usuario);
             if (usuario) {
                 // Se a senha estiver presente na requisição, criptografar antes de atualizar
                 if (req.body.senha) {
@@ -147,13 +145,10 @@ exports.updateUsuario = [
                     status: req.body.status,
                 });
 
-                console.log('Papéis recebidos para atualização:', req.body.roles);
-
                 // Atualizar os papéis do usuário
                 if (req.body.roles) {
                     // Primeiro, removemos todos os papéis atuais do usuário
                     await UsuarioRole.destroy({ where: { id_usuario: usuario.id_usuario } });
-                    console.log('Papéis atuais removidos.');
 
                     // Em seguida, adicionamos os novos papéis
                     // Verificar se `req.body.roles` é um array de IDs
@@ -162,12 +157,9 @@ exports.updateUsuario = [
                         id_role: roleId // Certifique-se de que isso está mapeando corretamente para os IDs
                     }));
 
-                    console.log('Papéis a serem adicionados:', rolesToAdd);
-
                     // Adicionar os novos papéis, se houver
                     if (rolesToAdd.length > 0) {
                         await UsuarioRole.bulkCreate(rolesToAdd);
-                        console.log('Papéis adicionados com sucesso.');
                     } else {
                         console.log('Nenhum papel a ser adicionado.');
                     }
