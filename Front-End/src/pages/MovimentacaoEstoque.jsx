@@ -8,7 +8,7 @@ const MovimentacaoEstoque = () => {
     return (
         <main className="MovimentacaoContainer">
             <section className="MovimentacaoForm">
-                <h2>Registrar Movimentação de Estoque</h2>
+                <h2>Movimentação de Estoque</h2>
 
                 <form onSubmit={""}>
 
