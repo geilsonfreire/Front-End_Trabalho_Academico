@@ -102,6 +102,9 @@ export const updateProduto = async (id, produtoData) => {
 
 // Função para deletar um produto
 export const deleteProduto = async (id) => {
+    if (!id) {
+        throw new Error("ID do produto é necessário para deletar.");
+    }
     try {
         const response = await axios.delete(`${API_BASE_URL}/${id}`, {
             headers: {

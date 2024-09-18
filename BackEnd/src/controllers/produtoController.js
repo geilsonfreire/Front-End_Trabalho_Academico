@@ -57,6 +57,15 @@ exports.createProduto = async (req, res) => {
             id_categoria
         });
 
+        // Obter o produto com o ID após a criação
+        const produtoCriado = await Produto.findByPk(novoProduto.id_produto, {
+            include: [
+                { model: Categoria, as: 'categoria', attributes: ['nome'] },
+                { model: Estoque, as: 'estoque', attributes: ['quantidade_minima', 'quantidade_atual'] },
+                { model: MovimentacaoEstoque, as: 'movimentacoes', attributes: ['tipo_movimentacao', 'data_movimentacao'] }
+            ]
+        });
+
         // Criar o registro no estoque
         await Estoque.create({
             id_produto: novoProduto.id_produto,
@@ -72,7 +81,7 @@ exports.createProduto = async (req, res) => {
             quantidade: quantidade_atual
         });
 
-        return res.status(201).json(novoProduto);
+        return res.status(201).json(produtoCriado);
     } catch (error) {
         console.error("Erro ao criar produto e dados relacionados", error);
         return res.status(500).json({ message: "Erro ao criar produto e dados relacionados", error: error.message });
@@ -103,6 +112,7 @@ exports.getProdutos = async (req, res) => {
 
         const produtos = await Produto.findAll({
             attributes: [
+                'id_produto',
                 'nome',
                 'descricao',
                 'preco_compra',
@@ -142,6 +152,7 @@ exports.getProdutoById = async (req, res) => {
     try {
         const produto = await Produto.findByPk(req.params.id, {
             attributes: [
+                'id_produto',
                 'nome',
                 'descricao',
                 'preco_compra',
@@ -212,6 +223,15 @@ exports.updateProduto = async (req, res) => {
             id_categoria
         });
 
+        // Buscar o produto atualizado com as associações
+        const produtoAtualizado = await Produto.findByPk(id, {
+            include: [
+                { model: Categoria, as: 'categoria', attributes: ['nome'] },
+                { model: Estoque, as: 'estoque', attributes: ['quantidade_minima', 'quantidade_atual'] },
+                { model: MovimentacaoEstoque, as: 'movimentacoes', attributes: ['tipo_movimentacao', 'data_movimentacao'] }
+            ]
+        });
+
         // Atualizar o registro no estoque
         const estoque = await Estoque.findOne({ where: { id_produto: id } });
         if (estoque) {
@@ -244,7 +264,7 @@ exports.updateProduto = async (req, res) => {
             });
         }
 
-        return res.status(200).json(produto);
+        return res.status(200).json(produtoAtualizado);
     } catch (error) {
         console.error("Erro ao atualizar produto e dados relacionados", error);
         return res.status(500).json({ message: "Erro ao atualizar produto e dados relacionados", error: error.message });
@@ -270,6 +290,7 @@ exports.deleteProduto = async (req, res) => {
 
         // Deletar o produto
         await produto.destroy();
+        return res.status(200).json({ message: 'Produto deletado com sucesso.', id_produto: id });
 
         return res.status(204).send();
     } catch (error) {

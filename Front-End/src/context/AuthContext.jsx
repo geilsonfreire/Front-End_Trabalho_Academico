@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
         if (token) {
             // Armazena o token no localStorage
             localStorage.setItem('token', token);
+            console.log('Token armazenado:', token);
             localStorage.setItem('tokenExpires', now + expiresIn * 1000); // Armazena a data de expiração do token
         } else {
             // Remove o token se não houver autenticação

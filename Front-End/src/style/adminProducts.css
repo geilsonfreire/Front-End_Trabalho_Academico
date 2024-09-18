@@ -198,3 +198,25 @@
 .Page-Product .stock-list table tbody tr td .btn-cancel svg:hover {
     color: red;
 }
+
+/* Funçao style */
+.editing-row input {
+    max-width: 100%;
+    border: none;
+    border-bottom: solid 2px #1e3194;
+    border-radius: 5px;
+    padding: 2px 0.5rem;
+    outline: none;
+    font-size: .7rem;
+    cursor: pointer;
+}
+
+.editing-row select {
+    border: none;
+    border-bottom: solid 2px #1e3194;
+    border-radius: 5px;
+    padding: 3px 0.5rem;
+    outline: none;
+    font-size: .7rem;
+    cursor: pointer;
+}

@@ -89,6 +89,7 @@ const AdminProducts = () => {
 
     // Função para deletar um produto
     const handleDeleteProduct = async (id) => {
+      
         try {
             await deleteProduto(id);
             setProdutos(produtos.filter(produto => produto.id_produto !== id));
@@ -130,7 +131,7 @@ const AdminProducts = () => {
             return prev;
         });
     };
-    
+
     // Função para salvar a edição de um produto (com atualizações parciais)
     const handleSaveEdit = async (id) => {
         try {
@@ -277,143 +278,104 @@ const AdminProducts = () => {
                     </thead>
                     <tbody>
                         {produtos.length > 0 && produtos.map(produto => (
-                            <tr key={produto.id_produto}>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="text"
-                                            name="nome"
-                                            value={editedProductData.nome || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.nome
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <select
-                                            name="id_categoria"
-                                            value={editedProductData.id_categoria || ''}
-                                            onChange={handleInputChange}
-                                        >
-                                            <option value="">Selecione</option>
-                                            {categoriasOptions.map(categoria => (
-                                                <option key={categoria.id_categoria} value={categoria.id_categoria}>
-                                                    {categoria.nome}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    ) : (
-                                        produto.categoria?.nome || 'N/A'
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="text"
-                                            name="descricao"
-                                            value={editedProductData.descricao || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.descricao
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="number"
-                                            name="preco_compra"
-                                            value={editedProductData.preco_compra || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.preco_compra
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="number"
-                                            name="preco_venda"
-                                            value={editedProductData.preco_venda || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.preco_venda
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="number"
-                                            name="quantidade_minima"
-                                            value={editedProductData.quantidade_minima || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.estoque?.quantidade_minima || 'N/A'
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="number"
-                                            name="quantidade_atual"
-                                            value={editedProductData.quantidade_atual || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.estoque?.quantidade_atual || 'N/A'
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="text"
-                                            name="unidade_de_medida"
-                                            value={editedProductData.unidade_de_medida || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.unidade_de_medida
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <select
-                                            name="tipo_movimentacao"
-                                            value={editedProductData.tipo_movimentacao || ''}
-                                            onChange={handleInputChange}
-                                        >
-                                            <option value="">Selecione</option>
-                                            {statusOptions.map(status => (
-                                                <option key={status} value={status}>
-                                                    {status}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    ) : (
-                                        produto.movimentacoes?.[0]?.tipo_movimentacao || 'N/A'
-                                    )}
-                                </td>
-                                <td>
-                                    {editingProductId === produto.id_produto ? (
-                                        <input
-                                            type="date"
-                                            name="data_movimentacao"
-                                            value={editedProductData.data_movimentacao || ''} 
-                                            onChange={handleInputChange}
-                                        />
-                                    ) : (
-                                        produto.movimentacoes?.[0]?.data_movimentacao || 'N/A'
-                                    )}
-                                </td>
-                                <td>{produto.updated_at}</td>
-                                <td className="td-btn">
-                                    {editingProductId === produto.id_produto ? (
-                                        <>
+                            <tr key={produto.id_produto} className={editingProductId === produto.id_produto ? 'editing-row' : ''}>
+                                {editingProductId === produto.id_produto ? (
+                                    <>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="nome"
+                                                value={editedProductData.nome || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>
+                                            <select
+                                                name="id_categoria"
+                                                value={editedProductData.id_categoria || ''}
+                                                onChange={handleInputChange}
+                                            >
+                                                <option value="">Selecione</option>
+                                                {categoriasOptions.map(categoria => (
+                                                    <option key={categoria.id_categoria} value={categoria.id_categoria}>
+                                                        {categoria.nome}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="descricao"
+                                                value={editedProductData.descricao || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="preco_compra"
+                                                value={editedProductData.preco_compra || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="preco_venda"
+                                                value={editedProductData.preco_venda || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="quantidade_minima"
+                                                value={editedProductData.quantidade_minima || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="quantidade_atual"
+                                                value={editedProductData.quantidade_atual || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="unidade_de_medida"
+                                                value={editedProductData.unidade_de_medida || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>
+                                            <select
+                                                name="tipo_movimentacao"
+                                                value={editedProductData.tipo_movimentacao || ''}
+                                                onChange={handleInputChange}
+                                            >
+                                                <option value="">Selecione</option>
+                                                {statusOptions.map(status => (
+                                                    <option key={status} value={status}>
+                                                        {status}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="date"
+                                                name="data_movimentacao"
+                                                value={editedProductData.data_movimentacao || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </td>
+                                        <td>{produto.updated_at}</td>
+
+                                        <td className="td-btn">
                                             <button
                                                 className="btn-save"
                                                 onClick={() => handleSaveEdit(produto.id_produto)}
@@ -426,9 +388,23 @@ const AdminProducts = () => {
                                             >
                                                 <MdCancel />
                                             </button>
-                                        </>
-                                    ) : (
-                                        <>
+                                        </td>
+
+                                    </>
+                                ) : (
+                                    <>
+                                        <td>{produto.nome}</td>
+                                        <td>{produto.categoria?.nome || 'N/A'}</td>
+                                        <td>{produto.descricao}</td>
+                                        <td>{produto.preco_compra}</td>
+                                        <td>{produto.preco_venda}</td>
+                                        <td>{produto.estoque?.quantidade_minima || 'N/A'}</td>
+                                        <td>{produto.estoque?.quantidade_atual || 'N/A'}</td>
+                                        <td>{produto.unidade_de_medida}</td>
+                                        <td>{produto.movimentacoes?.[0]?.tipo_movimentacao || 'N/A'}</td>
+                                        <td>{produto.movimentacoes?.[0]?.data_movimentacao || 'N/A'}</td>
+                                        <td>{produto.updated_at}</td>
+                                        <td className="td-btn">
                                             <button
                                                 className="btn-edit"
                                                 onClick={() => handleEditProduct(produto)}
@@ -441,9 +417,9 @@ const AdminProducts = () => {
                                             >
                                                 <MdDeleteForever />
                                             </button>
-                                        </>
-                                    )}
-                                </td>
+                                        </td>
+                                    </>
+                                )}
                             </tr>
                         ))}
                         {produtos.length === 0 && !loading && (
@@ -454,14 +430,14 @@ const AdminProducts = () => {
                     </tbody>
                 </table>
                 {loading && <div>Carregando...</div>}
-            </section>
+            </section >
             {
                 isModalProductOpen && <AddProductModal
                     onClose={handleCloseProductModal}
                     onAddProduto={handleAddProdutoToList}
                 />
             }
-        </main>
+        </main >
     );
 };
 
