@@ -18,13 +18,13 @@ export const AuthProvider = ({ children }) => {
         if (token) {
             // Armazena o token no localStorage
             localStorage.setItem('token', token);
-            console.log('Token armazenado:', token);
             localStorage.setItem('tokenExpires', now + expiresIn * 1000); // Armazena a data de expiração do token
         } else {
             // Remove o token se não houver autenticação
             localStorage.removeItem('token');
             localStorage.removeItem('tokenExpires');
         }
+        console.log('Token armazenado:', token);
 
         // Atualiza os estados de autenticação e usuário
         setIsAuthenticated(isAuthenticated);
@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }) => {
             checkTokenExpiration();
 
             const token = localStorage.getItem('token'); 
-            // console.log('Token encontrado:', token);
+         
 
             if (token) {
                 const response = await axios.get('http://localhost:3000/api/auth/check', {
@@ -125,7 +125,7 @@ export const AuthProvider = ({ children }) => {
                 });
             }
         } catch (error) {
-            console.log('Erro ao verificar autenticação:', error);
+            console.error("Erro de autenticação:", error);
             // Em caso de erro, reseta o estado e remove o token
             setAuthState({
                 token: null,
