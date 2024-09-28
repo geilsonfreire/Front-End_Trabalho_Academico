@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +19,13 @@ export const AuthProvider = ({ children }) => {
         if (token) {
             // Armazena o token no localStorage
             localStorage.setItem('token', token);
-            localStorage.setItem('tokenExpires', now + expiresIn * 1000); // Armazena a data de expiração do token
+            // Armazena a data de expiração do token
+            localStorage.setItem('tokenExpires', now + expiresIn * 1000); 
+
+            // Configura um timeout para exibir a mensagem quando o token expirar
+            setTimeout(() => {
+                toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
+            }, expiresIn * 1000);
         } else {
             // Remove o token se não houver autenticação
             localStorage.removeItem('token');
