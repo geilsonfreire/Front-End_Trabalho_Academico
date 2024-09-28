@@ -1,0 +1,102 @@
+/*Container*/
+.Menu-lateral {
+    width: 86px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    overflow-Y: scroll;
+    background: #3749A6;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+    border-radius: 0 16px 16px 0;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.Menu-lateral:hover {
+    width: 220px;
+}
+
+.Menu-lateral::-webkit-scrollbar {
+    display: none;
+}
+
+/*Logo */
+.Menu-lateral img {
+    width: 3rem;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.5s ease-in-out;
+}
+
+.Menu-lateral img:hover {
+    transform: scale(1.1);
+    border: solid 1px #fff;
+    border-radius: 50%;
+}
+
+/* Menu Icones e listas */
+.Menu-lateral ul {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2rem;
+    gap: .5rem;
+}
+
+.Menu-lateral ul li {
+    width: 100%;
+    font-size: 1rem;
+    list-style: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.Menu-lateral ul li::after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 0;
+    width: 100%;
+    height: 2rem;
+    transform: scaleX(0);
+    background-color: #4379EE;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: left;
+    z-index: -1;
+}
+
+.Menu-lateral ul li:hover::after {
+    transform: scaleX(1);
+}
+
+.Menu-lateral ul li a {
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.5rem;
+    white-space: nowrap;
+}
+
+
+
+.icon-text {
+    width: 0;
+    font-size: .7rem;
+    padding: 1rem;
+    letter-spacing: 2px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.Menu-lateral:hover .icon-text {
+    opacity: 1;
+    color: #fff;
+}

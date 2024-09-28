@@ -1,0 +1,225 @@
+.LoginContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100%;
+    background: #fff;
+    overflow: hidden;
+    gap: 1rem;
+}
+
+/* Left */
+.LoginContainer .LoginContainerLeft {
+    width: 60%;
+    height: 100%;
+    background-image: url(../assets//img/Banner.jpg);
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+}
+
+/* Right */
+.LoginContainerRight {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+form .InputWithIcon:focus-within .InputIcon {
+    color: #00ff26;
+}
+
+.LoginContainerRight .EntradaLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 95%;
+    height: 95%;
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+    box-shadow: 0 10px 20px 0 rgba(31, 38, 135, 0.3);
+    backdrop-filter: blur(3.5px);
+    -webkit-backdrop-filter: blur(3.5px);
+}
+
+.LoginContainerRight .EntradaLogin::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-top: solid 4px #1e3194;
+    border-radius: 2%;
+    z-index: -1;
+    top: -4px;
+}
+
+
+/* Header */
+.LoginContainerRight .LoginHeader {
+    position: absolute;
+    background: #1e3194;
+    width: 30%;
+    height: 10%;
+    top: -4px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LoginContainerRight .LoginHeader span {
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    top: 0px;
+}
+
+/* Form */
+.FormLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+}
+
+.FormLogin input {
+    width: 100%;
+    height: 2rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1px solid #00ff26;
+    border-radius: 5px;
+    background: #fff;
+    color: #000;
+    box-shadow: 0 10px 10px -8px rgba(31, 38, 135, 0.3);
+    font-size:.7rem;
+    outline: none;
+}
+
+.FormLogin input::placeholder {
+    color: #00000063;
+    font-size: .6rem;
+}
+
+.InputWithIcon {
+    position: relative;
+    width: 100%;
+}
+
+.InputIcon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1rem;
+    color: #000;
+    filter: none;
+}
+
+.FormLogin input[type="text"],
+.FormLogin input[type="password"] {
+    padding-left: 1rem;
+
+}
+
+/* Mostrar Senha */
+.CheckBox {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.input-checkbox {
+    width: 50%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+}
+
+.CheckBox input[type="checkbox"] {
+    margin-right: 5px;
+    cursor: pointer;
+    width: .8rem;
+}
+
+.CheckBox label {
+    margin: 0;
+    font-size: .6em;
+    color: #666;
+}
+
+/* Esqueceu senha */
+.EsqueseuSenha {
+    font-size: .6em;
+    color: #666;
+}
+
+.EsqueseuSenha:hover {
+    color: #5c73db;
+    text-decoration: underline;
+}
+
+/* Button */
+.BtnLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 60%;
+    height: 2rem;
+    margin: 2rem;
+    border: none;
+    border-radius: 5px;
+    background: #1e3194;
+    border-bottom: solid 2px #fff;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1em;
+    line-height: 8px;
+    cursor: pointer;
+    outline: none;
+}
+
+.BtnLogin:hover {
+    background: #fff;
+    color: #000;
+    border-bottom: solid 2px #00ff26;
+    border-radius: 5px;
+}
+
+
+/* Ou */
+.Divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    font-size: 1em;
+    color: #ffffff63;
+}
+
+.DividerLine {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.DividerText {
+    padding: 0 10px;
+    color: #777;
+}

@@ -1,0 +1,82 @@
+/* customToast.css */
+.custom-toast .Toastify__toast {
+    background-color: #fff;
+    color: #000;
+    font-size: 16px !important;
+}
+
+.custom-toast .Toastify__toast--info {
+    background-color: #fff;
+    color: #000;
+    font-size: 16px !important;
+}
+
+.custom-toast .Toastify__toast--success {
+    background-color: #fff;
+    color: #000;
+    font-size: 16px !important;
+}
+
+.custom-toast .Toastify__toast--warning {
+    background-color: #fff;
+    color: #a02905;
+    font-size: 16px !important;
+}
+
+.custom-toast .Toastify__toast--error {
+    background-color: #fff;
+    color: red;
+    font-size: 16px !important;
+}
+
+.custom-toast .Toastify__close-button {
+    color: #000 !important;
+}
+
+/* Barra de progresso personalizada */
+.custom-toast .Toastify__progress-bar {
+    background-color: #00ff26;
+    /* Cor personalizada */
+}
+
+.custom-toast .Toastify__progress-bar--info {
+    background-color: #00ff26;
+    /* Cor para toast informativo */
+}
+
+.custom-toast .Toastify__progress-bar--success {
+    background-color: #00ff26;
+    /* Cor para toast de sucesso */
+}
+
+.custom-toast .Toastify__progress-bar--warning {
+    background-color: #f1c40f;
+    /* Cor para toast de aviso */
+}
+
+.custom-toast .Toastify__progress-bar--error {
+    background-color: #e74c3c;
+    /* Cor para toast de erro */
+}
+
+/* Icons */
+.custom-toast .Toastify__toast-icon {
+    color: #00ff26 !important;
+
+}
+
+.custom-toast .Toastify__toast-icon--info {
+    color: #00ff26 !important;
+}
+
+.custom-toast .Toastify__toast-icon--success {
+    color: #00ff26 !important;
+}
+
+.custom-toast .Toastify__toast-icon--warning {
+    color: #f1c40f !important;
+}
+
+.custom-toast .Toastify__toast-icon--error {
+    color: #e74c3c !important;
+}

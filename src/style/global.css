@@ -1,0 +1,227 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    vertical-align: baseline;
+    font: inherit;
+}
+
+/* Body */
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    background: #000;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* Links */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Ul -  OL*/
+ul,
+ol {
+    list-style: none;
+}
+
+/* scrollbar.css */
+
+/* Estilo da barra de rolagem */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    /* Largura da barra de rolagem */
+}
+
+/* Estilo do track (fundo da barra de rolagem) */
+::-webkit-scrollbar-track {
+    background: #000;
+    /* Cor de fundo */
+}
+
+/* Estilo do thumb (a parte deslizante da barra de rolagem) */
+::-webkit-scrollbar-thumb {
+    background: #00ff26;
+    /* Cor do thumb */
+    border-radius: 4px;
+    /* Borda arredondada */
+}
+
+/* Estilo do thumb ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+    background: #506653;
+    /* Cor do thumb ao passar o mouse */
+}
+
+
+/*Global de outra */
+/*Conatiner Body*/
+main {
+    padding: 0 .5rem;
+}
+
+/*Container Title */
+main .Title {
+    padding: .5rem 0;
+    
+}
+
+main .Title h1 {
+    font-size: 2.5em;
+    letter-spacing: 2px;
+    color: #000;
+    font-weight: bold;
+}
+
+main .Title span {
+    color: #1e3194;
+}
+
+/* Header */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/*Global sections */
+section {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+/*Barra de pesquisa */
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-left: 2rem;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #3749A6;
+    font-size: 1.5rem;
+}
+
+.search-bar input {
+    padding: 10px;
+    background-color: #d5d5d5;
+    border: 1px solid #F5f6fa;
+    border-radius: 25px;
+    width: 22rem;
+    height: 2rem;
+    outline: none;
+    caret-color: #3749A6;
+    padding-left: 2.5rem;
+}
+
+.search-bar input::placeholder {
+    font-size: .8rem;
+}
+
+/*Button */
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    padding: .2rem 1rem;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+button:hover {
+    background-color: #1e3194;
+}
+
+button i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+
+/*Modal */
+.modal-overlay {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/*Container */
+.modal-content {
+    overflow-y: auto;
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    margin-right: 10px;
+    width: 50%;
+    height: 82%;
+    border-radius: 10px;
+    transform: translateX(100%);
+    transition: transform .5s ease-in-out;
+}
+
+/* Classes para estados de transição */
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content.show {
+    transform: translateX(0);
+}
+
+/* Buttons modal salvar e cancelar*/
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    width: 10rem;
+    margin: 0 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-buttons button[type="submit"] {
+    background: #28a745;
+    color: #fff;
+}
+
+
+.modal-buttons button[type="button"] {
+    background: #dc3545;
+    color: #fff;
+}
+
+.modal-buttons button:hover {
+    transform: scale(1.1);
+}
