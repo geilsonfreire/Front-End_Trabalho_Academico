@@ -62,7 +62,7 @@ exports.createProduto = async (req, res) => {
             include: [
                 { model: Categoria, as: 'categoria', attributes: ['nome'] },
                 { model: Estoque, as: 'estoque', attributes: ['quantidade_minima', 'quantidade_atual'] },
-                { model: MovimentacaoEstoque, as: 'movimentacoes', attributes: ['tipo_movimentacao', 'data_movimentacao'] }
+                { model: MovimentacaoEstoque, as: 'movimentacoes', attributes: ['tipo_movimentacao', 'quantidade',  'data_movimentacao'] }
             ]
         });
 
@@ -70,7 +70,7 @@ exports.createProduto = async (req, res) => {
         await Estoque.create({
             id_produto: novoProduto.id_produto,
             quantidade_minima,
-            quantidade_atual
+            quantidade_atual,
         });
 
         // Criar a movimentação de estoque
@@ -134,7 +134,7 @@ exports.getProdutos = async (req, res) => {
                 {
                     model: MovimentacaoEstoque,
                     as: 'movimentacoes',
-                    attributes: ['tipo_movimentacao', 'data_movimentacao']
+                    attributes: ['tipo_movimentacao', 'quantidade', 'data_movimentacao']
                 }
             ],
             where: filters
@@ -174,7 +174,7 @@ exports.getProdutoById = async (req, res) => {
                 {
                     model: MovimentacaoEstoque,
                     as: 'movimentacoes',
-                    attributes: ['tipo_movimentacao', 'data_movimentacao']
+                    attributes: ['tipo_movimentacao', 'quantidade', 'data_movimentacao']
                 }
             ]
         });
@@ -228,7 +228,7 @@ exports.updateProduto = async (req, res) => {
             include: [
                 { model: Categoria, as: 'categoria', attributes: ['nome'] },
                 { model: Estoque, as: 'estoque', attributes: ['quantidade_minima', 'quantidade_atual'] },
-                { model: MovimentacaoEstoque, as: 'movimentacoes', attributes: ['tipo_movimentacao', 'data_movimentacao'] }
+                { model: MovimentacaoEstoque, as: 'movimentacoes', attributes: ['tipo_movimentacao', 'quantidade', 'data_movimentacao'] }
             ]
         });
 
@@ -259,7 +259,7 @@ exports.updateProduto = async (req, res) => {
             await MovimentacaoEstoque.create({
                 id_produto: id,
                 tipo_movimentacao,
-                data_movimentacao,
+                data_movimentacao: data_movimentacao || new Date(),
                 quantidade: quantidade_atual  // Adicionando o campo quantidade
             });
         }

@@ -14,6 +14,9 @@ const MovimentacaoEstoque = () => {
     const [tipoMovimentacao, setTipoMovimentacao] = useState('entrada');
     const [quantidade, setQuantidade] = useState(0);
     const [dataMovimentacao, setDataMovimentacao] = useState('');
+    const [precoCompraDecimal, setPrecoCompraDecimal] = useState(0);
+    const [precoVendaDecimal, setPrecoVendaDecimal] = useState(0);
+
     const [produtoDetalhes, setProdutoDetalhes] = useState({
         nome: '',
         descricao: '',
@@ -30,17 +33,34 @@ const MovimentacaoEstoque = () => {
             try {
                 const produtos = await fetchProdutos();
                 setProdutos(produtos);
-               
+                
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
                 toast.error('Erro ao carregar produtos.');
             }
         };
+        
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         carregarProdutos();
     }, []);
+    console.log('Carregando produtos...', produtos);
 
     const handleProdutoChange = async (produtoId) => {
+
         try {
             const produto = await fetchProdutoById(produtoId);
 
@@ -49,8 +69,8 @@ const MovimentacaoEstoque = () => {
                 setProdutoDetalhes({
                     nome: produto.nome,
                     descricao: produto.descricao,
-                    preco_compra: parseFloat(produto.preco_compra),
-                    preco_venda: parseFloat(produto.preco_venda),
+                    preco_compra: formatCurrency(produto.preco_compra),
+                    preco_venda: formatCurrency(produto.preco_venda),
                     unidade_de_medida: produto.unidade_de_medida,
                     quantidade_minima: produto.estoque.quantidade_minima,
                     quantidade_atual: produto.estoque.quantidade_atual,
@@ -58,7 +78,11 @@ const MovimentacaoEstoque = () => {
                         nome: produto.categoria ? produto.categoria.nome : ''
                     }
                 });
-                
+
+                // Armazenar o valor decimal bruto para envio ao banco
+                setPrecoCompraDecimal(parseFloat(produto.preco_compra));
+                setPrecoVendaDecimal(parseFloat(produto.preco_venda));
+
             }
         } catch (error) {
             console.error('Erro ao buscar produto:', error);
@@ -66,9 +90,9 @@ const MovimentacaoEstoque = () => {
             setProdutoDetalhes({
                 nome: '',
                 descricao: '',
-                preco_compra: 0,
-                preco_venda: 0,
-                unidade_de_medida: '',
+                preco_compra: '0,00',
+                preco_venda: '0,00',
+                unidade_de_medida: 0,
                 quantidade_minima: 0,
                 quantidade_atual: 0,
                 categoria: { nome: '' }
@@ -84,14 +108,16 @@ const MovimentacaoEstoque = () => {
         }).format(value);
     };
 
-
-    // Função para tratar valores de moeda antes de enviar
+    // Função para converter valores formatados em BRL para número decimal
     const parseCurrency = (value) => {
-        // Remove caracteres não numéricos e converte para número
-        return parseFloat(value.replace(/\D/g, '')) / 100;
+        if (!value) return 0;
+        // Remove tudo o que não for número, vírgula ou ponto
+        const numericValue = value.replace(/[^\d,-]/g, '').replace(',', '.');
+        return parseFloat(numericValue);
     };
 
- 
+
+
 
     // Função para tratar valores de moeda antes de enviar
     const handleSubmit = async (event) => {
@@ -108,18 +134,26 @@ const MovimentacaoEstoque = () => {
             id_produto: parseInt(produtoSelecionado, 10),
             nome: produtoDetalhes.nome,
             descricao: produtoDetalhes.descricao,
-            preco_compra: parseFloat(produtoDetalhes.preco_compra),
-            preco_venda: parseFloat(produtoDetalhes.preco_venda),
+            preco_compra: precoCompraDecimal,
+            preco_venda: precoVendaDecimal,
             unidade_de_medida: produtoDetalhes.unidade_de_medida,
             updated_at: new Date().toISOString(),
             categoria: {
                 nome: produtoDetalhes.categoria.nome
             },
             estoque: {
-                quantidade_minima: produtoDetalhes.estoque?.quantidade_minima || 0,
+                quantidade_minima: produtoDetalhes.estoque?.quantidade_minima != null
+                    ? produtoDetalhes.estoque.quantidade_minima
+                    : 0,
+
+                // Lógica para quantidade_atual
                 quantidade_atual: tipoMovimentacao === 'entrada'
-                    ? (produtoDetalhes.estoque?.quantidade_atual || 0) + parseInt(quantidade, 10)
-                    : (produtoDetalhes.estoque?.quantidade_atual || 0) - parseInt(quantidade, 10)
+                    ? (produtoDetalhes.estoque?.quantidade_atual != null
+                        ? produtoDetalhes.estoque.quantidade_atual
+                        : 0) + parseInt(quantidade, 10)
+                    : (produtoDetalhes.estoque?.quantidade_atual != null
+                        ? produtoDetalhes.estoque.quantidade_atual
+                        : 0) - parseInt(quantidade, 10)
             },
             movimentacoes: [
                 {
@@ -128,7 +162,7 @@ const MovimentacaoEstoque = () => {
                 }
             ]
         };
-
+        console.log('Valores enviados para API:', movimentacaoData);
         try {
             await createProduto(movimentacaoData);
             toast.success('Movimentação registrada com sucesso!');
@@ -204,6 +238,14 @@ const MovimentacaoEstoque = () => {
 
                     <div className="container-section">
                         <div className="InputGroup">
+                            <label>Categorias</label>
+                            <input
+                                type="text"
+                                value={produtoDetalhes.categoria.nome}
+                                disabled
+                            />
+                        </div>
+                        <div className="InputGroup">
                             <label>Unidade de Medida</label>
                             <input
                                 type="text"
@@ -236,8 +278,8 @@ const MovimentacaoEstoque = () => {
                         <div className="InputGroup">
                             <label>Preço de Compra</label>
                             <input
-                                type="text" 
-                                value={formatCurrency(produtoDetalhes.preco_compra)}
+                                type="text"
+                                value={produtoDetalhes.preco_compra}
                                 disabled
                             />
                         </div>
@@ -246,13 +288,14 @@ const MovimentacaoEstoque = () => {
                             <label>Preço de Venda</label>
                             <input
                                 type="text"
-                                value={formatCurrency(produtoDetalhes.preco_venda)}
+                                value={produtoDetalhes.preco_venda}
                                 onChange={(e) => {
                                     const value = e.target.value;
                                     setProdutoDetalhes({
                                         ...produtoDetalhes,
-                                        preco_venda: parseCurrency(value) || 0
+                                        preco_venda: value
                                     });
+                                    setPrecoVendaDecimal(parseCurrency(value));
                                 }}
                             />
                         </div>

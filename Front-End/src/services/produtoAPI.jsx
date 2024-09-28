@@ -3,6 +3,7 @@ import axios from "axios";
 
 const API_BASE_URL = 'http://localhost:3000/api/produtos';
 
+
 // Função auxiliar para lidar com erros de resposta
 const handleResponse = async (response) => {
     if (response.status >= 200 && response.status < 300) {
@@ -18,6 +19,7 @@ const getToken = () => localStorage.getItem('token');
 // Função para obter todos os produtos com filtros
 export const fetchProdutos = async (queryString = '') => {
     try {
+    
         const response = await axios.get(`${API_BASE_URL}?${queryString}`, {
             headers: {
                 'Authorization': `Bearer ${getToken()}`,
@@ -25,11 +27,13 @@ export const fetchProdutos = async (queryString = '') => {
             },
         });
         return response.data;
+        
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
         throw error;
     }
 };
+
 
 
 // Função para obter um produto por ID
@@ -63,12 +67,8 @@ export const createProduto = async (produtoData) => {
             }
         };
 
-        console.log("Enviando dados para:", API_BASE_URL);  // Debug para verificar a URL
-        console.log("Dados do produto:", produtoData);      // Debug para verificar os dados que estão sendo enviados
-
         const response = await axios.post(API_BASE_URL, produtoData, config);
-        console.log("Resposta do servidor:", response.data); // Debug para verificar a resposta
-
+        
         return response.data;
     } catch (error) {
         console.error('Erro ao criar produto:', error);
