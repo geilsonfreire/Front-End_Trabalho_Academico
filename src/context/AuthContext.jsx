@@ -14,18 +14,25 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
     // Função centralizada para definir o estado de autenticação
-    const setAuthState = ({ token, user, isAuthenticated, expiresIn }) => {
+    const setAuthState = useCallback(({ token, user, isAuthenticated, expiresIn }) => {
         const now = new Date().getTime(); // Obtém a data atual em milissegundos
         if (token) {
             // Armazena o token no localStorage
             localStorage.setItem('token', token);
             // Armazena a data de expiração do token
-            localStorage.setItem('tokenExpires', now + expiresIn * 1000); 
+            localStorage.setItem('tokenExpires', now + expiresIn * 1000);
 
-            // Configura um timeout para exibir a mensagem quando o token expirar
+            // Configura um timeout para verificar a expiração do token
             setTimeout(() => {
-                toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
-            }, expiresIn * 1000);
+                const tokenExpires = localStorage.getItem('tokenExpires');
+                const currentTime = new Date().getTime();
+                if (tokenExpires && currentTime >= tokenExpires) {
+                    toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
+                    setSessionExpired(true);
+                    // Redireciona o usuário para a página de login
+                    navigate('/login');
+                }
+            }, expiresIn * 1000); // Verifica após o tempo de expiração
         } else {
             // Remove o token se não houver autenticação
             localStorage.removeItem('token');
@@ -36,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         // Atualiza os estados de autenticação e usuário
         setIsAuthenticated(isAuthenticated);
         setUser(user);
-    };
+    }, [navigate]);
 
     // Função para verificar a expiração do token
     const checkTokenExpiration = useCallback(() => {
@@ -53,18 +60,19 @@ export const AuthProvider = ({ children }) => {
                 isAuthenticated: false,
             });
             setSessionExpired(true);
+            toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
             navigate('/'); // Redireciona usando React Router
         } else {
             setSessionExpired(false);
         }
-    }, [navigate]);
+    }, [navigate, setAuthState]);
 
     // Função de login
     const login = async (emailOrUsername, password) => {
         try {
             // Faz a requisição de login
             const response = await axios.post('http://localhost:3000/api/auth/login', { emailOrUsername, senha: password });
-           
+
             const { token, user, expiresIn } = response.data; // Extrai o token e o usuário da resposta
 
             // Atualiza o estado de autenticação, salva o token e os dados do usuário
@@ -74,7 +82,7 @@ export const AuthProvider = ({ children }) => {
                 isAuthenticated: true,
                 expiresIn: expiresIn || 3600, // Define o tempo de expiração (1h por padrão)
             });
-        
+
             setSessionExpired(false);
 
             // Redireciona para a última página visitada
@@ -99,14 +107,13 @@ export const AuthProvider = ({ children }) => {
             // Verifica a expiração do token
             checkTokenExpiration();
 
-            const token = localStorage.getItem('token'); 
-         
+            const token = localStorage.getItem('token');
 
             if (token) {
                 const response = await axios.get('http://localhost:3000/api/auth/check', {
                     headers: { Authorization: `Bearer ${token}` }
                 }); // Faz a requisição para verificar o token
-                
+
 
                 if (response.data.isAuthenticated) {
                     // Atualiza o estado se a autenticação for válida
@@ -139,10 +146,10 @@ export const AuthProvider = ({ children }) => {
                 user: null,
                 isAuthenticated: false,
             });
-        }finally{
+        } finally {
             setLoading(false);
         }
-    }, [checkTokenExpiration]);
+    }, [checkTokenExpiration, setAuthState]);
 
     useEffect(() => {
         checkAuth();// Executa a função de verificação de autenticação
