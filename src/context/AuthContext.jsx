@@ -38,7 +38,6 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem('token');
             localStorage.removeItem('tokenExpires');
         }
-        console.log('Token armazenado:', token);
 
         // Atualiza os estados de autenticação e usuário
         setIsAuthenticated(isAuthenticated);
@@ -71,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (emailOrUsername, password) => {
         try {
             // Faz a requisição de login
-            const response = await axios.post('http://localhost:3000/api/auth/login', { emailOrUsername, senha: password });
+            const response = await axios.post('https://backendtrabalhoacademico-production.up.railway.app/api/auth/login', { emailOrUsername, senha: password });
 
             const { token, user, expiresIn } = response.data; // Extrai o token e o usuário da resposta
 
@@ -110,7 +109,7 @@ export const AuthProvider = ({ children }) => {
             const token = localStorage.getItem('token');
 
             if (token) {
-                const response = await axios.get('http://localhost:3000/api/auth/check', {
+                const response = await axios.get('https://backendtrabalhoacademico-production.up.railway.app/api/auth/check', {
                     headers: { Authorization: `Bearer ${token}` }
                 }); // Faz a requisição para verificar o token
 

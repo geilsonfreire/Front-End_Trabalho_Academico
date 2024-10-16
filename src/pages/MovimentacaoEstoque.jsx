@@ -57,7 +57,6 @@ const MovimentacaoEstoque = () => {
         
         carregarProdutos();
     }, []);
-    console.log('Carregando produtos...', produtos);
 
     const handleProdutoChange = async (produtoId) => {
 
@@ -162,7 +161,6 @@ const MovimentacaoEstoque = () => {
                 }
             ]
         };
-        console.log('Valores enviados para API:', movimentacaoData);
         try {
             await createProduto(movimentacaoData);
             toast.success('Movimentação registrada com sucesso!');

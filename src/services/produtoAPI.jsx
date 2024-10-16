@@ -1,7 +1,7 @@
 // Import Bibliotecas
 import axios from "axios";
 
-const API_BASE_URL = 'http://localhost:3000/api/produtos';
+const API_BASE_URL = 'https://backendtrabalhoacademico-production.up.railway.app/api/produtos';
 
 
 // Função auxiliar para lidar com erros de resposta
@@ -87,6 +87,8 @@ export const createProduto = async (produtoData) => {
 // Função para atualizar um produto existente
 export const updateProduto = async (id, produtoData) => {
     try {
+        console.log('Atualizando produto com ID:', id);
+        console.log('Dados do produto:', produtoData);
         const response = await axios.put(`${API_BASE_URL}/${id}`, produtoData, {
             headers: {
                 'Authorization': `Bearer ${getToken()}`,
