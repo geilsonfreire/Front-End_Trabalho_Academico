@@ -1,8 +1,0 @@
-{
-    "build": {
-        "output": "dist" 
-    },
-    "start": {
-        "command": "serve -s dist" 
-    }
-}

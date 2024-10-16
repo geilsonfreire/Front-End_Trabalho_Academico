@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 // Import Componentes
 import Login from "../pages/Login.jsx";
-import Home from '../pages/Home.jsx';
+import Home from '../pages/home.jsx';
 import CadastroUsuario from "../pages/cadastro-usuario.jsx";
 import AdminProducts from "../pages/adminProducts.jsx";
 import AdminDashBoard from "../pages/AdminDashBoard.jsx";
