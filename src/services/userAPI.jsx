@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // URL base da API
-const API_URL = 'https://backendtrabalhoacademico-production.up.railway.app/api/usuarios';
+const API_URL = 'https://localhost:3000/api/usuarios';
+// https://backendtrabalhoacademico-production.up.railway.app
 
 // Função para criar um usuário (POST)
 export const cadastrarUsuario = async (usuarioData) => {
