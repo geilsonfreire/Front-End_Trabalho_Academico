@@ -1,7 +1,7 @@
 // Import Bibliotecas
 import axios from "axios";
 
-const API_BASE_URL = 'https://backendtrabalhoacademico-production.up.railway.app/api/produtos';
+const API_BASE_URL = 'http://localhost:3000/api/produtos';
 
 
 // Função auxiliar para lidar com erros de resposta

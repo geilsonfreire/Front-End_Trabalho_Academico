@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://backendtrabalhoacademico-production.up.railway.app/api';
+const API_URL = 'http://localhost:3000/api';
 
 // Função para obter o token JWT
 const getToken = () => localStorage.getItem('token');

@@ -23,6 +23,11 @@ function MyRoutes() {
                     <Home />
                 </ProtectedRoute>
             }>
+                <Route index element={
+                    <RoleProtectedRoute role="Administrador">
+                        <AdminDashBoard />
+                    </RoleProtectedRoute>
+                } />
                 <Route path="/admin/adminDashBoard" element={
                     <RoleProtectedRoute role="Administrador">
                         <AdminDashBoard />
