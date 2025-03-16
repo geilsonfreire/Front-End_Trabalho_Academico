@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // Import Bibliotecas
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // Import de Componentes
@@ -31,7 +31,7 @@ const Login = () => {
         } else {
             navigate('/'); // Redireciona para a página de login
         }
-    }, [isAuthenticated, navigate]); 
+    }, [isAuthenticated, navigate]);
 
 
     const handleLogin = async (event) => {
@@ -48,7 +48,7 @@ const Login = () => {
         }
 
         try {
-            await login(emailOrUsername, password); // Usa a função login do AuthContext
+            await login(emailOrUsername, password);
             toast.success('Logado com sucesso!');
         } catch (error) {
             toast.error('Erro na autenticação. Verifique suas credenciais.');

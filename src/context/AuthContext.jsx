@@ -154,7 +154,6 @@ export const AuthProvider = ({ children }) => {
         checkAuth();// Executa a função de verificação de autenticação
     }, [checkAuth]);
 
-
     // Função de logout
     const logout = () => {
         setAuthState({
@@ -162,20 +161,20 @@ export const AuthProvider = ({ children }) => {
             user: null,
             isAuthenticated: false,
         });
-        navigate('/'); 
+        navigate('/');
     };
 
     //  Retorna o contexto de autenticação
     return (
-        <AuthContext.Provider value={{ 
-            isAuthenticated, 
-            checkTokenExpiration, 
-            sessionExpired, 
-            user, 
-            login, 
-            checkAuth, 
-            logout, 
-            loading 
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            checkTokenExpiration,
+            sessionExpired,
+            user,
+            login,
+            checkAuth,
+            logout,
+            loading
         }}>
             {children}
         </AuthContext.Provider>
