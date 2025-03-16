@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }) => {
                 const tokenExpires = localStorage.getItem('tokenExpires');
                 const currentTime = new Date().getTime();
                 if (tokenExpires && currentTime >= tokenExpires) {
-                    toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
+                    if (isAuthenticated) {
+                        toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
+                    }
                     setSessionExpired(true);
                     // Redireciona o usuário para a página de login
                     navigate('/login');
@@ -59,12 +61,14 @@ export const AuthProvider = ({ children }) => {
                 isAuthenticated: false,
             });
             setSessionExpired(true);
-            toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
+            if (isAuthenticated) {
+                toast.warn('Sua sessão expirou. Por favor, faça login novamente.');
+            }
             navigate('/'); // Redireciona usando React Router
         } else {
             setSessionExpired(false);
         }
-    }, [navigate, setAuthState]);
+    }, [navigate, setAuthState, isAuthenticated]);
 
     // Função de login
     const login = async (emailOrUsername, password) => {
