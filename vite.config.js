@@ -8,4 +8,7 @@ export default defineConfig({
         outDir: 'dist', // Diretório de saída
         sourcemap: true, // Crie sourcemaps para facilitar a depuração
     },
+    server: {
+        port: 3001, // Porta do servidor de desenvolvimento
+    },
 });
