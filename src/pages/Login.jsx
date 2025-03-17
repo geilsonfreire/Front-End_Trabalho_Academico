@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 // Import de Componentes
 import AuthContext from '../context/AuthContext';
-
+import Loading from '../components/loadingLogin';
 
 // Import CSS
 import "../style/Login.css";
@@ -21,7 +21,7 @@ const Login = () => {
     const [emailOrUsername, setEmailOrUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const { isAuthenticated, login } = useContext(AuthContext);
+    const { isAuthenticated, login, loading } = useContext(AuthContext);
     const navigate = useNavigate();
 
     // Redireciona se já estiver autenticado
@@ -58,6 +58,7 @@ const Login = () => {
 
     return (
         <main className="LoginContainer">
+            {loading && <Loading />} {/* Exibe o componente de carregamento */}
             {/* Left */}
             <section className="LoginContainerLeft">
             </section>

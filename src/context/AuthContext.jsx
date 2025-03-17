@@ -3,13 +3,14 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/loading';
 
 const AuthContext = createContext(); // Cria o contexto de autenticação
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [sessionExpired, setSessionExpired] = useState(false);
     const navigate = useNavigate();
 
@@ -72,6 +73,7 @@ export const AuthProvider = ({ children }) => {
 
     // Função de login
     const login = async (emailOrUsername, password) => {
+        setLoading(true); // Inicia o carregamento
         try {
             // Faz a requisição de login
             const response = await axios.post('http://localhost:3000/api/auth/login', { emailOrUsername, senha: password });
@@ -90,7 +92,7 @@ export const AuthProvider = ({ children }) => {
 
             // Redireciona para a última página visitada
             const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/admin';
-            navigate(lastVisitedPage);
+            navigate(lastVisitedPage); // Redireciona imediatamente
 
         } catch (error) {
             console.error("Erro de login:", error);
@@ -101,6 +103,8 @@ export const AuthProvider = ({ children }) => {
                 isAuthenticated: false,
             });
             throw error.response?.data?.message || 'Falha ao autenticar';
+        } finally {
+            setLoading(false); // Finaliza o carregamento
         }
     };
 
@@ -180,6 +184,7 @@ export const AuthProvider = ({ children }) => {
             logout,
             loading
         }}>
+            {loading && <Loading />} {/* Exibe o componente de carregamento */}
             {children}
         </AuthContext.Provider>
     );

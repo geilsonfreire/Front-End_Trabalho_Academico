@@ -1,6 +1,7 @@
 // Importação de Bibliotecas
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import Loading from '../components/loading';
 
 // Importação de Serviços
 import { fetchProdutos, createProduto, fetchProdutoById } from '../services/produtoAPI';
@@ -9,6 +10,7 @@ import { fetchProdutos, createProduto, fetchProdutoById } from '../services/prod
 import "../style/MovimentacaoEstoque.css";
 
 const MovimentacaoEstoque = () => {
+    const [loading, setLoading] = useState(true);
     const [produtos, setProdutos] = useState([]);
     const [produtoSelecionado, setProdutoSelecionado] = useState('');
     const [tipoMovimentacao, setTipoMovimentacao] = useState('entrada');
@@ -33,30 +35,27 @@ const MovimentacaoEstoque = () => {
             try {
                 const produtos = await fetchProdutos();
                 setProdutos(produtos);
-                
+
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
                 toast.error('Erro ao carregar produtos.');
             }
         };
-        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
         carregarProdutos();
     }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 2000); // 2000ms de carregamento
+
+        return () => clearTimeout(timer); // Limpa o timeout se o componente desmontar
+    }, []);
+
+    if (loading) {
+        return <Loading />; // Exibe o componente de carregamento
+    }
 
     const handleProdutoChange = async (produtoId) => {
 

@@ -19,6 +19,7 @@ import {
 import AddProductModal from "../components/addProductModal";
 import { fetchProdutos, deleteProduto, updateProduto } from "../services/produtoAPI";
 import { fetchCategorias, fetchTiposEDatas } from "../services/filtroAPI";
+import Loading from '../components/loading';
 
 const AdminProducts = () => {
     const [isModalProductOpen, setIsModalProductOpen] = useState(false);
@@ -87,9 +88,21 @@ const AdminProducts = () => {
         loadProdutos();
     }, [categoria, status, date]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 2000); // 2000ms de carregamento
+
+        return () => clearTimeout(timer); // Limpa o timeout se o componente desmontar
+    }, []);
+
+    if (loading) {
+        return <Loading />; // Exibe o componente de carregamento
+    }
+
     // Função para deletar um produto
     const handleDeleteProduct = async (id) => {
-      
+
         try {
             await deleteProduto(id);
             setProdutos(produtos.filter(produto => produto.id_produto !== id));

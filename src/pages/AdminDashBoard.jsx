@@ -1,4 +1,6 @@
 // Immports Bibliotecas
+import { useState, useEffect } from 'react';
+import Loading from '../components/loading';
 
 // Imports Css
 import '../style/AdminDashBoard.css'
@@ -8,7 +10,7 @@ import Admincharts from '../components/AdminApexcharts'
 
 // imports icons and images
 import { BsGraphUpArrow } from "react-icons/bs";
-import { 
+import {
     MdGroups,
     MdOutlineTrendingUp,
     MdChecklist,
@@ -17,6 +19,20 @@ import {
 } from "react-icons/md";
 
 const AdminDashBoard = () => {
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 2000); // 2000ms de carregamento
+
+        return () => clearTimeout(timer); // Limpa o timeout se o componente desmontar
+    }, []);
+
+    if (loading) {
+        return <Loading />; // Exibe o componente de carregamento
+    }
+
     return (
         <>
             <main>
@@ -72,7 +88,7 @@ const AdminDashBoard = () => {
 
                 <section className='Apexcharts'>
                     <div className="container-charts">
-                        <Admincharts /> 
+                        <Admincharts />
                     </div>
                 </section>
 
@@ -112,7 +128,7 @@ const AdminDashBoard = () => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td><img src="https://cambuci.vtexassets.com/arquivos/ids/1033160/Bola-de-Futsal-Penalty-S11-R1-XXIV.jpg?v=638372870109700000" alt="Bola Penalty"/></td>
+                                <td><img src="https://cambuci.vtexassets.com/arquivos/ids/1033160/Bola-de-Futsal-Penalty-S11-R1-XXIV.jpg?v=638372870109700000" alt="Bola Penalty" /></td>
                                 <td>Produto 1</td>
                                 <td>Local 1</td>
                                 <td>01/01/2021</td>
@@ -127,7 +143,7 @@ const AdminDashBoard = () => {
 
             </main>
         </>
-    )
+    );
 }
 
-export default AdminDashBoard
+export default AdminDashBoard;
